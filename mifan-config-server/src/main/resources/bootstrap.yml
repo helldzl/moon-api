@@ -1,0 +1,29 @@
+###########################
+### SPRING CLOUD CONFIG ###
+###########################
+spring:
+  application:
+    name: config-server
+  cloud:
+    bus:
+      trace:
+        enabled: false
+    config:
+      server:
+        git:
+          #uri: https://github.com/helldzl/mifan-api-config-repo
+          username:
+          password:
+          clone-on-start: true
+          search-paths: '{application}'
+          uri: file:///${user.home}/AppData/Local/Temp/config-repo-6965976270678774789
+#        native:
+#          search-locations: file://C:\Users\quzile\AppData\Local\Temp\config-repo-6965976270678774789
+#          fail-on-error: true
+          #basedir: file://${user.home}/config-repo-local/
+
+###################################
+## TO CONFIGURE A SYMMETRIC KEY ###
+###################################
+encrypt:
+  key: b2baa944-0f36-4b90-bfba-880ffae59eb4

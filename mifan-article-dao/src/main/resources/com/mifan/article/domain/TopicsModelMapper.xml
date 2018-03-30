@@ -1,0 +1,498 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.mifan.article.domain.TopicsModel">
+
+    <!-- result map -->
+    <resultMap id="topicsModel" type="com.mifan.article.domain.TopicsModel">
+        <id property="id" column="id" javaType="long"/>
+        <result property="forumId" column="forum_id" javaType="long"/>
+        <result property="modelStatus" column="model_status" javaType="string"/>
+        <result property="modelName" column="model_name" javaType="string"/>
+        <result property="priority" column="priority" javaType="int"/>
+        <result property="confRandomSelection" column="conf_random_selection" javaType="int"/>
+        <result property="confOverwrite" column="conf_overwrite" javaType="int"/>
+        <result property="resultSamples" column="result_samples" javaType="int"/>
+        <result property="resultText" column="result_text" javaType="string"/>
+        <result property="enabled" column="enabled" javaType="int"/>
+        <result property="creator" column="creator" javaType="long"/>
+        <result property="modifier" column="modifier" javaType="long"/>
+        <result property="created" column="created" javaType="date"/>
+        <result property="modified" column="modified" javaType="date"/>
+    </resultMap>
+
+    <!-- sql -->
+    <sql id="columns">
+        <choose>
+            <when test="fields != null and fields.size != 0">
+                <foreach collection="fields" separator="," item="item" index="index">
+                    ${item.fullname}
+                </foreach>
+            </when>
+            <otherwise>
+                id, forum_id, model_status, model_name, priority, conf_random_selection, conf_overwrite, result_samples, result_text, enabled, creator, modifier, created, modified 
+            </otherwise>
+        </choose>
+    </sql>
+
+    <sql id="insertColumns">
+        <trim suffixOverrides=",">
+            <if test="id != null">
+                id,
+            </if>
+            <if test="forumId != null">
+                forum_id,
+            </if>
+            <if test="modelStatus != null">
+                model_status,
+            </if>
+            <if test="modelName != null">
+                model_name,
+            </if>
+            <if test="priority != null">
+                priority,
+            </if>
+            <if test="confRandomSelection != null">
+                conf_random_selection,
+            </if>
+            <if test="confOverwrite != null">
+                conf_overwrite,
+            </if>
+            <if test="resultSamples != null">
+                result_samples,
+            </if>
+            <if test="resultText != null">
+                result_text,
+            </if>
+            <if test="enabled != null">
+                enabled,
+            </if>
+            <if test="creator != null">
+                creator,
+            </if>
+            <if test="modifier != null">
+                modifier,
+            </if>
+            <if test="created != null">
+                created,
+            </if>
+            <if test="modified != null">
+                modified,
+            </if>
+        </trim>
+    </sql>
+
+    <sql id="insertEntityColumns">
+        <trim suffixOverrides=",">
+            <if test="insert.id != null">
+                id,
+            </if>
+            <if test="insert.forumId != null">
+                forum_id,
+            </if>
+            <if test="insert.modelStatus != null">
+                model_status,
+            </if>
+            <if test="insert.modelName != null">
+                model_name,
+            </if>
+            <if test="insert.priority != null">
+                priority,
+            </if>
+            <if test="insert.confRandomSelection != null">
+                conf_random_selection,
+            </if>
+            <if test="insert.confOverwrite != null">
+                conf_overwrite,
+            </if>
+            <if test="insert.resultSamples != null">
+                result_samples,
+            </if>
+            <if test="insert.resultText != null">
+                result_text,
+            </if>
+            <if test="insert.enabled != null">
+                enabled,
+            </if>
+            <if test="insert.creator != null">
+                creator,
+            </if>
+            <if test="insert.modifier != null">
+                modifier,
+            </if>
+            <if test="insert.created != null">
+                created,
+            </if>
+            <if test="insert.modified != null">
+                modified,
+            </if>
+        </trim>
+    </sql>
+
+    <sql id="insertValues">
+        <trim suffixOverrides=",">
+            <if test="id != null">
+                #{id},
+            </if>
+            <if test="forumId != null">
+                #{forumId},
+            </if>
+            <if test="modelStatus != null">
+                #{modelStatus},
+            </if>
+            <if test="modelName != null">
+                #{modelName},
+            </if>
+            <if test="priority != null">
+                #{priority},
+            </if>
+            <if test="confRandomSelection != null">
+                #{confRandomSelection},
+            </if>
+            <if test="confOverwrite != null">
+                #{confOverwrite},
+            </if>
+            <if test="resultSamples != null">
+                #{resultSamples},
+            </if>
+            <if test="resultText != null">
+                #{resultText},
+            </if>
+            <if test="enabled != null">
+                #{enabled},
+            </if>
+            <if test="creator != null">
+                #{creator},
+            </if>
+            <if test="modifier != null">
+                #{modifier},
+            </if>
+            <if test="created != null">
+                #{created},
+            </if>
+            <if test="modified != null">
+                #{modified},
+            </if>
+        </trim>
+    </sql>
+
+    <sql id="insertEntityValues">
+        <trim suffixOverrides=",">
+            <if test="insert.id != null">
+                #{insert.id},
+            </if>
+            <if test="insert.forumId != null">
+                #{insert.forumId},
+            </if>
+            <if test="insert.modelStatus != null">
+                #{insert.modelStatus},
+            </if>
+            <if test="insert.modelName != null">
+                #{insert.modelName},
+            </if>
+            <if test="insert.priority != null">
+                #{insert.priority},
+            </if>
+            <if test="insert.confRandomSelection != null">
+                #{insert.confRandomSelection},
+            </if>
+            <if test="insert.confOverwrite != null">
+                #{insert.confOverwrite},
+            </if>
+            <if test="insert.resultSamples != null">
+                #{insert.resultSamples},
+            </if>
+            <if test="insert.resultText != null">
+                #{insert.resultText},
+            </if>
+            <if test="insert.enabled != null">
+                #{insert.enabled},
+            </if>
+            <if test="insert.creator != null">
+                #{insert.creator},
+            </if>
+            <if test="insert.modifier != null">
+                #{insert.modifier},
+            </if>
+            <if test="insert.created != null">
+                #{insert.created},
+            </if>
+            <if test="insert.modified != null">
+                #{insert.modified},
+            </if>
+        </trim>
+    </sql>
+
+    <sql id="updateValues">
+        <trim suffixOverrides=",">
+            <if test="forumId != null">
+                forum_id = #{forumId},
+            </if>
+            <if test="modelStatus != null">
+                model_status = #{modelStatus},
+            </if>
+            <if test="modelName != null">
+                model_name = #{modelName},
+            </if>
+            <if test="priority != null">
+                priority = #{priority},
+            </if>
+            <if test="confRandomSelection != null">
+                conf_random_selection = #{confRandomSelection},
+            </if>
+            <if test="confOverwrite != null">
+                conf_overwrite = #{confOverwrite},
+            </if>
+            <if test="resultSamples != null">
+                result_samples = #{resultSamples},
+            </if>
+            <if test="resultText != null">
+                result_text = #{resultText},
+            </if>
+            <if test="enabled != null">
+                enabled = #{enabled},
+            </if>
+            <if test="creator != null">
+                creator = #{creator},
+            </if>
+            <if test="modifier != null">
+                modifier = #{modifier},
+            </if>
+            <if test="created != null">
+                created = #{created},
+            </if>
+            <if test="modified != null">
+                modified = #{modified},
+            </if>
+        </trim>
+    </sql>
+
+    <sql id="updateValuesByCriterion">
+        <trim suffixOverrides=",">
+            <if test="entity.forumId != null">
+                forum_id = #{entity.forumId},
+            </if>
+            <if test="entity.modelStatus != null">
+                model_status = #{entity.modelStatus},
+            </if>
+            <if test="entity.modelName != null">
+                model_name = #{entity.modelName},
+            </if>
+            <if test="entity.priority != null">
+                priority = #{entity.priority},
+            </if>
+            <if test="entity.confRandomSelection != null">
+                conf_random_selection = #{entity.confRandomSelection},
+            </if>
+            <if test="entity.confOverwrite != null">
+                conf_overwrite = #{entity.confOverwrite},
+            </if>
+            <if test="entity.resultSamples != null">
+                result_samples = #{entity.resultSamples},
+            </if>
+            <if test="entity.resultText != null">
+                result_text = #{entity.resultText},
+            </if>
+            <if test="entity.enabled != null">
+                enabled = #{entity.enabled},
+            </if>
+            <if test="entity.creator != null">
+                creator = #{entity.creator},
+            </if>
+            <if test="entity.modifier != null">
+                modifier = #{entity.modifier},
+            </if>
+            <if test="entity.created != null">
+                created = #{entity.created},
+            </if>
+            <if test="entity.modified != null">
+                modified = #{entity.modified},
+            </if>
+        </trim>
+    </sql>
+
+    <sql id="simpleConditions">
+        <trim prefix="WHERE" prefixOverrides="AND">
+            <if test="entity.id != null">
+                AND id = #{entity.id}
+            </if>
+            <if test="entity.forumId != null">
+                AND forum_id = #{entity.forumId}
+            </if>
+            <if test="entity.modelStatus != null">
+                AND model_status = #{entity.modelStatus}
+            </if>
+            <if test="entity.modelName != null">
+                AND model_name = #{entity.modelName}
+            </if>
+            <if test="entity.priority != null">
+                AND priority = #{entity.priority}
+            </if>
+            <if test="entity.confRandomSelection != null">
+                AND conf_random_selection = #{entity.confRandomSelection}
+            </if>
+            <if test="entity.confOverwrite != null">
+                AND conf_overwrite = #{entity.confOverwrite}
+            </if>
+            <if test="entity.resultSamples != null">
+                AND result_samples = #{entity.resultSamples}
+            </if>
+            <if test="entity.resultText != null">
+                AND result_text = #{entity.resultText}
+            </if>
+            <if test="entity.enabled != null">
+                AND enabled = #{entity.enabled}
+            </if>
+            <if test="entity.creator != null">
+                AND creator = #{entity.creator}
+            </if>
+            <if test="entity.modifier != null">
+                AND modifier = #{entity.modifier}
+            </if>
+            <if test="entity.created != null">
+                AND created = #{entity.created}
+            </if>
+            <if test="entity.modified != null">
+                AND modified = #{entity.modified}
+            </if>
+        </trim>
+    </sql>
+
+    <sql id="sort">
+        <trim prefix="ORDER BY" suffixOverrides=",">
+            <foreach collection="orders" separator="," item="item" index="index">
+                ${item.property} ${item.direction}
+            </foreach>
+        </trim>
+    </sql>
+
+    <sql id="criterion">
+        <foreach collection="conditions.tokens" item="item">
+            <choose>
+                <when test="item.param">#{item.value}</when><otherwise>${item.value}</otherwise>
+            </choose>
+        </foreach>
+    </sql>
+
+    <sql id="limit">
+        LIMIT #{offset}, #{pageSize}
+    </sql>
+
+    <sql id="relationships">
+        <if test="relationships != null">
+            <foreach collection="relationships" item="join" index="index">
+                ${join.type()} ${join.table()} ON ${join.condition()}
+            </foreach>
+        </if>
+    </sql>
+
+    <!-- insert -->
+    <insert id="save" parameterType="com.mifan.article.domain.TopicsModel" keyProperty="id" useGeneratedKeys="true">
+        INSERT INTO topics_model(<include refid="insertColumns"/>) VALUES (<include refid="insertValues"/>)
+    </insert>
+
+    <!-- insert into on duplicate -->
+    <insert id="insertOnDuplicate" parameterType="com.mifan.article.domain.TopicsModel" keyProperty="id" useGeneratedKeys="true">
+        INSERT INTO topics_model(<include refid="insertEntityColumns"/>) VALUES (<include refid="insertEntityValues"/>) ON DUPLICATE KEY UPDATE <include refid="updateValuesByCriterion"/>
+    </insert>
+
+    <!-- insert into on duplicate -->
+    <insert id="saveOrUpdate" parameterType="com.mifan.article.domain.TopicsModel" keyProperty="id" useGeneratedKeys="true">
+        INSERT INTO topics_model(<include refid="insertColumns"/>) VALUES (<include refid="insertValues"/>) ON DUPLICATE KEY UPDATE <include refid="updateValues"/>
+    </insert>
+
+    <!-- delete -->
+    <delete id="delete" parameterType="long">
+        DELETE FROM topics_model WHERE id = #{id}
+    </delete>
+
+    <!-- update -->
+    <update id="update" parameterType="com.mifan.article.domain.TopicsModel">
+        UPDATE topics_model SET <include refid="updateValues"/> WHERE id = #{id}
+    </update>
+
+    <update id="updateByCriterion" parameterType="com.mifan.article.domain.TopicsModel">
+        UPDATE topics_model SET <include refid="updateValuesByCriterion"/> WHERE id = #{entity.id} AND <include refid="criterion"></include>
+    </update>
+
+    <update id="updateByMap" parameterType="map">
+        UPDATE topics_model
+        <trim prefix="SET" suffixOverrides=",">
+            <foreach collection="increments" index="index" item="item">
+                ${item.key} = ${item.key} + #{item.value},
+            </foreach>
+            <foreach collection="fields" index="index" item="item">
+                ${item.key} = #{item.value},
+            </foreach>
+        </trim>
+        WHERE id = #{id}
+    </update>
+
+    <!-- select -->
+    <select id="findOne" parameterType="map" resultMap="topicsModel">
+        SELECT
+        <include refid="columns"></include>
+        FROM topics_model WHERE id = #{id}
+    </select>
+
+    <select id="findOneByObject" parameterType="map" resultMap="topicsModel">
+        SELECT
+        <include refid="columns"></include>
+        FROM topics_model <include refid="simpleConditions"></include>
+    </select>
+
+    <select id="findAll" parameterType="map" resultMap="topicsModel">
+        SELECT
+        <include refid="columns"></include>
+        FROM topics_model WHERE ${field} IN
+        <foreach collection="ids" open="(" separator="," close=")" index="index" item="item" >
+            ${item}
+        </foreach>
+    </select>
+
+    <select id="findAllByObject" parameterType="map" resultMap="topicsModel">
+        SELECT
+        <include refid="columns"></include>
+        FROM topics_model <include refid="simpleConditions"></include>
+    </select>
+
+    <select id="findAllByCriterion" parameterType="map" resultMap="topicsModel">
+        SELECT
+        <include refid="columns"></include>
+        FROM topics_model WHERE <include refid="criterion"></include>
+    </select>
+
+    <select id="findPage" parameterType="map" resultMap="topicsModel">
+        SELECT
+        <include refid="columns"></include>
+        FROM topics_model <include refid="simpleConditions"></include> <include refid="sort"></include> <include refid="limit"></include>
+    </select>
+
+    <select id="findPageByCriterion" parameterType="map" resultMap="topicsModel">
+        SELECT
+        <include refid="columns"></include>
+        FROM topics_model
+        <include refid="relationships"></include>
+        WHERE <include refid="criterion"></include> <include refid="sort"></include> <include refid="limit"></include>
+    </select>
+
+    <select id="count" resultType="long">
+        SELECT COUNT(*) FROM topics_model
+    </select>
+
+    <select id="countByCondition" parameterType="map" resultType="long">
+        SELECT COUNT(*) FROM topics_model <include refid="simpleConditions"></include>
+    </select>
+
+    <select id="countByCriterion" parameterType="map" resultType="long">
+        SELECT COUNT(*) FROM topics_model
+        <include refid="relationships"></include>
+        WHERE <include refid="criterion"></include>
+    </select>
+
+    <select id="exists" parameterType="long" resultType="long">
+        SELECT COUNT(*) FROM topics_model WHERE id = #{id}
+    </select>
+
+</mapper>

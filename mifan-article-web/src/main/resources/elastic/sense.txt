@@ -1,0 +1,3929 @@
+###############
+### MONITOR ###
+###############
+GET /_cat/indices?v
+GET /_cat/plugins
+GET /_cat/health?v
+GET /logstash-2015.05.18
+GET /_search?pretty
+GET /product/profile/151
+GET /topic
+GET /customer
+GET /product-20170509/modified/1
+GET /company
+GET /_nodes/process?pretty
+GET /_nodes/stats/process?filter_path=**.max_file_descriptors
+
+POST /topic/_optimize?max_num_segments=1
+
+# DELETE product-20170516
+
+###################
+### analyze API ###
+###################
+### 了解分析器的工作情况
+GET /topic/_analyze?field=items.titles.en
+{
+  "text": "我是曲子乐，<strong>我爱中华人民共和国</strong>，Hello China"
+}
+GET /topic/_analyze?analyzer=smartcn
+{
+  "text": "我是曲子乐，我爱中华人民共和国，Hello China"
+}
+
+
+###################
+### Terms Query ###
+###################
+# https://www.elastic.co/guide/en/elasticsearch/reference/2.4/query-dsl-terms-query.html
+POST /topic/summary/_search
+{
+  "query": {
+    "constant_score": {
+      "filter": {
+        "terms": {
+          "categories.en.raw": [
+            "Guitars and Basses",
+            "Guitars & Stringed Instruments"
+          ]
+        }
+      }
+    }
+  }
+}
+
+
+################
+### 预匹配器 ###
+################
+PUT /my-index
+{
+  "mappings": {
+    "my-type": {
+      "properties": {
+        "message": {
+          "type": "string"
+        }
+      }
+    }
+  }
+}
+
+# Register a query in the percolator:
+PUT /my-index/.percolator/1
+{
+  "query": {
+    "match": {
+      "message": "bonsai tree"
+    }
+  }
+}
+DELETE /my-index/.percolator/1
+
+# Match a document to the registered percolator queries:
+GET /my-index/my-type/_percolate
+{
+  "doc": {
+    "message": "A new bonsai tree in the office"
+  }
+}
+
+######################
+### 自动完成建议器 ###
+######################
+GET /topic/post/_search
+{
+  "query": {
+    "match": {
+      "_id": "2"
+    }
+  }
+}
+
+GET /music
+GET /music/song/_search
+{
+  "query": {
+    "match": {
+      "_id": "7"
+    }
+  }
+}
+
+DELETE /music
+PUT /music
+PUT /music/song/_mapping
+{
+  "song": {
+    "properties": {
+      "forum": {
+        "type": "integer"
+      },
+      "name": {
+        "type": "string",
+        "analyzer": "smartcn"
+      },
+      "suggest": {
+        "type": "completion",
+        "analyzer": "standard",
+        "search_analyzer": "standard",
+        "payloads": true,
+        "preserve_separators": true,
+        "preserve_position_increments": true,
+        "max_input_length": 50
+      },
+      "suggest-cat": {
+        "type": "completion",
+        "analyzer": "simple",
+        "search_analyzer": "simple",
+        "payloads": true,
+        "preserve_separators": true,
+        "preserve_position_increments": true,
+        "max_input_length": 50,
+        "context": {
+          "color": {
+            "type": "category",
+            "default": [
+              "red",
+              "green",
+              "blue"
+            ]
+          },
+          "category": {
+            "type": "category",
+            "default": [
+              "basses",
+              "keyboard",
+              "guitars"
+            ]
+          }
+        }
+      }
+    }
+  }
+}
+
+PUT /music/song/1?refresh=true
+{
+  "name": "Fyodor Dostoevsky",
+  "suggest": {
+    "input": [
+      "fyodor",
+      "dostoevsky"
+    ],
+    "output": "Fyodor Dostoevsky",
+    "payload": {
+      "id": 2321
+    },
+    "weight": 34
+  }
+}
+
+PUT /music/song/10?refresh=true
+{
+  "forum": 1,
+
+  "suggest": {
+    "input": [
+      "起底红黄蓝幼儿园，创始人曾称有全国无死角监控系统 | 附视频",
+      "qdhhlyrycsr"
+    ],
+    "output": "新闻 - 起底红黄蓝幼儿园，创始人曾称有全国无死角监控系统 | 附视频",
+    "payload": {
+      "id": 2321
+    }
+  },
+  "suggest-cat": {
+    "input": [
+      "起底红黄蓝幼儿园，创始人曾称有全国无死角监控系统 | 附视频",
+      "qdhhlyrycsr"
+    ],
+    "output": "新闻 - 起底红黄蓝幼儿园，创始人曾称有全国无死角监控系统 | 附视频",
+    "payload": {
+      "data": {
+        "type": "product",
+        "id": 9,
+        "attributes": {
+          "name": "test"
+        }
+      }
+    },
+    "context": {
+      "color": [
+        "-",
+        "red",
+        "yellow"
+      ],
+      "category": [
+        "-",
+        "guitar"
+      ]
+    }
+  }
+}
+
+PUT /music/song/2?refresh=true
+{
+  "name": "我爱中华人民共和国",
+  "suggest": {
+    "input": [
+      "我",
+      "爱",
+      "中华人民共和国"
+    ],
+    "output": "我爱中华人民共和国",
+    "payload": {
+      "id": 2321
+    },
+    "weight": 34
+  }
+}
+
+GET /topic-20171201/post/_count
+GET /topic-20171201/post/_search
+{
+  "query": {
+    "match_all": {}
+  }
+}
+
+GET /topic-20171201/post/_search
+{
+  "fields": [
+    "created",
+    "boost"
+  ],
+  "query": {
+    "function_score": {
+      "query": {
+        "multi_match": {
+          "query": "guitar",
+          "fields": [
+            "items.titles.*^5",
+            "items.contents.*"
+          ]
+        }
+      },
+      "functions": [
+        {
+          "field_value_factor": {
+            "field": "boost",
+            "modifier": "log1p",
+            "factor": 1.2,
+            "missing": 1
+          },
+          "weight": 2
+        },
+        {
+          "field_value_factor": {
+            "field": "created",
+            "modifier": "log1p",
+            "factor": 1,
+            "missing": 1
+          },
+          "weight": 3
+        }
+      ],
+      "score_mode": "avg",
+      "boost_mode": "multiply"
+    }
+  }
+}
+
+POST /topic-20171201/post/_search?pretty
+{
+  "size": 0,
+  "suggest": {
+    "suggest": {
+      "text": "un",
+      "completion": {
+        "field": "suggest",
+        "size": 5,
+        "fuzzy": {
+          "fuzziness": 0
+        },
+        "context": {
+          "forumId": "1",
+          "category": "-",
+          "brand": "-"
+        }
+      }
+    }
+  }
+}
+
+PUT /music/song/3?refresh=true
+{
+  "name": "今日头条10亿元砸给悟空问答，知乎们跟还是不跟是个问题广",
+  "suggest": {
+    "input": [
+      "今日头条",
+      "知乎们跟还是不跟是个问题广"
+    ],
+    "output": "今日头条10亿元砸给悟空问答，知乎们跟还是不跟是个问题",
+    "payload": {
+      "id": 23213
+    },
+    "weight": 34
+  }
+}
+
+PUT /music/song/4?refresh=true
+{
+  "name": "今日头条怎么做推广",
+  "suggest": {
+    "input": [
+      "今日头条怎么做推广",
+      "头条",
+      "做推广",
+      "jinri",
+      "jrttzmztg"
+    ],
+    "output": "今日头条怎么做推广dddd",
+    "payload": {
+      "type": "product",
+      "id": 23213
+    },
+    "weight": 20171124
+  }
+}
+
+POST /music/_suggest?pretty
+{
+  "suggest": {
+    "text": "a the",
+    "completion": {
+      "field": "suggest",
+      "size": 5,
+      "fuzzy": {
+        "fuzziness": 0
+      }
+    }
+  },
+  "suggest-cat": {
+    "text": "at",
+    "completion": {
+      "field": "suggest-cat",
+      "size": 10,
+      "context": {
+        "color": "red",
+        "category": null
+      }
+    }
+  }
+}
+
+POST /music/_suggest?pretty
+{
+  "suggest": {
+    "text": "knacksack",
+    "completion": {
+      "field": "suggest-cat",
+      "size": 10,
+      "context": {
+        "color": "red"
+      }
+    }
+  }
+}
+
+POST /music/song/_search?pretty
+{
+  "size": 0,
+  "suggest": {
+    "suggest": {
+      "text": "起底红黄蓝幼儿园创",
+      "completion": {
+        "field": "suggest",
+        "size": 5,
+        "fuzzy": {
+          "fuzziness": 0
+        }
+      }
+    },
+    "suggest-cat": {
+      "text": "起底红黄蓝幼儿园",
+      "completion": {
+        "field": "suggest-cat",
+        "size": 10,
+        "context": {
+          "color": "-",
+          "category": "-"
+        }
+      }
+    }
+  }
+}
+
+##################
+### 多语言处理 ###
+##################
+PUT /blogs-en
+{
+  "mappings": {
+    "post": {
+      "properties": {
+        "title": {
+          "type": "string",
+          "fields": {
+            "stemmed": {
+              "type": "string",
+              "analyzer": "english"
+            }
+          }
+        }
+      }
+    }
+  }
+}
+
+PUT /blogs-cn
+{
+  "mappings": {
+    "post": {
+      "properties": {
+        "title": {
+          "type": "string",
+          "fields": {
+            "stemmed": {
+              "type": "string",
+              "analyzer": "smartcn"
+            }
+          }
+        }
+      }
+    }
+  }
+}
+
+PUT /blogs-en/post/1
+{
+    "title" : "Analog Modeling Desktop Synthesizer and 24-bit/192kHz Audio/MIDI Interface"
+}
+PUT /blogs-cn/post/1
+{
+    "title" : "模拟建模桌面合成器和24位/ 192kHz音频/ MIDI接口"
+}
+
+GET /blogs-*/post/_search
+{
+  "query": {
+    "multi_match": {
+      "query": "24-bit",
+      "fields": [
+        "title.stemmed"
+      ],
+      "type": "most_fields"
+    }
+  },
+  "indices_boost": {
+    "blogs-en": 3,
+    "blogs-cn": 4
+  }
+}
+
+
+##################
+### 标识符查询 ###
+##################
+POST /topic/summary/_search
+{
+  "query": {
+    "ids": {
+      "values": [
+        "1",
+        "2"
+      ]
+    }
+  },
+  "size": 2
+}
+
+POST /topic/summary/_search
+{
+  "query": {
+    "ids": {
+      "values": [
+        "1",
+        "2"
+      ]
+    }
+  },
+  "post_filter": {
+    "query": {
+      "ids": {
+        "values": [
+          "1"
+        ]
+      }
+    }
+  },
+  "size": 2
+}
+
+################
+### 查询验证 ###
+################
+POST /topic/summary/_validate/query
+{
+  "query": {
+    "term": {
+      "categories.en.raw": {
+        "value": "Guitars and Basses"
+      }
+    }
+  }
+}
+
+#########################
+### query string 查询 ###
+#########################
+POST /topic/summary/_search
+{
+  "query": {
+    "query_string": {
+      "fields": [
+        "items.titles.en",
+        "items.contents.en"
+      ],
+      "query": "+Guitars AND +Basses",
+      "use_dis_max": true,
+      "tie_breaker": 0.7
+    }
+  }
+}
+
+# multi-match
+POST /topic/summary/_search
+{
+  "query": {
+    "function_score": {
+      "query": {
+        "bool": {
+          "must": [
+            {
+              "match": {
+                "items.titles.en": {
+                  "query": "Guitars and Basses",
+                  "operator": "and"
+                }
+              }
+            },
+            {
+              "match": {
+                "items.contents.en": {
+                  "query": "Guitars and Basses",
+                  "operator": "and"
+                }
+              }
+            }
+          ]
+        }
+      }
+    }
+  }
+}
+
+##
+##
+##
+POST /topic/post/_search
+{
+  "fields": [
+    "items.titles.en",
+    "items.titles.cn",
+    "items.price",
+    "created"
+  ],
+  "query": {
+    "function_score": {
+      "query": {
+        "multi_match": {
+          "query": "guitar",
+          "fields": [
+            "items.titles.*^5",
+            "items.contents.*"
+          ]
+        }
+      },
+      "functions": [
+        {
+          "filter": {
+            "query": {
+              "bool": {
+                "must": [
+                  {
+                    "exists": {
+                      "field": "items.price"
+                    }
+                  },
+                  {
+                    "term": {
+                      "forumId": {
+                        "value": "1"
+                      }
+                    }
+                  }
+                ]
+              }
+            }
+          },
+          "script_score": {
+            "script": "_score * doc['created'].value"
+          }
+        },
+        {
+          "random_score": {
+            "seed": 1212
+          }
+        }
+      ],
+      "score_mode": "avg",
+      "boost_mode": "multiply"
+    }
+  }
+}
+
+POST /topic/summary/_search
+{
+  "query": {
+    "function_score": {
+      "query": {
+        "multi_match": {
+          "query": "guitar",
+          "fields": [
+            "items.titles.*^5",
+            "items.contents.*"
+          ]
+        }
+      },
+      "functions": [
+        {
+          "filter": {
+            "query": {
+              "bool": {
+                "must": [
+                  {
+                    "exists": {
+                      "field": "items.price"
+                    }
+                  },
+                  {
+                    "term": {
+                      "forumId": {
+                        "value": "1"
+                      }
+                    }
+                  }
+                ]
+              }
+            }
+          },
+          "field_value_factor": {
+            "field": "items.price",
+            "modifier": "log1p",
+            "factor": 0.1,
+            "missing": 1
+          }
+        }
+      ],
+      "score_mode": "avg",
+      "boost_mode": "multiply"
+    }
+  }
+}
+
+POST /topic/summary/_search
+{
+  "explain": true,
+  "query": {
+    "function_score": {
+      "query": {
+        "multi_match": {
+          "query": "guitars",
+          "fields": [
+            "items.titles.en",
+            "items.titles.cn",
+            "items.contents.en",
+            "items.contents.cn"
+          ],
+          "operator": "and"
+        }
+      },
+      "functions": [
+        {
+          "field_value_factor": {
+            "field": "items.price"
+          }
+        }
+      ],
+      "boost_mode": "multiply"
+    }
+  }
+}
+
+POST /topic/summary/_search
+{
+  "query": {
+    "multi_match": {
+      "query": "Guitars and Basses",
+      "operator": "and",
+      "use_dis_max": true,
+      "tie_breaker": 0.3,
+      "minimum_should_match": "80%",
+      "type": "best_fields",
+      "fields": [
+        "items.titles.*^5",
+        "items.contents.*"
+      ]
+    }
+  }
+}
+
+POST /topic/summary/_search?search_type=count
+{
+  "query": {
+    "multi_match": {
+      "query": "Guitars and Basses",
+      "operator": "and",
+      "use_dis_max": true,
+      "tie_breaker": 0.3,
+      "minimum_should_match": "30%",
+      "type": "best_fields",
+      "fields": [
+        "items.titles.*^5",
+        "items.contents.*"
+      ]
+    }
+  },
+  "aggs": {
+    "a": {
+      "global": {},
+      "aggs": {
+        "topic-count": {
+          "terms": {
+            "field": "forumId",
+            "size": 10
+          }
+        }
+      }
+    },
+    "b": {
+      "terms": {
+        "field": "categories.en.raw",
+        "size": 10
+      }
+    }
+  }
+}
+
+####################
+### 高亮显示查询 ###
+####################
+POST /topic/summary/_search
+{
+  "fields": [
+    "items.titles.en"
+  ],
+  "query": {
+    "match": {
+      "items.titles.en": "guitars"
+    }
+  },
+  "highlight": {
+    "fields": {
+      "items.titles.en": {}
+    }
+  }
+}
+
+###################
+### suggest API ###
+###################
+POST /topic/_suggest
+{
+  "my-suggestion": {
+    "text": "guitar",
+    "term": {
+      "field": "items.titles.en"
+    }
+  }
+}
+
+POST /topic/summary/_search?search_type=count
+{
+  "query": {
+    "match_all": {}
+  },
+  "suggest": {
+    "text": "",
+    "first-suggestion": {
+      "phrase": {
+        "field": "_all"
+      }
+    },
+    "second-suggestion": {
+      "om": {
+        "field": "items.titles.cn"
+      }
+    }
+  }
+}
+
+POST /topic/post/_search
+{
+  "suggest": {
+    "text": "keis",
+    "simple_phrase": {
+      "term": {
+        "suggest_mode": "missing",
+        "field": "items.contents.en",
+        "size": 10
+      }
+    }
+  },
+  "size": 0
+}
+
+POST /topic/post/_search
+{
+  "size": 0,
+  "suggest": {
+    "text": "吉她",
+    "simple_phrase": {
+      "term": {
+        "field": "items.contents.en",
+        "size": 10,
+        "analyzer": "ik_smart",
+        "max_edits": 2,
+        "min_word_length": 0,
+        "string_distance": "damerau_levenshtein"
+      }
+    }
+  }
+}
+
+POST /topic/post/_search
+{
+  "size": 0,
+  "suggest": {
+    "text": "guitars and basses",
+    "simple_phrase": {
+      "phrase": {
+        "field": "items.titles.en",
+        "size": 10,
+        "analyzer": "ik_smart",
+        "real_word_error_likelihood": 0.9,
+        "max_errors": 0.1,
+        "gram_size": 2,
+        "direct_generator": [
+          {
+            "field": "items.titles.en",
+            "suggest_mode": "always",
+            "min_word_length": 1
+          }
+        ],
+        "highlight": {
+          "pre_tag": "<em>",
+          "post_tag": "</em>"
+        }
+      }
+    }
+  }
+}
+
+POST /topic/summary/_search
+{
+  "query": {
+    "match": {
+      "items.titles.en": "saerch"
+    }
+  }
+}
+
+################
+### logstash ###
+################
+GET /logstash-2016.08.26
+GET /logstash-2016.08.26/_search
+GET /logstash-2016.08.26/_search?q=response=200
+GET /logstash-2016.08.24/_search?q=geoip.city_name=Buffalo
+DELETE /logstash-2016.08.26
+
+##############
+### DELETE ###
+##############
+# 删除索引
+DELETE /product-20170210
+
+##############
+### UPDATE ###
+##############
+POST /product/profile/_search
+{
+  "query": {
+    "match": {
+      "brand.name": "2box"
+    }
+  },
+  "size": 20
+}
+# 修改索引随后更新时间, 让定时任务重建索引
+POST /product/modified/_bulk?pretty
+{
+  "index": {
+    "_id": "1"
+  }
+}
+PUT /topic/modified/1?pretty
+{
+  "date": "2000-12-24T10:38:23.000Z"
+}
+
+# 2010-08-24T10:38:23.000Z
+
+
+##############
+### SEARCH ###
+##############
+POST /topic-20171201/post/_search
+{
+  "query": {
+    "match": {
+      "forumId": "1"
+    }
+  },
+  "aggs": {
+    "brand": {
+      "terms": {
+        "field": "level_0.en.raw",
+        "size": 100
+      }
+    }
+  },
+  "size": 0
+}
+
+POST  /topic-20171201/post/_search
+{
+  "query": {
+    "bool": {
+      "must": [
+        {
+          "term": {
+            "level_0.en.raw": {
+              "value": "Useless"
+            }
+          }
+        }
+      ]
+    }
+  }
+}
+
+POST /topic/summary/_search
+{
+  "fields": ["brand.id"],
+  "query": {
+    "match": {
+      "_all": "&nbsp"
+    }
+  }
+}
+
+POST /topic/summary/_search
+{
+  "query": {
+    "bool": {
+      "should": [
+        {
+          "match": {
+            "_id": "1"
+          }
+        }
+      ]
+    }
+  }
+}
+
+POST /topic/summary/_search
+{
+  "query": {
+    "match": {
+      "_all": {
+        "query": "Looks like a price war is breaking",
+        "operator": "and"
+      }
+    }
+  },
+  "size": 10
+}
+
+################
+### 短语查询 ###
+################
+### slop - 定义词条之间可以有多少个未知词
+POST /topic/summary/_search
+{
+  "query": {
+    "match_phrase": {
+      "_all": {
+        "query": "Looks like a is breaking",
+        "slop": 3
+      }
+    }
+  }
+}
+
+########################
+### multi match 查询 ###
+########################
+### use_dis_max - true:析取最大分查询, false:布尔查询
+### tie_breaker - use_dis_max为ture时, 指定低分数项和最高分数项之间的平衡
+POST /topic/summary/_search
+{
+  "query": {
+    "multi_match": {
+      "query": "Yamaha EV",
+      "fields": [
+        "items.titles.en",
+        "items.titles.cn",
+        "items.contents.en",
+        "items.contents.cn"
+      ],
+      "operator":"and",
+      "use_dis_max": true,
+      "tie_breaker": 100
+    }
+  },
+  "size": 10
+}
+
+#########################
+### query_string 查询 ###
+#########################
+### e.g - items.titles.en:guitars +items.titles.en:bass
+POST /topic/summary/_search
+{
+  "query": {
+    "query_string": {
+      "query": "Yamaha guitars",
+      "fields": [
+        "_all"
+      ],
+      "default_operator": "and",
+      "default_field": "items.titles.en",
+      "use_dis_max": true
+    }
+  }
+}
+
+##################
+### 标识符查询 ###
+##################
+POST /topic/summary/_search
+{
+  "query": {
+    "ids": {
+      "values": [
+        "398632",
+        "1"
+      ]
+    }
+  },
+  "size": 2
+}
+
+POST /topic/summary/_search
+{
+  "query": {
+    "match": {
+      "_id": "398632"
+    }
+  }
+}
+
+################
+### 前缀查询 ###
+################
+POST /topic/summary/_search
+{
+  "query": {
+    "prefix": {
+      "items.titles.en": {
+        "value": "guit"
+      }
+    }
+  }
+}
+
+################
+### 模糊查询 ###
+################
+### 比较占用CPU资源
+### 检查用户拼写错误时可用的查询类型
+POST /topic/summary/_search
+{
+  "query": {
+    "fuzzy": {
+      "items.titles.en": {
+        "value": "gutars"
+      }
+    }
+  }
+}
+
+##################
+### 通配符查询 ###
+##################
+# 该类查询不太注重性能, 尤其是以*开头的查询, 应尽力避免
+# "_source": {
+#    "include": ["items.titles.en","items.titles.cn"]
+#  },
+POST /topic/summary/_search
+{
+  "fields": [
+    "items.titles.en",
+    "items.titles.cn"
+  ],
+  "query": {
+    "wildcard": {
+      "items.titles.en": {
+        "value": "*uitars*"
+      }
+    }
+  }
+}
+
+##################
+### 最大分查询 ###
+##################
+# disjunction max query (dis_max)
+# 控制较低得分的子查询对文档最后得分的影响
+# 最高分数的子查询的得分之和 + (其余子查询的得分之和 x tie_breaker)
+POST /topic/summary/_search
+{
+  "query": {
+    "dis_max": {
+      "tie_breaker": 1,
+      "boost": 1.2,
+      "queries": [
+        {
+          "match": {
+            "items.titles.en": "2box"
+          }
+        },
+        {
+          "match": {
+            "items.titles.en": "yamaha"
+          }
+        }
+      ]
+    }
+  }
+}
+
+######################
+### 正则表达式查询 ###
+######################
+POST /topic/summary/_search
+{
+  "fields": ["items.titles.en"],
+  "query": {
+    "regexp": {
+      "items.titles.en": {
+        "value": "s.*y",
+        "boost": 1.2
+      }
+    }
+  }
+}
+
+################
+### 加权查询 ###
+################
+POST /topic/summary/_search
+{
+  "explain": true,
+  "query": {
+    "boosting": {
+      "positive": {
+        "match": {
+          "categories.en.raw": "Guitars and Basses"
+        }
+      },
+      "negative": {
+        "range": {
+          "items.price": {
+            "gte": 200,
+            "lte": 300
+          }
+        }
+      },
+      "negative_boost": 10
+    }
+  },
+  "size": 1
+}
+
+GET topic-new/post/_search?search_type=count
+
+# 拾音器、麦克风、麦克、话筒、无线、mic、Microphone、cardioid、dynamic、wireless
+GET topic-new/post/_search
+{
+  "_source": {
+    "include": [
+      "items.titles.cn",
+      "items.titles.en",
+      "items.contents.cn",
+      "items.contents.en",
+      "categories.en",
+      "categories.cn"
+    ]
+  },
+  "query": {
+    "bool": {
+      "must": [
+        {
+          "bool": {
+            "should": [
+              {
+                "query_string": {
+                  "fields": [
+                    "items.titles.cn^3",
+                    "items.contents.cn"
+                  ],
+                  "analyzer": "cn",
+                  "query": "拾音器 OR 麦克风 OR 麦克 OR 话筒 OR 无线"
+                }
+              },
+              {
+                "query_string": {
+                  "fields": [
+                    "items.titles.en^3",
+                    "items.contents.en"
+                  ],
+                  "analyzer": "en",
+                  "query": "mic OR microphone OR cardioid OR dynamic OR wireless"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "boosting": {
+            "positive": {
+              "function_score": {
+                "query": {
+                  "multi_match": {
+                    "query": "guitar",
+                    "fields": [
+                      "items.titles.*^5",
+                      "items.contents.*"
+                    ]
+                  }
+                },
+                "functions": [
+                  {
+                    "filter": {
+                      "query": {
+                        "bool": {
+                          "must": [
+                            {
+                              "exists": {
+                                "field": "items.price"
+                              }
+                            },
+                            {
+                              "term": {
+                                "forumId": {
+                                  "value": "1"
+                                }
+                              }
+                            }
+                          ]
+                        }
+                      }
+                    },
+                    "field_value_factor": {
+                      "field": "items.price",
+                      "modifier": "log1p",
+                      "factor": 0.1,
+                      "missing": 1
+                    }
+                  }
+                ],
+                "score_mode": "avg",
+                "boost_mode": "multiply"
+              }
+            },
+            "negative": {
+              "bool": {
+                "should": [
+                  {
+                    "terms": {
+                      "FIELD": [
+                        "VALUE1",
+                        "VALUE2"
+                      ]
+                    }
+                  }
+                ]
+              }
+            },
+            "negative_boost": 0.5
+          }
+        }
+      ]
+    }
+  }
+}
+
+
+
+POST /topic/summary/_search
+{
+  "query": {
+    "boosting": {
+      "positive": {
+        "bool": {
+          "must": [
+            {
+              "multi_match": {
+                "query": "吉他,贝斯",
+                "fields": [
+                  "items.titles.*^3",
+                  "items.contents.*"
+                ]
+              }
+            },
+            {
+              "match": {
+                "categories.en.raw": "Guitars and Basses"
+              }
+            },
+            {
+              "terms": {
+                "FIELD": [
+                  "VALUE1",
+                  "VALUE2"
+                ]
+              }
+            }
+          ]
+        }
+      },
+      "negative": {
+        "term": {
+          "FIELD": {
+            "value": "VALUE"
+          }
+        }
+      },
+      "negative_boost": 10
+    }
+  },
+  "size": 20
+}
+
+###########################
+### constant score 查询 ###
+###########################
+POST /topic/summary/_search
+{
+  "fields": [
+    "categories.en.raw"
+  ],
+  "query": {
+    "constant_score": {
+      "query": {
+        "term": {
+          "categories.en.raw": "Guitars and Basses"
+        }
+      },
+      "boost": 2
+    }
+  }
+}
+
+##############
+### 过滤器 ###
+##############
+# filtered 更快, 应该总是这用这种类型. 先过滤再查询 (dep in 2.0)
+# post_filter 比filtered慢.            先查询在过滤
+# QueryBuilders.queryFilter()
+# builder.setPostFilter()
+# msg : Use the bool query instead with a must clause for the query and a filter clause for the filter
+POST /topic/summary/_search
+{
+  "fields": ["items.price"],
+  "query": {
+    "term": {
+      "categories.en.raw": "Guitars and Basses"
+    }
+  },
+  "post_filter": {
+    "range": {
+      "items.price": {
+        "gte": 10,
+        "lte": 20
+      }
+    }
+  }
+}
+
+### filtered is deprecated
+POST /topic/summary/_search
+{
+  "query": {
+    "filtered": {
+      "query": {
+        "term": {
+          "categories.en.raw": "Guitars and Basses"
+        }
+      },
+      "filter": {
+        "range": {
+          "items.price": {
+            "gte": 10,
+            "lte": 20
+          }
+        }
+      }
+    }
+  }
+}
+
+### Use boolQuery() instead with a must clause for the query and a filter clause for the filter.
+### a filtered query affects both search results and aggregations
+### filter -> query -> aggs
+### 过滤发生在在运行查询之前
+POST /topic/summary/_search
+{
+  "query": {
+    "bool": {
+      "must": [
+        {
+          "term": {
+            "categories.en.raw": "Guitars and Basses"
+          }
+        }
+      ],
+      "filter": {
+        "range": {
+          "items.price": {
+            "gte": 10,
+            "lte": 20
+          }
+        }
+      }
+    }
+  },
+  "aggs": {
+    "price": {
+      "range": {
+        "field": "items.price",
+        "ranges": [
+          {
+            "from": 0,
+            "to": 30
+          },
+          {
+            "from": 30,
+            "to": 5000000
+          }
+        ]
+      }
+    }
+  },
+  "size": 0
+}
+
+### post_filter
+### while a post_filter only affects the search results but NOT the aggregations
+### query -> aggs -> post_filter
+### 过滤器应用到查询所发现的所有文档上
+POST /topic/summary/_search
+{
+  "query": {
+    "bool": {
+      "must": [
+        {
+          "term": {
+            "categories.en.raw": "Guitars and Basses"
+          }
+        }
+      ]
+    }
+  },
+  "post_filter": {
+    "range": {
+      "items.price": {
+        "gte": 10,
+        "lte": 20
+      }
+    }
+  },
+  "aggs": {
+    "price": {
+      "range": {
+        "field": "items.price",
+        "ranges": [
+          {
+            "from": 0,
+            "to": 30
+          },
+          {
+            "from": 30,
+            "to": 5000000
+          }
+        ]
+      }
+    }
+  },
+  "size": 0
+}
+
+POST /topic/summary/_search
+{
+  "query": {
+    "bool": {
+      "must": [
+        {
+          "term": {
+            "categories.en.raw": "Guitars and Basses"
+          }
+        },
+        {
+          "range": {
+            "items.price": {
+              "gte": 10,
+              "lte": 20
+            }
+          }
+        }
+      ]
+    }
+  },
+  "aggs": {
+    "price": {
+      "range": {
+        "field": "items.price",
+        "ranges": [
+          {
+            "from": 0,
+            "to": 30
+          },
+          {
+            "from": 30,
+            "to": 5000000
+          }
+        ]
+      }
+    }
+  },
+  "size": 0
+}
+
+
+
+
+POST /topic/summary/_search
+{
+  "query": {
+    "term": {
+      "categories.en.raw": {
+        "value": "Guitars and Basses",
+        "boost": 1.0
+      }
+    }
+  }
+}
+
+
+
+POST /topic/summary/_search?search_type=count
+{
+  "query": {
+    "match_all": {}
+  },
+  "size": 20,
+  "from": 0
+}
+
+POST /topic/summary/_search
+{
+  "query": {
+    "match_all": {}
+  },
+  "sort": [
+    {
+      "created": {
+        "order": "desc"
+      }
+    }
+  ]
+}
+
+# all 排序
+POST /product/profile/_search
+{
+  "query": {
+    "bool": {
+      "must": [
+        {
+          "match": {
+            "brand.name": "Yamaha"
+          }
+        },
+        {
+          "match": {
+            "category.raw": "Guitars and Basses"
+          }
+        }
+      ]
+    }
+  },
+  "aggs": {
+    "models": {
+      "terms": {
+        "field": "category.raw"
+      }
+    }
+  },
+  "post_filter": {
+    "term": {
+      "category.raw": "6-string Acoustic Guitars"
+    }
+  },
+  "size": 0,
+  "from": 40
+}
+
+
+
+POST /product/summary/_search
+{
+  "query": {
+    "bool": {
+      "must": [
+        {
+          "match": {
+            "items.seedId": 11
+          }
+        },
+        {
+          "bool": {
+            "should": [
+              {
+                "term": {
+                  "name": "ev"
+                }
+              },
+              {
+                "term": {
+                  "items.contents.en": "ev"
+                }
+              }
+            ]
+          }
+        }
+      ]
+    }
+  }
+}
+POST /product-20170509/profile/_search
+{
+  "query": {"match": {
+    "_id": "1"
+  }}
+}
+
+
+POST /product/profile/_search
+{
+  "query": {
+    "bool": {
+      "filter": [
+        {
+          "term": {
+            "brand.name": "Yamaha"
+          }
+        },
+        {
+          "term": {
+            "category.raw": "Guitars and Basses"
+          }
+        }
+      ]
+    }
+  },
+  "aggs": {
+    "models": {
+      "terms": {
+        "field": "category.raw"
+      }
+    }
+  }
+}
+POST /product/profile/_search
+{
+  "query": {
+    "bool": {
+      "filter": [
+        {
+          "term": {
+            "brand.name": "Yamaha"
+          }
+        },
+        {
+          "term": {
+            "category.raw": "4-string Bass Guitars"
+          }
+        }
+      ]
+    }
+  },
+  "size": 0,
+  "aggs": {
+    "duplicateCount": {
+      "terms": {
+        "field": "origin",
+        "min_doc_count": 1
+      },
+      "aggs": {
+        "duplicateDocuments": {
+          "top_hits": {
+            "_source": {}
+          }
+        }
+      }
+    }
+  }
+}
+POST /product-20170124/summary/_search
+{
+  "query": {
+    "term": {
+      "_id": {
+        "value": "130"
+      }
+    }
+  },
+  "size": 20
+}
+POST /product-20170118/profile/_search
+{
+  "query": {"multi_match": {
+    "query": "混合工作站",
+    "fields": ["items.content_cn"]
+  }}
+}
+POST /product-20170118/summary/_search
+{
+  "query": {
+    "bool": {
+      "should": [
+        {
+          "term": {
+            "category": {
+              "value": "bass"
+            }
+          }
+        },
+        {
+          "term": {
+            "items.content_cn": {
+              "value": "中国"
+            }
+          }
+        }
+      ]
+    }
+  }
+}
+POST /product-20170118/summary/_search
+{
+  "query": {
+    "bool": {
+      "should": [
+        {
+          "multi_match": {
+            "query": "bass",
+            "fields": [
+              "name",
+              "items.content_cn",
+              "items.content"
+            ]
+          }
+        }
+      ]
+    }
+  }
+}
+POST /product-20170118/profile/_search
+{
+  "query": {
+    "match": {
+      "_id": "3"
+    }
+  },
+  "size": 20
+}
+POST /product-20161227/summary/_search
+{
+  "query": {
+    "bool": {
+      "should": [
+        {
+          "term": {
+            "_id": "130"
+          }
+        },
+        {
+          "term": {
+            "_id": "2"
+          }
+        },
+        {
+          "term": {
+            "_id": "1"
+          }
+        }
+      ]
+    }
+  },
+  "size": 20
+}
+
+POST /product-20161227/summary/_search
+{
+  "query": {
+    "bool": {
+      "must": [
+        {
+          "multi_match": {
+            "query": "560",
+            "fields": ["name","items.content"]
+          }
+        },
+        {
+          "term": {
+            "tags.raw": {
+              "value": "API560"
+            }
+          }
+        }
+      ]
+    }
+  },
+  "size": 20
+}
+
+POST /product/summary/_search
+{
+  "query": {
+    "multi_match": {
+      "query": "Bass-Methode",
+      "fields": ["name", "items.content"]
+    }
+  },
+  "_source": {
+    "include": [
+      "name",
+      "category",
+      "brand",
+      "tags",
+      "created",
+      "image.id",
+      "image.width",
+      "image.height",
+      "items.seedId",
+      "items.origin",
+      "items.price",
+      "items.priceUnit",
+      "items.description",
+      "items.rating"
+    ]
+  },
+  "highlight": {
+    "tags_schema": "styled",
+    "pre_tags": [
+      "<tag1>"
+    ],
+    "post_tags": [
+      "</tag1>"
+    ],
+    "fields": {
+      "items.content": {
+        "fragment_size": 100,
+        "number_of_fragments": 2
+      }
+    }
+  },
+  "size": 3
+}
+POST /product/profile/_search
+{
+  "query": {
+    "bool": {
+      "must": [
+        {
+          "bool": {
+            "should": [
+              {
+                "term": {
+                  "brand.name": {
+                    "value": "NS Design"
+                  }
+                }
+              }
+            ]
+          }
+        },
+        {
+          "bool": {
+            "should": [
+              {
+                "term": {
+                  "category.raw": {
+                    "value": "Bass Guitars"
+                  }
+                }
+              },
+              {
+                "term": {
+                  "category.raw": {
+                    "value": "Accessories"
+                  }
+                }
+              }
+            ]
+          }
+        },
+        {
+          "multi_match": {
+            "query": "guitar",
+            "fields": [
+              "name",
+              "content"
+            ]
+          }
+        },
+        {
+          "range": {
+            "price": {
+              "gte": 10,
+              "lte": 2000000
+            }
+          }
+        }
+      ]
+    }
+  },
+  "size": 20
+}
+POST /product/profile/_search
+{
+  "query": {
+    "match": {
+      "_id": "141575"
+    }
+  },
+  "size": 20
+}
+POST /product/profile/_search
+{
+  "query": {
+    "match": {
+      "seedId": "1"
+    }
+  },
+  "size": 20
+}
+POST /product/profile/_search
+{
+  "sort": [
+    {
+      "images.distance.0000FF": {
+        "order": "desc"
+      }
+    }
+  ],
+  "query": {
+    "match_all": {}
+  },
+  "size": 20
+}
+POST /product/profile/_search
+{
+  "query": {
+    "bool": {
+      "must": [
+        {
+          "match": {
+            "brand.name": "2box"
+          }
+        },
+        {
+          "match": {
+            "category.raw": "Drums & Percussion"
+          }
+        }
+      ]
+    }
+  },
+  "size": 300
+}
+POST /product/profile/_search
+{
+  "query": {
+    "bool": {
+      "must": [
+        {
+          "match": {
+            "category.raw": "Trumpet & Cornet Mutes"
+          }
+        },
+        {
+          "multi_match": {
+            "query": "guitar",
+            "fields": [
+              "name",
+              "content"
+            ]
+          }
+        }
+      ]
+    }
+  }
+}
+##############################
+### aggs search_type=count ###
+##############################
+GET /product/profile/_search
+{
+  "query": {
+    "filtered": {
+      "query": {
+        "bool": {
+          "must": [
+            {
+              "match": {
+                "level_0.raw": "Drums & Percussion"
+              }
+            },
+            {
+              "match": {
+                "brand.name": "2box"
+              }
+            }
+          ]
+        }
+      },
+      "filter": {
+        "exists": {
+          "field": "images.image"
+        }
+      }
+    }
+  },
+  "size": 0,
+  "aggs": {
+    "category": {
+      "terms": {
+        "field": "category.raw",
+        "order": {
+          "_count": "asc"
+        },
+        "size": 10
+      }
+    }
+  }
+}
+GET /product/profile/_search
+{
+  "query": {
+    "match": {
+      "brand.name": "2box"
+    }
+  },
+  "size": 0,
+  "aggs": {
+    "category": {
+      "terms": {
+        "field": "level_0.raw",
+        "size": 500
+      },
+      "aggs": {
+        "level_1": {
+          "terms": {
+            "field": "level_1.raw",
+            "size": 500
+          }
+        }
+      }
+    }
+  }
+}
+GET /product/profile/_search
+{
+  "query": {
+    "bool": {
+      "must": [
+        {
+          "match": {
+            "category.raw": "bass"
+          }
+        },
+        {
+          "match": {
+            "brand.name": "Zama"
+          }
+        },
+        {
+          "multi_match": {
+            "query": "Kick Drum",
+            "fields": [
+              "name",
+              "content"
+            ]
+          }
+        }
+      ]
+    }
+  },
+  "from": 0,
+  "size": 2,
+  "aggs": {
+    "category": {
+      "terms": {
+        "field": "category.raw",
+        "order": {
+          "_count": "desc"
+        },
+        "size": 10
+      }
+    },
+    "brand": {
+      "terms": {
+        "field": "brand.name",
+        "order": {
+          "_count": "desc"
+        },
+        "size": 10
+      }
+    }
+  }
+}
+# find by id
+POST /product/profile/_search
+{
+  "_source": {
+    "include": "{field}"
+  },
+  "query": {
+    "match": {
+      "_id": "1"
+    }
+  }
+}
+POST /product2/profile/_search
+{
+  "query": {
+    "term": {
+      "seedId": {
+        "value": "11"
+      }
+    }
+  }
+}
+# find by bool
+POST /product/profile/_search
+{
+  "query": {
+    "bool": {
+      "must": [
+        {
+          "match": {
+            "_id": "21277"
+          }
+        },
+        {
+          "match": {
+            "images.id": "229388"
+          }
+        }
+      ]
+    }
+  }
+}
+# find by multi field
+POST /product/profile/_search
+{
+  "query": {
+    "multi_match": {
+      "query": "Accessories",
+      "fields": [
+        "name",
+        "content"
+      ]
+    }
+  }
+}
+
+######################
+### MORE LIKE THIS ###
+######################
+POST /product-20170124/summary/_search
+{
+  "query": {
+    "more_like_this": {
+      "fields": [
+        "name",
+        "items.contents.en"
+      ],
+      "like_text": "Jubilee Combo gives you everything you love",
+      "min_term_freq": 1,
+      "max_query_terms": 12
+    }
+  }
+}
+
+POST /product/profile/_search
+{
+  "query": {
+    "bool": {
+      "must": [
+        {
+          "more_like_this": {
+            "fields": [
+              "name",
+              "content"
+            ],
+            "like_text": "Jubilee Combo gives you everything you love",
+            "min_term_freq": 1,
+            "max_query_terms": 12
+          }
+        }
+      ],
+      "must_not": [
+        {
+          "match": {
+            "_id": "28130"
+          }
+        }
+      ]
+    }
+  }
+}
+
+##############
+### scroll ###
+##############
+GET /product/profile/_search?scroll=1m
+{
+  "query": {
+    "match": {
+      "seedId": "1"
+    }
+  },
+  "from": 10000,
+  "size": 1,
+  "sort": [
+    {
+      "images.distance.000000": {
+        "order": "desc"
+      }
+    }
+  ]
+}
+GET /_search/scroll
+{
+  "scroll": "1m",
+  "scroll_id": "cXVlcnlUaGVuRmV0Y2g7NTszMDUyNzQ6YkFlUmxhRk9RY0tOVlcyYjZZeGV0dzszMDUyNzU6YkFlUmxhRk9RY0tOVlcyYjZZeGV0dzszMDUyNzg6YkFlUmxhRk9RY0tOVlcyYjZZeGV0dzszMDUyNzY6YkFlUmxhRk9RY0tOVlcyYjZZeGV0dzszMDUyNzc6YkFlUmxhRk9RY0tOVlcyYjZZeGV0dzswOw=="
+}
+
+
+###############
+### cluster ###
+###############
+### carrot algorithms
+GET /_algorithms
+
+GET /product/profile/_search_with_clusters?q=bass+guitar&size=100&field_mapping_title=_source.name&field_mapping_content=_source.content&include_hits=true
+
+### "query": {"match" : { "content": "bass" }},
+POST /product/profile/_search_with_clusters
+{
+  "search_request": {
+    "_source": [
+      "name",
+      "rawContent",
+      "content",
+      "images.*"
+    ],
+    "query": {
+      "multi_match": {
+        "query": "bass",
+        "fields": [
+          "name",
+          "content"
+        ]
+      }
+    },
+    "from": 0,
+    "size": 100,
+    "sort": [
+      {
+        "images.distance.000000": {
+          "order": "desc"
+        }
+      }
+    ],
+    "highlight": {
+      "tags_schema": "styled",
+      "pre_tags": [
+        "<tag1>"
+      ],
+      "post_tags": [
+        "</tag1>"
+      ],
+      "fields": {
+        "content": {
+          "fragment_size": 100,
+          "number_of_fragments": 2
+        }
+      }
+    }
+  },
+  "query_hint": "bass",
+  "field_mapping": {
+    "title": [
+      "_source.name"
+    ],
+    "content": [
+      "_source.content"
+    ]
+  },
+  "algorithm": "lingo",
+  "include_hits": true
+}
+
+
+### Matches on the title field will have twice the weight as those on the content field, which has the default boost of 1.0.
+###############
+### MAPPING ###
+###############
+# 修改
+POST /product/_close
+PUT /product/_settings
+{
+  "analysis": {
+    "analyzer": {
+      "default": {
+        "type": "smartcn"
+      }
+    }
+  }
+}
+POST /product/_open
+
+
+###############
+### reindex ###
+###############
+POST /_reindex
+{
+  "source": {
+    "index": "product"
+  },
+  "dest": {
+    "index": "product-20160901"
+  }
+}
+
+
+#############
+### alias ###
+#############
+# https://www.elastic.co/guide/en/elasticsearch/reference/2.4/indices-aliases.html#alias-index-creation
+### Renaming an alias is a simple remove then add operation within the same API. This operation is atomic, no need to worry about a short period of time where the alias does not point to an index:
+POST /_aliases
+{
+  "actions": [
+    {
+      "remove": {
+        "index": "product-20170216",
+        "alias": "product"
+      }
+    },
+    {
+      "add": {
+        "index": "product-20170509",
+        "alias": "product"
+      }
+    }
+  ]
+}
+
+POST /_aliases
+{
+  "actions": [
+    {
+      "add": {
+        "index": "topic-0825",
+        "alias": "topic"
+      }
+    }
+  ]
+}
+
+POST /_aliases
+{
+  "actions": [
+    {
+      "remove": {
+        "index": "product",
+        "alias": "product2"
+      }
+    }
+  ]
+}
+
+
+# mapping
+# https://www.elastic.co/guide/en/elasticsearch/reference/current/multi-fields.html
+GET /product-20170124
+DELETE /topic
+PUT /topic-0825
+{
+  "aliases": {},
+  "mappings": {
+    "summary": {
+      "dynamic_templates": [
+        {
+          "longs_as_strings": {
+            "match_mapping_type": "string",
+            "match": "long_*",
+            "unmatch": "*_text",
+            "mapping": {
+              "type": "long"
+            }
+          }
+        },
+        {
+          "objects": {
+            "match_mapping_type": "object",
+            "match": "level_*",
+            "mapping": {
+              "properties": {
+                "en": {
+                  "type": "string",
+                  "analyzer": "english",
+                  "fields": {
+                    "raw": {
+                      "type": "string",
+                      "index": "not_analyzed"
+                    }
+                  }
+                },
+                "cn": {
+                  "type": "string",
+                  "analyzer": "smartcn",
+                  "fields": {
+                    "raw": {
+                      "type": "string",
+                      "index": "not_analyzed"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        {
+          "distance": {
+            "path_match": "images.distance.*",
+            "mapping": {
+              "type": "double"
+            }
+          }
+        }
+      ],
+      "properties": {
+        "forumId": {
+          "type": "long"
+        },
+        "topicType": {
+          "type": "integer"
+        },
+        "postType": {
+          "type": "integer"
+        },
+        "imageSingle": {
+          "type": "boolean"
+        },
+        "imageRotation": {
+          "type": "boolean"
+        },
+        "creator": {
+          "type": "long"
+        },
+        "created": {
+          "type": "date",
+          "format": "yyyy-MM-dd HH:mm:ss||yyyy-MM-dd||epoch_millis"
+        },
+        "modified": {
+          "type": "date",
+          "format": "yyyy-MM-dd HH:mm:ss||yyyy-MM-dd||epoch_millis"
+        },
+        "categories": {
+          "properties": {
+            "en": {
+              "type": "string",
+              "analyzer": "english",
+              "fields": {
+                "raw": {
+                  "type": "string",
+                  "index": "not_analyzed"
+                }
+              }
+            },
+            "cn": {
+              "type": "string",
+              "analyzer": "smartcn",
+              "fields": {
+                "raw": {
+                  "type": "string",
+                  "index": "not_analyzed"
+                }
+              }
+            }
+          }
+        },
+        "tags": {
+          "type": "string",
+          "fields": {
+            "raw": {
+              "type": "string",
+              "index": "not_analyzed"
+            }
+          }
+        },
+        "brand": {
+          "properties": {
+            "logo": {
+              "type": "string",
+              "index": "not_analyzed"
+            },
+            "name": {
+              "type": "string",
+              "index": "not_analyzed"
+            },
+            "rating": {
+              "type": "double"
+            },
+            "reviews": {
+              "type": "integer"
+            },
+            "top": {
+              "type": "boolean"
+            }
+          }
+        },
+        "items": {
+          "properties": {
+            "seedId": {
+              "type": "long"
+            },
+            "channelId": {
+              "type": "long"
+            },
+            "origin": {
+              "type": "string",
+              "index": "not_analyzed"
+            },
+            "titles": {
+              "properties": {
+                "en": {
+                  "type": "string",
+                  "analyzer": "english"
+                },
+                "cn": {
+                  "type": "string",
+                  "analyzer": "smartcn"
+                }
+              }
+            },
+            "contents": {
+              "properties": {
+                "en": {
+                  "type": "string",
+                  "index_options": "offsets",
+                  "store": "no",
+                  "analyzer": "english"
+                },
+                "cn": {
+                  "type": "string",
+                  "index_options": "offsets",
+                  "store": "no",
+                  "analyzer": "smartcn"
+                }
+              }
+            },
+            "descriptions": {
+              "properties": {
+                "en": {
+                  "type": "string",
+                  "index": "no"
+                },
+                "cn": {
+                  "type": "string",
+                  "index": "no"
+                }
+              }
+            },
+            "price": {
+              "type": "double"
+            },
+            "priceUnit": {
+              "type": "string",
+              "index": "not_analyzed"
+            },
+            "rating": {
+              "type": "double"
+            },
+            "author": {
+              "type": "string",
+              "index": "not_analyzed"
+            },
+            "postDate": {
+              "type": "date",
+              "format": "yyyy-MM-dd HH:mm:ss||yyyy-MM-dd||epoch_millis"
+            },
+            "brands": {
+              "properties": {
+                "logo": {
+                  "type": "string",
+                  "index": "not_analyzed"
+                },
+                "name": {
+                  "type": "string",
+                  "index": "not_analyzed"
+                },
+                "rating": {
+                  "type": "double"
+                },
+                "reviews": {
+                  "type": "integer"
+                },
+                "top": {
+                  "type": "boolean"
+                }
+              }
+            }
+          }
+        },
+        "images": {
+          "properties": {
+            "filename": {
+              "type": "string",
+              "index": "not_analyzed"
+            },
+            "width": {
+              "type": "integer"
+            },
+            "height": {
+              "type": "integer"
+            }
+          }
+        },
+        "rotations": {
+          "properties": {
+            "filename": {
+              "type": "string",
+              "index": "not_analyzed"
+            },
+            "width": {
+              "type": "integer"
+            },
+            "height": {
+              "type": "integer"
+            }
+          }
+        },
+        "features": {
+          "properties": {
+            "en": {
+              "properties": {
+                "_name": {
+                  "type": "string",
+                  "index": "not_analyzed"
+                },
+                "_value": {
+                  "type": "string",
+                  "index": "no"
+                }
+              }
+            },
+            "cn": {
+              "properties": {
+                "_name": {
+                  "type": "string",
+                  "index": "not_analyzed"
+                },
+                "_value": {
+                  "type": "string",
+                  "index": "no"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "modified": {
+      "properties": {
+        "date": {
+          "type": "date"
+        }
+      }
+    }
+  },
+  "settings": {
+    "index": {
+      "analysis": {
+        "analyzer": {
+          "default": {
+            "type": "smartcn"
+          }
+        }
+      }
+    }
+  }
+}
+
+PUT /product-20170517
+{
+  "aliases": {},
+  "mappings": {
+    "summary": {
+      "dynamic_templates": [
+        {
+          "longs_as_strings": {
+            "match_mapping_type": "string",
+            "match": "long_*",
+            "unmatch": "*_text",
+            "mapping": {
+              "type": "long"
+            }
+          }
+        },
+        {
+          "objects": {
+            "match_mapping_type": "object",
+            "match": "level_*",
+            "mapping": {
+              "properties": {
+                "en": {
+                  "type": "string",
+                  "analyzer": "english",
+                  "fields": {
+                    "raw": {
+                      "type": "string",
+                      "index": "not_analyzed"
+                    }
+                  }
+                },
+                "cn": {
+                  "type": "string",
+                  "analyzer": "smartcn",
+                  "fields": {
+                    "raw": {
+                      "type": "string",
+                      "index": "not_analyzed"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        {
+          "distance": {
+            "path_match": "images.distance.*",
+            "mapping": {
+              "type": "double"
+            }
+          }
+        }
+      ],
+      "properties": {
+        "name": {
+          "type": "string"
+        },
+        "category": {
+          "properties": {
+            "en": {
+              "type": "string",
+              "analyzer": "english",
+              "fields": {
+                "raw": {
+                  "type": "string",
+                  "index": "not_analyzed"
+                }
+              }
+            },
+            "cn": {
+              "type": "string",
+              "analyzer": "smartcn",
+              "fields": {
+                "raw": {
+                  "type": "string",
+                  "index": "not_analyzed"
+                }
+              }
+            }
+          }
+        },
+        "brand": {
+          "properties": {
+            "logo": {
+              "type": "string",
+              "index": "not_analyzed"
+            },
+            "name": {
+              "type": "string",
+              "index": "not_analyzed"
+            },
+            "rating": {
+              "type": "double"
+            },
+            "reviews": {
+              "type": "integer"
+            },
+            "top": {
+              "type": "boolean"
+            }
+          }
+        },
+        "tags": {
+          "type": "string",
+          "fields": {
+            "raw": {
+              "type": "string",
+              "index": "not_analyzed"
+            }
+          }
+        },
+        "mask": {
+          "type": "integer"
+        },
+        "items": {
+          "properties": {
+            "seedId": {
+              "type": "long"
+            },
+            "origin": {
+              "type": "string",
+              "index": "not_analyzed"
+            },
+            "from": {
+              "properties": {
+                "source": {
+                  "type": "string",
+                  "index": "no"
+                },
+                "host": {
+                  "type": "string",
+                  "index": "no"
+                }
+              }
+            },
+            "contents": {
+              "properties": {
+                "en": {
+                  "type": "string",
+                  "index_options": "offsets",
+                  "store": "no",
+                  "analyzer": "english"
+                },
+                "cn": {
+                  "type": "string",
+                  "index_options": "offsets",
+                  "store": "no",
+                  "analyzer": "smartcn"
+                }
+              }
+            },
+            "descriptions": {
+              "properties": {
+                "en": {
+                  "type": "string",
+                  "index": "no"
+                },
+                "cn": {
+                  "type": "string",
+                  "index": "no"
+                }
+              }
+            },
+            "price": {
+              "type": "double"
+            },
+            "priceUnit": {
+              "type": "string",
+              "index": "not_analyzed"
+            },
+            "rating": {
+              "type": "double"
+            }
+          }
+        },
+        "images": {
+          "properties": {
+            "id": {
+              "type": "long"
+            },
+            "image": {
+              "type": "string",
+              "index": "not_analyzed"
+            },
+            "title": {
+              "type": "string",
+              "index": "not_analyzed"
+            },
+            "alt": {
+              "type": "string",
+              "index": "not_analyzed"
+            },
+            "width": {
+              "type": "integer"
+            },
+            "height": {
+              "type": "integer"
+            }
+          }
+        },
+        "features": {
+          "properties": {
+            "en": {
+              "properties": {
+                "_name": {
+                  "type": "string",
+                  "index": "not_analyzed"
+                },
+                "_value": {
+                  "type": "string",
+                  "index": "no"
+                }
+              }
+            },
+            "cn": {
+              "properties": {
+                "_name": {
+                  "type": "string",
+                  "index": "not_analyzed"
+                },
+                "_value": {
+                  "type": "string",
+                  "index": "no"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "profile": {
+      "dynamic_templates": [
+        {
+          "longs_as_strings": {
+            "match_mapping_type": "string",
+            "match": "long_*",
+            "unmatch": "*_text",
+            "mapping": {
+              "type": "long"
+            }
+          }
+        }
+      ],
+      "properties": {
+        "seedId": {
+          "type": "long"
+        },
+        "origin": {
+          "type": "string",
+          "index": "not_analyzed"
+        },
+        "name": {
+          "type": "string"
+        },
+        "category": {
+          "properties": {
+            "en": {
+              "type": "string",
+              "analyzer": "english",
+              "fields": {
+                "raw": {
+                  "type": "string",
+                  "index": "not_analyzed"
+                }
+              }
+            },
+            "cn": {
+              "type": "string",
+              "analyzer": "smartcn",
+              "fields": {
+                "raw": {
+                  "type": "string",
+                  "index": "not_analyzed"
+                }
+              }
+            }
+          }
+        },
+        "brand": {
+          "properties": {
+            "logo": {
+              "type": "string",
+              "index": "not_analyzed"
+            },
+            "name": {
+              "type": "string",
+              "index": "not_analyzed"
+            },
+            "rating": {
+              "type": "double"
+            },
+            "reviews": {
+              "type": "integer"
+            },
+            "top": {
+              "type": "boolean"
+            }
+          }
+        },
+        "tags": {
+          "type": "string",
+          "fields": {
+            "raw": {
+              "type": "string",
+              "index": "not_analyzed"
+            }
+          }
+        },
+        "contents": {
+          "properties": {
+            "en": {
+              "type": "string",
+              "index": "no"
+            },
+            "cn": {
+              "type": "string",
+              "index": "no"
+            }
+          }
+        },
+        "descriptions": {
+          "properties": {
+            "en": {
+              "type": "string",
+              "index": "no"
+            },
+            "cn": {
+              "type": "string",
+              "index": "no"
+            }
+          }
+        },
+        "price": {
+          "type": "double"
+        },
+        "priceUnit": {
+          "type": "string",
+          "index": "not_analyzed"
+        },
+        "rating": {
+          "type": "double"
+        },
+        "images": {
+          "properties": {
+            "id": {
+              "type": "long"
+            },
+            "image": {
+              "type": "string",
+              "index": "not_analyzed"
+            },
+            "title": {
+              "type": "string",
+              "index": "not_analyzed"
+            },
+            "alt": {
+              "type": "string",
+              "index": "not_analyzed"
+            },
+            "width": {
+              "type": "integer"
+            },
+            "height": {
+              "type": "integer"
+            }
+          }
+        },
+        "images360": {
+          "properties": {
+            "id": {
+              "type": "long"
+            },
+            "image": {
+              "type": "string",
+              "index": "not_analyzed"
+            },
+            "title": {
+              "type": "string",
+              "index": "not_analyzed"
+            },
+            "alt": {
+              "type": "string",
+              "index": "not_analyzed"
+            },
+            "width": {
+              "type": "integer"
+            },
+            "height": {
+              "type": "integer"
+            }
+          }
+        },
+        "features": {
+          "properties": {
+            "en": {
+              "properties": {
+                "_name": {
+                  "type": "string",
+                  "index": "not_analyzed"
+                },
+                "_value": {
+                  "type": "string",
+                  "index": "no"
+                }
+              }
+            },
+            "cn": {
+              "properties": {
+                "_name": {
+                  "type": "string",
+                  "index": "not_analyzed"
+                },
+                "_value": {
+                  "type": "string",
+                  "index": "no"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "brand": {
+      "properties": {
+        "brandName": {
+          "type": "string",
+          "index": "not_analyzed"
+        },
+        "logo": {
+          "type": "string",
+          "index": "not_analyzed"
+        },
+        "reviews": {
+          "type": "integer"
+        },
+        "rating": {
+          "type": "double"
+        },
+        "description": {
+          "type": "string",
+          "index": "no"
+        },
+        "content": {
+          "type": "string",
+          "index_options": "offsets",
+          "store": "no"
+        },
+        "rawContent": {
+          "type": "string",
+          "index": "no"
+        },
+        "features": {
+          "properties": {
+            "_name": {
+              "type": "string",
+              "index": "not_analyzed"
+            },
+            "_value": {
+              "type": "string",
+              "index": "no"
+            }
+          }
+        }
+      }
+    },
+    "feature": {
+      "_parent": {
+        "type": "profile"
+      },
+      "dynamic_templates": [
+        {
+          "integers": {
+            "match_mapping_type": "long",
+            "mapping": {
+              "type": "integer"
+            }
+          }
+        },
+        {
+          "strings": {
+            "match_mapping_type": "string",
+            "mapping": {
+              "type": "string",
+              "fields": {
+                "raw": {
+                  "type": "string",
+                  "index": "not_analyzed"
+                }
+              }
+            }
+          }
+        },
+        {
+          "dynamic_type": {
+            "match_mapping_type": "*",
+            "mapping": {
+              "type": "{dynamic_type}"
+            }
+          }
+        }
+      ]
+    },
+    "modified": {
+      "properties": {
+        "date": {
+          "type": "date"
+        }
+      }
+    }
+  },
+  "settings": {
+    "index": {
+      "analysis": {
+        "analyzer": {
+          "default": {
+            "type": "smartcn"
+          }
+        }
+      }
+    }
+  }
+}
+
+
+
+###############
+### EXAMPLE ###
+###############
+PUT /company
+{
+  "mappings": {
+    "branch": {},
+    "employee": {
+      "_parent": {
+        "type": "branch"
+      }
+    }
+  }
+}
+
+POST /company/branch/_search
+{
+  "query": {
+    "match_all": {}
+  },
+  "size": 20
+}
+
+POST /company/employee/_search
+{
+  "query": {
+    "match_all": {}
+  },
+  "size": 20
+}
+
+#This parent ID serves two purposes: it creates the link between the parent and the child, and it ensures that the child document is stored on the same shard as the parent.
+PUT /company/employee/1?parent=london
+{
+  "name": "Alice Smith",
+  "dob": "1970-10-24",
+  "hobby": "hiking"
+}
+
+GET /company/branch/_search
+{
+  "query": {
+    "has_child": {
+      "type": "employee",
+      "score_mode": "max",
+      "query": {
+        "match": {
+          "name": "Alice Smith"
+        }
+      }
+    }
+  }
+}
+
+GET /company/employee/_search
+{
+  "query": {
+    "has_parent": {
+      "type": "branch",
+      "query": {
+        "match": {
+          "country": "UK"
+        }
+      }
+    }
+  }
+}
+
+###
+GET _cat/indices
+GET /topic-text
+DELETE /topic-text
+
+POST /_analyze
+{
+  "tokenizer": "standard",
+  "char_filter": [
+    "html_strip"
+  ],
+  "text": "<p>I&apos;m  &nbsp;so <b>happy</b>!</p>"
+}
+
+POST /topic-text/_analyze
+{
+  "analyzer": "my_analyzer",
+  "text": "<p>我很&nbsp;<b>开心</b>!</p>"
+}
+
+GET /topic-text/_analyze?field=content
+{
+  "text": "我是曲子乐，<strong>我爱中华人民共和国</strong>，Hello China"
+}
+
+
+POST /topic-text/my-type/1
+{
+  "title":"你好，中国",
+  "content":"<p>我很&nbsp;<b>开心</b>!</p>"
+}
+
+POST /topic-text/my-type/_search
+{
+  "aggs": {
+    "NAME": {
+      "terms": {
+        "field": "content",
+        "size": 10
+      }
+    }
+  }
+}
+
+PUT /topic-text
+{
+  "mappings": {
+    "my-type": {
+      "properties": {
+        "title": {
+          "type": "string"
+        },
+        "content": {
+          "type": "string",
+          "index": "analyzed",
+          "analyzer": "my_analyzer"
+        }
+      }
+    }
+  },
+  "settings": {
+    "analysis": {
+      "analyzer": {
+        "my_analyzer": {
+          "type": "smartcn",
+          "char_filter": ["html_char_filter"]
+        }
+      },
+      "char_filter": {
+        "html_char_filter": {
+          "type": "html_strip"
+        }
+      }
+    },
+    "number_of_shards": "5",
+    "number_of_replicas": "1"
+  }
+}
+
+
+#################
+### 新mapping ###
+#################
+POST /topic-new/_analyze?field=content
+{
+  "text": "<p>I&apos;m so <b>happy</b>!, categories, category</p>"
+}
+
+POST /topic-new/_analyze?field=content
+{
+  "text": "<p>我很&nbsp;<b>爱你</b>,!!！！，，,, 中华人民共和国Happy!</p>"
+}
+
+POST /topic-new/_analyze?field=items.titles.cn
+{
+  "text": "曲子乐, 中华人民共和国"
+}
+
+POST /topic-new/_analyze?field=title.en
+{
+  "text": "<p>I&apos;m so <b>happy</b>!, categories, category</p>"
+}
+
+POST /_analyze
+{
+  "analyzer": "ik_smart",
+  "text": "<p>I&apos;m so <b>happy</b>!</p>"
+}
+
+POST /_analyze
+{
+  "analyzer": "english",
+  "text": "I'm so happy,categories, category"
+}
+
+
+POST /topic-new/post/1/_update
+{
+  "script": {
+    "inline": "ctx._source.statistics.reviews += a1;ctx._source.statistics.votes += a2",
+    "params": {
+      "a1": 4,
+      "a2": 1
+    }
+  },
+  "upsert": {
+    "statistics": {
+      "reviews": 1,
+      "votes": 1
+    }
+  }
+}
+
+POST /topic-new/post/_search
+{
+  "version": true,
+  "query": {
+    "match_all": {}
+  }
+}
+
+GET topic-new/post/_search
+{
+  "query": {
+    "match_all": {}
+  }
+}
+
+GET topic/summary/_search
+{
+  "query": {
+    "bool": {
+      "should": [
+        {
+          "term": {
+            "categories.en.raw": "照明+舞台"
+          }
+        },
+        {
+          "term": {
+            "categories.cn.raw": "照明+舞台"
+          }
+        }
+      ]
+    }
+  }
+}
+
+GET topic/summary/_search
+{
+  "query": {
+    "ids": {
+      "values": [
+        "283514"
+      ]
+    }
+  }
+}
+
+GET topic/summary/_search
+{
+  "query": {
+    "bool": {
+      "must": {
+        "multi_match": {
+          "query": "测试数据",
+          "fields": [
+            "items.titles.*^3",
+            "items.contents.*"
+          ],
+          "operator": "AND"
+        }
+      },
+      "must_not": {
+        "term": {
+          "forumId": 2
+        }
+      }
+    }
+  }
+}
+
+GET /_cat/indices
+
+DELETE topic-new/post/111
+DELETE topic-20171201
+GET topic-20171201
+###################
+### IK Analyzer ###
+###################
+### 2017年9月21日 新mapping
+### 将smartcn换成IK, 增加字符过滤器等
+PUT topic-20171201
+{
+  "mappings": {
+    "post": {
+      "dynamic_templates": [
+        {
+          "longs_as_strings": {
+            "match_mapping_type": "string",
+            "match": "long_*",
+            "unmatch": "*_text",
+            "mapping": {
+              "type": "long"
+            }
+          }
+        },
+        {
+          "objects": {
+            "match_mapping_type": "object",
+            "match": "level_*",
+            "mapping": {
+              "properties": {
+                "en": {
+                  "type": "string",
+                  "analyzer": "en",
+                  "fields": {
+                    "raw": {
+                      "type": "string",
+                      "analyzer": "en",
+                      "index": "not_analyzed"
+                    }
+                  }
+                },
+                "cn": {
+                  "type": "string",
+                  "analyzer": "cn",
+                  "fields": {
+                    "raw": {
+                      "type": "string",
+                      "analyzer": "cn",
+                      "index": "not_analyzed"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        {
+          "distance": {
+            "path_match": "images.distance.*",
+            "mapping": {
+              "type": "double"
+            }
+          }
+        }
+      ],
+      "properties": {
+        "forumId": {
+          "type": "long"
+        },
+        "topicType": {
+          "type": "integer"
+        },
+        "postType": {
+          "type": "integer"
+        },
+        "imageSize": {
+          "type": "integer"
+        },
+        "imageSingle": {
+          "type": "boolean"
+        },
+        "imageRotation": {
+          "type": "boolean"
+        },
+        "creator": {
+          "type": "long"
+        },
+        "created": {
+          "type": "date",
+          "format": "yyyy-MM-dd HH:mm:ss||yyyy-MM-dd||epoch_millis"
+        },
+        "modified": {
+          "type": "date",
+          "format": "yyyy-MM-dd HH:mm:ss||yyyy-MM-dd||epoch_millis"
+        },
+        "boost": {
+          "type": "double"
+        },
+        "suggest": {
+          "type": "completion",
+          "analyzer": "standard",
+          "search_analyzer": "standard",
+          "payloads": true,
+          "preserve_separators": true,
+          "preserve_position_increments": true,
+          "max_input_length": 50,
+          "context": {
+            "forumId": {
+              "type": "category",
+              "default": "-"
+            },
+            "category": {
+              "type": "category",
+              "default": "-"
+            },
+            "brand": {
+              "type": "category",
+              "default": "-"
+            }
+          }
+        },
+        "categories": {
+          "properties": {
+            "en": {
+              "type": "string",
+              "analyzer": "en",
+              "fields": {
+                "raw": {
+                  "type": "string",
+                  "analyzer": "en",
+                  "index": "not_analyzed"
+                }
+              }
+            },
+            "cn": {
+              "type": "string",
+              "analyzer": "cn",
+              "fields": {
+                "raw": {
+                  "type": "string",
+                  "analyzer": "cn",
+                  "index": "not_analyzed"
+                }
+              }
+            }
+          }
+        },
+        "tags": {
+          "type": "string",
+          "fields": {
+            "raw": {
+              "type": "string",
+              "index": "not_analyzed"
+            }
+          }
+        },
+        "brand": {
+          "properties": {
+            "logo": {
+              "type": "string",
+              "index": "not_analyzed"
+            },
+            "name": {
+              "type": "string",
+              "index": "not_analyzed"
+            },
+            "rating": {
+              "type": "double"
+            },
+            "reviews": {
+              "type": "integer"
+            },
+            "top": {
+              "type": "boolean"
+            }
+          }
+        },
+        "items": {
+          "properties": {
+            "seedId": {
+              "type": "long"
+            },
+            "origin": {
+              "type": "string",
+              "index": "not_analyzed"
+            },
+            "titles": {
+              "properties": {
+                "en": {
+                  "type": "string",
+                  "index_options": "offsets",
+                  "analyzer": "en"
+                },
+                "cn": {
+                  "type": "string",
+                  "index_options": "offsets",
+                  "analyzer": "cn"
+                }
+              }
+            },
+            "contents": {
+              "properties": {
+                "en": {
+                  "type": "string",
+                  "index_options": "offsets",
+                  "analyzer": "en"
+                },
+                "cn": {
+                  "type": "string",
+                  "index_options": "offsets",
+                  "analyzer": "cn"
+                }
+              }
+            },
+            "descriptions": {
+              "properties": {
+                "en": {
+                  "type": "string",
+                  "index": "no"
+                },
+                "cn": {
+                  "type": "string",
+                  "index": "no"
+                }
+              }
+            },
+            "price": {
+              "type": "double"
+            },
+            "priceUnit": {
+              "type": "string",
+              "index": "not_analyzed"
+            },
+            "rating": {
+              "type": "double"
+            },
+            "author": {
+              "type": "string",
+              "index": "not_analyzed"
+            },
+            "postDate": {
+              "type": "date",
+              "format": "yyyy-MM-dd HH:mm:ss||yyyy-MM-dd||epoch_millis"
+            }
+          }
+        },
+        "images": {
+          "properties": {
+            "filename": {
+              "type": "string",
+              "index": "not_analyzed"
+            },
+            "width": {
+              "type": "integer"
+            },
+            "height": {
+              "type": "integer"
+            }
+          }
+        },
+        "rotations": {
+          "properties": {
+            "filename": {
+              "type": "string",
+              "index": "not_analyzed"
+            },
+            "width": {
+              "type": "integer"
+            },
+            "height": {
+              "type": "integer"
+            }
+          }
+        },
+        "features": {
+          "properties": {
+            "en": {
+              "properties": {
+                "_name": {
+                  "type": "string",
+                  "index": "not_analyzed"
+                },
+                "_value": {
+                  "type": "string",
+                  "index": "no"
+                }
+              }
+            },
+            "cn": {
+              "properties": {
+                "_name": {
+                  "type": "string",
+                  "index": "not_analyzed"
+                },
+                "_value": {
+                  "type": "string",
+                  "index": "no"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "modified": {
+      "properties": {
+        "date": {
+          "type": "date"
+        }
+      }
+    }
+  },
+  "settings": {
+    "analysis": {
+      "analyzer": {
+        "cn": {
+          "type": "custom",
+          "char_filter": [
+            "html_char_filter"
+          ],
+          "tokenizer": "ik_smart"
+        },
+        "en": {
+          "type": "custom",
+          "char_filter": [
+            "html_char_filter"
+          ],
+          "tokenizer": "standard",
+          "filter": [
+            "english_possessive_stemmer",
+            "lowercase",
+            "english_stop",
+            "english_keywords",
+            "english_stemmer"
+          ]
+        }
+      },
+      "filter": {
+        "english_stop": {
+          "type": "stop",
+          "stopwords": "_english_"
+        },
+        "english_keywords": {
+          "type": "keyword_marker",
+          "keywords": [
+            "example"
+          ]
+        },
+        "english_stemmer": {
+          "type": "stemmer",
+          "language": "english"
+        },
+        "english_possessive_stemmer": {
+          "type": "stemmer",
+          "language": "possessive_english"
+        }
+      },
+      "char_filter": {
+        "html_char_filter": {
+          "type": "html_strip"
+        }
+      }
+    }
+  }
+}

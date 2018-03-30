@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE configuration PUBLIC "-//mybatis.org//DTD Config 3.0//EN" "http://mybatis.org/dtd/mybatis-3-config.dtd">
+<configuration>
+
+    <settings>
+        <setting name="cacheEnabled" value="true"/>
+        <setting name="lazyLoadingEnabled" value="true"/>
+        <setting name="multipleResultSetsEnabled" value="true"/>
+        <setting name="useColumnLabel" value="true"/>
+        <setting name="useGeneratedKeys" value="false"/>
+        <setting name="autoMappingBehavior" value="PARTIAL"/>
+        <setting name="defaultExecutorType" value="SIMPLE"/>
+        <setting name="defaultStatementTimeout" value="25"/>
+        <setting name="defaultFetchSize" value="100"/>
+        <setting name="safeRowBoundsEnabled" value="false"/>
+        <setting name="mapUnderscoreToCamelCase" value="false"/>
+        <setting name="localCacheScope" value="SESSION"/>
+        <setting name="jdbcTypeForNull" value="OTHER"/>
+        <setting name="lazyLoadTriggerMethods" value="equals,clone,hashCode,toString"/>
+    </settings>
+
+    <!-- user @Alias to rename -->
+    <typeAliases>
+        <package name="com.mifan.article.domain"/>
+    </typeAliases>
+
+    <mappers>
+        <mapper resource="com/mifan/article/domain/TopicsProductMapper.xml"></mapper>
+        <mapper resource="com/mifan/article/domain/TopicsProductHistoryMapper.xml"></mapper>
+        <mapper resource="com/mifan/article/domain/TopicsModelMapper.xml"></mapper>
+        <mapper resource="com/mifan/article/domain/AttachmentsMapper.xml"></mapper>
+        <mapper resource="com/mifan/article/domain/TopicsAttachmentsMapper.xml"></mapper>
+        <mapper resource="com/mifan/article/domain/AttachmentsFetchMapper.xml"></mapper>
+        <mapper resource="com/mifan/article/domain/PostsMapper.xml"></mapper>
+        <mapper resource="com/mifan/article/domain/ForumsMapper.xml"></mapper>
+        <mapper resource="com/mifan/article/domain/ForumCategoriesMapper.xml"></mapper>
+        <mapper resource="com/mifan/article/domain/NavigationMapper.xml"></mapper>
+        <mapper resource="com/mifan/article/domain/ElasticQueryBuilderMapper.xml"></mapper>
+        <mapper resource="com/mifan/article/domain/ElasticFunctionScoreMapper.xml"></mapper>
+        <mapper resource="com/mifan/article/domain/UsersTopicsReportMapper.xml"></mapper>
+        <mapper resource="com/mifan/article/domain/UsersTopicsFavoriteMapper.xml"></mapper>
+        <mapper resource="com/mifan/article/domain/TopicsBrandMappingMapper.xml"></mapper>
+        <mapper resource="com/mifan/article/domain/TopicsRelatedMapper.xml"></mapper>
+        <mapper resource="com/mifan/article/domain/TopicsFetchMapper.xml"></mapper>
+        <mapper resource="com/mifan/article/domain/LinksMapper.xml"></mapper>
+        <mapper resource="com/mifan/article/domain/TopicsRankMapper.xml"></mapper>
+        <mapper resource="com/mifan/article/domain/TopicsDocumentMapper.xml"></mapper>
+        <mapper resource="com/mifan/article/domain/StatisticsTagsMapper.xml"></mapper>
+        <mapper resource="com/mifan/article/domain/UsersTopicsLikeMapper.xml"></mapper>
+        <mapper resource="com/mifan/article/domain/ScheduledJobMapper.xml"></mapper>
+        <mapper resource="com/mifan/article/domain/TopicsMapper.xml"></mapper>
+        <mapper resource="com/mifan/article/domain/SeedsMapper.xml"></mapper>
+        <mapper resource="com/mifan/article/domain/ModerationMapper.xml"></mapper>
+        <mapper resource="com/mifan/article/domain/TopicsClassificationMapper.xml"></mapper>
+        <mapper resource="com/mifan/article/domain/PostsTextMapper.xml"></mapper>
+        <mapper resource="com/mifan/article/domain/TopicsClusteringMapper.xml"></mapper>
+        <mapper resource="com/mifan/article/domain/ChannelsMapper.xml"></mapper>
+        <mapper resource="com/mifan/article/domain/ChannelsSeedsMapper.xml"></mapper>
+        <mapper resource="com/mifan/article/domain/ExchangeRatesMapper.xml"></mapper>
+        <mapper resource="com/mifan/article/domain/MessagesMapper.xml"></mapper>
+        <mapper resource="com/mifan/article/domain/FeedbackMapper.xml"></mapper>
+        <mapper resource="com/mifan/article/domain/UsersTopicsHideMapper.xml"></mapper>
+        <mapper resource="com/mifan/article/domain/UsersChannelsWatchMapper.xml"></mapper>
+        <mapper resource="com/mifan/article/domain/TopicsBrandMapper.xml"></mapper>
+        <mapper resource="com/mifan/article/domain/HopeTranslateMapper.xml"></mapper>
+        <mapper resource="com/mifan/article/domain/HopeTranslateExtendMapper.xml"></mapper>
+        <mapper resource="com/mifan/article/domain/VotesOptionMapper.xml"></mapper>
+        <mapper resource="com/mifan/article/domain/VotesMapper.xml"></mapper>
+        <mapper resource="com/mifan/article/domain/WordDictionaryMapper.xml"></mapper>
+        <mapper resource="com/mifan/article/domain/QuartzJobsMapper.xml"></mapper>
+        <mapper resource="com/mifan/article/domain/TranslateTaskMapper.xml"></mapper>
+        <mapper resource="com/mifan/article/domain/FoldersMapper.xml"></mapper>
+        <mapper resource="com/mifan/article/domain/UsersTopicsCompareMapper.xml"></mapper>
+        <mapper resource="com/mifan/article/domain/TopicsTuneMapper.xml"></mapper>
+        <mapper resource="com/mifan/article/domain/SystemResourceLockMapper.xml"></mapper>
+        <mapper resource="com/mifan/article/domain/UserSearchHistoryMapper.xml"></mapper>
+        <mapper resource="com/mifan/article/domain/SearchKeywordMapper.xml"></mapper>
+        <mapper resource="com/mifan/article/domain/MpBrandsMapper.xml"></mapper>
+        <mapper resource="com/mifan/article/domain/MpCategoriesMapper.xml"></mapper>
+        <mapper resource="com/mifan/article/domain/MpDownloadsMapper.xml"></mapper>
+        <mapper resource="com/mifan/article/domain/MpBrandCategoriesMapper.xml"></mapper>
+        <mapper resource="com/mifan/article/domain/TopicsMpMapper.xml"></mapper>
+        <mapper resource="com/mifan/article/domain/TopicsMpdownloadsMapper.xml"></mapper>
+    </mappers>
+
+</configuration>

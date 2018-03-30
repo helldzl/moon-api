@@ -1,0 +1,49 @@
+########################################################
+### EMBEDDED SERVER CONFIGURATION (ServerProperties) ###
+########################################################
+server:
+  port: 8887
+  session:
+    timeout: 28800
+
+##############
+### SPRING ###
+##############
+spring:
+  rabbitmq:
+    host: 192.168.1.138
+    port: 5672
+    username: rabbitmq
+    password: rabbitmq
+  output:
+    ansi:
+      enabled: always
+
+###########################
+### SECURITY PROPERTIES ###
+###########################
+security:
+  basic:
+    enabled: true
+  user:
+    name: mifan
+    password: Mifan2017!
+
+###############
+### LOGGING ###
+###############
+logging:
+  level:
+    root: INFO
+    org.springframework.cloud: INFO
+    org.springframework.boot: INFO
+
+##############
+### EUREKA ###
+##############
+eureka:
+  instance:
+    prefer-ip-address: true
+  client:
+    service-url:
+      defaultZone: http://mifan:Mifan2017!@eureka:8761/eureka/

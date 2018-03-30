@@ -1,0 +1,594 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.mifan.support.domain.EventLog">
+
+    <!-- result map -->
+    <resultMap id="eventLog" type="com.mifan.support.domain.EventLog">
+        <id property="id" column="id" javaType="long"/>
+        <result property="source" column="source" javaType="string"/>
+        <result property="sourceTitle" column="source_title" javaType="string"/>
+        <result property="eventCode" column="event_code" javaType="string"/>
+        <result property="urlLog" column="url_log" javaType="string"/>
+        <result property="methodType" column="method_type" javaType="string"/>
+        <result property="params" column="params" javaType="string"/>
+        <result property="version" column="version" javaType="string"/>
+        <result property="pcMobile" column="pc_mobile" javaType="int"/>
+        <result property="isSuccess" column="is_success" javaType="int"/>
+        <result property="isWechat" column="is_wechat" javaType="int"/>
+        <result property="ssid" column="ssid" javaType="string"/>
+        <result property="ua" column="ua" javaType="string"/>
+        <result property="ip" column="ip" javaType="string"/>
+        <result property="enabled" column="enabled" javaType="int"/>
+        <result property="created" column="created" javaType="date"/>
+        <result property="creator" column="creator" javaType="long"/>
+    </resultMap>
+
+    <!-- sql -->
+    <sql id="columns">
+        <choose>
+            <when test="fields != null and fields.size != 0">
+                <foreach collection="fields" separator="," item="item" index="index">
+                    ${item.fullname}
+                </foreach>
+            </when>
+            <otherwise>
+                id, source, source_title, event_code, url_log, method_type, params, version, pc_mobile, is_success, is_wechat, ssid, ua, ip, enabled, created, creator 
+            </otherwise>
+        </choose>
+    </sql>
+
+    <sql id="insertColumns">
+        <trim suffixOverrides=",">
+            <if test="id != null">
+                id,
+            </if>
+            <if test="source != null">
+                source,
+            </if>
+            <if test="sourceTitle != null">
+                source_title,
+            </if>
+            <if test="eventCode != null">
+                event_code,
+            </if>
+            <if test="urlLog != null">
+                url_log,
+            </if>
+            <if test="methodType != null">
+                method_type,
+            </if>
+            <if test="params != null">
+                params,
+            </if>
+            <if test="version != null">
+                version,
+            </if>
+            <if test="pcMobile != null">
+                pc_mobile,
+            </if>
+            <if test="isSuccess != null">
+                is_success,
+            </if>
+            <if test="isWechat != null">
+                is_wechat,
+            </if>
+            <if test="ssid != null">
+                ssid,
+            </if>
+            <if test="ua != null">
+                ua,
+            </if>
+            <if test="ip != null">
+                ip,
+            </if>
+            <if test="enabled != null">
+                enabled,
+            </if>
+            <if test="created != null">
+                created,
+            </if>
+            <if test="creator != null">
+                creator,
+            </if>
+        </trim>
+    </sql>
+
+    <sql id="insertEntityColumns">
+        <trim suffixOverrides=",">
+            <if test="insert.id != null">
+                id,
+            </if>
+            <if test="insert.source != null">
+                source,
+            </if>
+            <if test="insert.sourceTitle != null">
+                source_title,
+            </if>
+            <if test="insert.eventCode != null">
+                event_code,
+            </if>
+            <if test="insert.urlLog != null">
+                url_log,
+            </if>
+            <if test="insert.methodType != null">
+                method_type,
+            </if>
+            <if test="insert.params != null">
+                params,
+            </if>
+            <if test="insert.version != null">
+                version,
+            </if>
+            <if test="insert.pcMobile != null">
+                pc_mobile,
+            </if>
+            <if test="insert.isSuccess != null">
+                is_success,
+            </if>
+            <if test="insert.isWechat != null">
+                is_wechat,
+            </if>
+            <if test="insert.ssid != null">
+                ssid,
+            </if>
+            <if test="insert.ua != null">
+                ua,
+            </if>
+            <if test="insert.ip != null">
+                ip,
+            </if>
+            <if test="insert.enabled != null">
+                enabled,
+            </if>
+            <if test="insert.created != null">
+                created,
+            </if>
+            <if test="insert.creator != null">
+                creator,
+            </if>
+        </trim>
+    </sql>
+
+    <sql id="insertValues">
+        <trim suffixOverrides=",">
+            <if test="id != null">
+                #{id},
+            </if>
+            <if test="source != null">
+                #{source},
+            </if>
+            <if test="sourceTitle != null">
+                #{sourceTitle},
+            </if>
+            <if test="eventCode != null">
+                #{eventCode},
+            </if>
+            <if test="urlLog != null">
+                #{urlLog},
+            </if>
+            <if test="methodType != null">
+                #{methodType},
+            </if>
+            <if test="params != null">
+                #{params},
+            </if>
+            <if test="version != null">
+                #{version},
+            </if>
+            <if test="pcMobile != null">
+                #{pcMobile},
+            </if>
+            <if test="isSuccess != null">
+                #{isSuccess},
+            </if>
+            <if test="isWechat != null">
+                #{isWechat},
+            </if>
+            <if test="ssid != null">
+                #{ssid},
+            </if>
+            <if test="ua != null">
+                #{ua},
+            </if>
+            <if test="ip != null">
+                #{ip},
+            </if>
+            <if test="enabled != null">
+                #{enabled},
+            </if>
+            <if test="created != null">
+                #{created},
+            </if>
+            <if test="creator != null">
+                #{creator},
+            </if>
+        </trim>
+    </sql>
+
+    <sql id="insertEntityValues">
+        <trim suffixOverrides=",">
+            <if test="insert.id != null">
+                #{insert.id},
+            </if>
+            <if test="insert.source != null">
+                #{insert.source},
+            </if>
+            <if test="insert.sourceTitle != null">
+                #{insert.sourceTitle},
+            </if>
+            <if test="insert.eventCode != null">
+                #{insert.eventCode},
+            </if>
+            <if test="insert.urlLog != null">
+                #{insert.urlLog},
+            </if>
+            <if test="insert.methodType != null">
+                #{insert.methodType},
+            </if>
+            <if test="insert.params != null">
+                #{insert.params},
+            </if>
+            <if test="insert.version != null">
+                #{insert.version},
+            </if>
+            <if test="insert.pcMobile != null">
+                #{insert.pcMobile},
+            </if>
+            <if test="insert.isSuccess != null">
+                #{insert.isSuccess},
+            </if>
+            <if test="insert.isWechat != null">
+                #{insert.isWechat},
+            </if>
+            <if test="insert.ssid != null">
+                #{insert.ssid},
+            </if>
+            <if test="insert.ua != null">
+                #{insert.ua},
+            </if>
+            <if test="insert.ip != null">
+                #{insert.ip},
+            </if>
+            <if test="insert.enabled != null">
+                #{insert.enabled},
+            </if>
+            <if test="insert.created != null">
+                #{insert.created},
+            </if>
+            <if test="insert.creator != null">
+                #{insert.creator},
+            </if>
+        </trim>
+    </sql>
+
+    <sql id="updateValues">
+        <trim suffixOverrides=",">
+            <if test="source != null">
+                source = #{source},
+            </if>
+            <if test="sourceTitle != null">
+                source_title = #{sourceTitle},
+            </if>
+            <if test="eventCode != null">
+                event_code = #{eventCode},
+            </if>
+            <if test="urlLog != null">
+                url_log = #{urlLog},
+            </if>
+            <if test="methodType != null">
+                method_type = #{methodType},
+            </if>
+            <if test="params != null">
+                params = #{params},
+            </if>
+            <if test="version != null">
+                version = #{version},
+            </if>
+            <if test="pcMobile != null">
+                pc_mobile = #{pcMobile},
+            </if>
+            <if test="isSuccess != null">
+                is_success = #{isSuccess},
+            </if>
+            <if test="isWechat != null">
+                is_wechat = #{isWechat},
+            </if>
+            <if test="ssid != null">
+                ssid = #{ssid},
+            </if>
+            <if test="ua != null">
+                ua = #{ua},
+            </if>
+            <if test="ip != null">
+                ip = #{ip},
+            </if>
+            <if test="enabled != null">
+                enabled = #{enabled},
+            </if>
+            <if test="created != null">
+                created = #{created},
+            </if>
+            <if test="creator != null">
+                creator = #{creator},
+            </if>
+        </trim>
+    </sql>
+
+    <sql id="updateValuesByCriterion">
+        <trim suffixOverrides=",">
+            <if test="entity.source != null">
+                source = #{entity.source},
+            </if>
+            <if test="entity.sourceTitle != null">
+                source_title = #{entity.sourceTitle},
+            </if>
+            <if test="entity.eventCode != null">
+                event_code = #{entity.eventCode},
+            </if>
+            <if test="entity.urlLog != null">
+                url_log = #{entity.urlLog},
+            </if>
+            <if test="entity.methodType != null">
+                method_type = #{entity.methodType},
+            </if>
+            <if test="entity.params != null">
+                params = #{entity.params},
+            </if>
+            <if test="entity.version != null">
+                version = #{entity.version},
+            </if>
+            <if test="entity.pcMobile != null">
+                pc_mobile = #{entity.pcMobile},
+            </if>
+            <if test="entity.isSuccess != null">
+                is_success = #{entity.isSuccess},
+            </if>
+            <if test="entity.isWechat != null">
+                is_wechat = #{entity.isWechat},
+            </if>
+            <if test="entity.ssid != null">
+                ssid = #{entity.ssid},
+            </if>
+            <if test="entity.ua != null">
+                ua = #{entity.ua},
+            </if>
+            <if test="entity.ip != null">
+                ip = #{entity.ip},
+            </if>
+            <if test="entity.enabled != null">
+                enabled = #{entity.enabled},
+            </if>
+            <if test="entity.created != null">
+                created = #{entity.created},
+            </if>
+            <if test="entity.creator != null">
+                creator = #{entity.creator},
+            </if>
+        </trim>
+    </sql>
+
+    <sql id="simpleConditions">
+        <trim prefix="WHERE" prefixOverrides="AND">
+            <if test="entity.id != null">
+                AND id = #{entity.id}
+            </if>
+            <if test="entity.source != null">
+                AND source = #{entity.source}
+            </if>
+            <if test="entity.sourceTitle != null">
+                AND source_title = #{entity.sourceTitle}
+            </if>
+            <if test="entity.eventCode != null">
+                AND event_code = #{entity.eventCode}
+            </if>
+            <if test="entity.urlLog != null">
+                AND url_log = #{entity.urlLog}
+            </if>
+            <if test="entity.methodType != null">
+                AND method_type = #{entity.methodType}
+            </if>
+            <if test="entity.params != null">
+                AND params = #{entity.params}
+            </if>
+            <if test="entity.version != null">
+                AND version = #{entity.version}
+            </if>
+            <if test="entity.pcMobile != null">
+                AND pc_mobile = #{entity.pcMobile}
+            </if>
+            <if test="entity.isSuccess != null">
+                AND is_success = #{entity.isSuccess}
+            </if>
+            <if test="entity.isWechat != null">
+                AND is_wechat = #{entity.isWechat}
+            </if>
+            <if test="entity.ssid != null">
+                AND ssid = #{entity.ssid}
+            </if>
+            <if test="entity.ua != null">
+                AND ua = #{entity.ua}
+            </if>
+            <if test="entity.ip != null">
+                AND ip = #{entity.ip}
+            </if>
+            <if test="entity.enabled != null">
+                AND enabled = #{entity.enabled}
+            </if>
+            <if test="entity.created != null">
+                AND created = #{entity.created}
+            </if>
+            <if test="entity.creator != null">
+                AND creator = #{entity.creator}
+            </if>
+        </trim>
+    </sql>
+
+    <sql id="sort">
+        <trim prefix="ORDER BY" suffixOverrides=",">
+            <foreach collection="orders" separator="," item="item" index="index">
+                ${item.property} ${item.direction}
+            </foreach>
+        </trim>
+    </sql>
+
+    <sql id="criterion">
+        <foreach collection="conditions.tokens" item="item">
+            <choose>
+                <when test="item.param">#{item.value}</when><otherwise>${item.value}</otherwise>
+            </choose>
+        </foreach>
+    </sql>
+
+    <sql id="limit">
+        LIMIT #{offset}, #{pageSize}
+    </sql>
+
+    <sql id="relationships">
+        <if test="relationships != null">
+            <foreach collection="relationships" item="join" index="index">
+                ${join.type()} ${join.table()} ON ${join.condition()}
+            </foreach>
+        </if>
+    </sql>
+
+    <!-- insert -->
+    <insert id="save" parameterType="com.mifan.support.domain.EventLog" keyProperty="id" useGeneratedKeys="true">
+        INSERT INTO event_log(<include refid="insertColumns"/>) VALUES (<include refid="insertValues"/>)
+    </insert>
+
+    <!-- insert into on duplicate -->
+    <insert id="insertOnDuplicate" parameterType="com.mifan.support.domain.EventLog" keyProperty="id" useGeneratedKeys="true">
+        INSERT INTO event_log(<include refid="insertEntityColumns"/>) VALUES (<include refid="insertEntityValues"/>) ON DUPLICATE KEY UPDATE <include refid="updateValuesByCriterion"/>
+    </insert>
+
+    <!-- insert into on duplicate -->
+    <insert id="saveOrUpdate" parameterType="com.mifan.support.domain.EventLog" keyProperty="id" useGeneratedKeys="true">
+        INSERT INTO event_log(<include refid="insertColumns"/>) VALUES (<include refid="insertValues"/>) ON DUPLICATE KEY UPDATE <include refid="updateValues"/>
+    </insert>
+
+    <!-- delete -->
+    <delete id="delete" parameterType="long">
+        DELETE FROM event_log WHERE id = #{id}
+    </delete>
+
+    <!-- update -->
+    <update id="update" parameterType="com.mifan.support.domain.EventLog">
+        UPDATE event_log SET <include refid="updateValues"/> WHERE id = #{id}
+    </update>
+
+    <update id="updateByCriterion" parameterType="com.mifan.support.domain.EventLog">
+        UPDATE event_log SET <include refid="updateValuesByCriterion"/> WHERE id = #{entity.id} AND <include refid="criterion"></include>
+    </update>
+
+    <update id="updateByMap" parameterType="map">
+        UPDATE event_log
+        <trim prefix="SET" suffixOverrides=",">
+            <foreach collection="increments" index="index" item="item">
+                ${item.key} = ${item.key} + #{item.value},
+            </foreach>
+            <foreach collection="fields" index="index" item="item">
+                ${item.key} = #{item.value},
+            </foreach>
+        </trim>
+        WHERE id = #{id}
+    </update>
+
+    <!-- 获取文章详情访问量 -->
+    <select id="findPageViews" parameterType="map" resultMap="eventLog">
+        select
+            el.url_log urlLog,count(url_log) pageViews
+        from
+            event_log el
+        where
+            el.event_code in ('M_2.1.0_M_detail_0032','M_2.1.0_PC_detail_0051')
+            and el.url_log is not null
+            <if test="startTime != null and startTime != ''">
+                and el.created &gt; #{startTime}
+            </if>
+            <if test="endTime != null and endTime != ''">
+                and el.created &lt; #{endTime}
+            </if>
+        group by
+            el.url_log
+        having
+            pageViews > 1
+        order by
+            pageViews desc
+        LIMIT 0, #{size}
+    </select>
+
+    <!-- select -->
+    <select id="findOne" parameterType="map" resultMap="eventLog">
+        SELECT
+        <include refid="columns"></include>
+        FROM event_log WHERE id = #{id}
+    </select>
+
+    <select id="findOneByObject" parameterType="map" resultMap="eventLog">
+        SELECT
+        <include refid="columns"></include>
+        FROM event_log <include refid="simpleConditions"></include>
+    </select>
+
+    <select id="findOneByCriterion" parameterType="map" resultMap="eventLog">
+        SELECT
+        <include refid="columns"></include>
+        FROM event_log WHERE <include refid="criterion"></include> LIMIT 1
+    </select>
+
+    <select id="findAll" parameterType="map" resultMap="eventLog">
+        SELECT
+        <include refid="columns"></include>
+        FROM event_log WHERE ${field} IN
+        <foreach collection="ids" open="(" separator="," close=")" index="index" item="item" >
+            ${item}
+        </foreach>
+    </select>
+
+    <select id="findAllByObject" parameterType="map" resultMap="eventLog">
+        SELECT
+        <include refid="columns"></include>
+        FROM event_log <include refid="simpleConditions"></include>
+    </select>
+
+    <select id="findAllByCriterion" parameterType="map" resultMap="eventLog">
+        SELECT
+        <include refid="columns"></include>
+        FROM event_log WHERE <include refid="criterion"></include>
+    </select>
+
+    <select id="findPage" parameterType="map" resultMap="eventLog">
+        SELECT
+        <include refid="columns"></include>
+        FROM event_log <include refid="simpleConditions"></include> <include refid="sort"></include> <include refid="limit"></include>
+    </select>
+
+    <select id="findPageByCriterion" parameterType="map" resultMap="eventLog">
+        SELECT
+        <include refid="columns"></include>
+        FROM event_log
+        <include refid="relationships"></include>
+        WHERE <include refid="criterion"></include> <include refid="sort"></include> <include refid="limit"></include>
+    </select>
+
+    <select id="count" resultType="long">
+        SELECT COUNT(*) FROM event_log
+    </select>
+
+    <select id="countByCondition" parameterType="map" resultType="long">
+        SELECT COUNT(*) FROM event_log <include refid="simpleConditions"></include>
+    </select>
+
+    <select id="countByCriterion" parameterType="map" resultType="long">
+        SELECT COUNT(*) FROM event_log
+        <include refid="relationships"></include>
+        WHERE <include refid="criterion"></include>
+    </select>
+
+    <select id="exists" parameterType="long" resultType="long">
+        SELECT COUNT(*) FROM event_log WHERE id = #{id}
+    </select>
+
+</mapper>

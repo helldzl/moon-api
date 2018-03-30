@@ -1,0 +1,230 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.mifan.user.domain.UserKarmaLogs">
+
+    <!-- result map -->
+    <resultMap id="userKarmaLogs" type="com.mifan.user.domain.UserKarmaLogs">
+        <id property="id" column="id" javaType="long"/>
+        <result property="userId" column="user_id" javaType="long"/>
+        <result property="score" column="score" javaType="int"/>
+        <result property="action" column="action" javaType="string"/>
+        <result property="created" column="created" javaType="date"/>
+    </resultMap>
+
+    <!-- sql -->
+    <sql id="columns">
+        <choose>
+            <when test="fields != null and fields.size != 0">
+                <foreach collection="fields" separator="," item="item" index="index">
+                    ${item.fullname}
+                </foreach>
+            </when>
+            <otherwise>
+                id, user_id, score, action, created 
+            </otherwise>
+        </choose>
+    </sql>
+
+    <sql id="insertColumns">
+        <trim suffixOverrides=",">
+            <if test="id != null">
+                id,
+            </if>
+            <if test="userId != null">
+                user_id,
+            </if>
+            <if test="score != null">
+                score,
+            </if>
+            <if test="action != null">
+                action,
+            </if>
+            <if test="created != null">
+                created,
+            </if>
+        </trim>
+    </sql>
+
+    <sql id="insertValues">
+        <trim suffixOverrides=",">
+            <if test="id != null">
+                #{id},
+            </if>
+            <if test="userId != null">
+                #{userId},
+            </if>
+            <if test="score != null">
+                #{score},
+            </if>
+            <if test="action != null">
+                #{action},
+            </if>
+            <if test="created != null">
+                #{created},
+            </if>
+        </trim>
+    </sql>
+
+    <sql id="updateValues">
+        <trim suffixOverrides=",">
+            <if test="userId != null">
+                user_id = #{userId},
+            </if>
+            <if test="score != null">
+                score = #{score},
+            </if>
+            <if test="action != null">
+                action = #{action},
+            </if>
+            <if test="created != null">
+                created = #{created},
+            </if>
+        </trim>
+    </sql>
+
+    <sql id="updateValuesByCriterion">
+        <trim suffixOverrides=",">
+            <if test="entity.userId != null">
+                user_id = #{entity.userId},
+            </if>
+            <if test="entity.score != null">
+                score = #{entity.score},
+            </if>
+            <if test="entity.action != null">
+                action = #{entity.action},
+            </if>
+            <if test="entity.created != null">
+                created = #{entity.created},
+            </if>
+        </trim>
+    </sql>
+
+    <sql id="simpleConditions">
+        <trim prefix="WHERE" prefixOverrides="AND">
+            <if test="entity.id != null">
+                AND id = #{entity.id}
+            </if>
+            <if test="entity.userId != null">
+                AND user_id = #{entity.userId}
+            </if>
+            <if test="entity.score != null">
+                AND score = #{entity.score}
+            </if>
+            <if test="entity.action != null">
+                AND action = #{entity.action}
+            </if>
+            <if test="entity.created != null">
+                AND created = #{entity.created}
+            </if>
+        </trim>
+    </sql>
+
+    <sql id="sort">
+        <trim prefix="ORDER BY" suffixOverrides=",">
+            <foreach collection="orders" separator="," item="item" index="index">
+                ${item.property} ${item.direction}
+            </foreach>
+        </trim>
+    </sql>
+
+    <sql id="criterion">
+        <foreach collection="conditions.tokens" item="item">
+            <choose>
+                <when test="item.param">#{item.value}</when><otherwise>${item.value}</otherwise>
+            </choose>
+        </foreach>
+    </sql>
+
+    <sql id="limit">
+        LIMIT #{offset}, #{pageSize}
+    </sql>
+
+    <!-- insert -->
+    <insert id="save" parameterType="com.mifan.user.domain.UserKarmaLogs" keyProperty="id" useGeneratedKeys="true">
+        INSERT INTO user_karma_logs(<include refid="insertColumns"/>) VALUES (<include refid="insertValues"/>)
+    </insert>
+
+    <!-- insert into on duplicate -->
+    <insert id="saveOrUpdate" parameterType="com.mifan.user.domain.UserKarmaLogs" keyProperty="id" useGeneratedKeys="true">
+        INSERT INTO user_karma_logs(<include refid="insertColumns"/>) VALUES (<include refid="insertValues"/>) ON DUPLICATE KEY UPDATE <include refid="updateValues"/>
+    </insert>
+
+    <!-- delete -->
+    <delete id="delete" parameterType="long">
+        DELETE FROM user_karma_logs WHERE id = #{id}
+    </delete>
+
+    <!-- update -->
+    <update id="update" parameterType="com.mifan.user.domain.UserKarmaLogs">
+        UPDATE user_karma_logs SET <include refid="updateValues"/> WHERE id = #{id}
+    </update>
+
+    <update id="updateByCriterion" parameterType="com.mifan.user.domain.UserKarmaLogs">
+        UPDATE user_karma_logs SET <include refid="updateValuesByCriterion"/> WHERE id = #{entity.id} AND <include refid="criterion"></include>
+    </update>
+
+    <!-- select -->
+    <select id="findOne" parameterType="map" resultMap="userKarmaLogs">
+        SELECT
+        <include refid="columns"></include>
+        FROM user_karma_logs WHERE id = #{id}
+    </select>
+
+    <select id="findOneByObject" parameterType="map" resultMap="userKarmaLogs">
+        SELECT
+        <include refid="columns"></include>
+        FROM user_karma_logs <include refid="simpleConditions"></include>
+    </select>
+
+    <select id="findAll" parameterType="map" resultMap="userKarmaLogs">
+        SELECT
+        <include refid="columns"></include>
+        FROM user_karma_logs WHERE ${field} IN
+        <foreach collection="ids" open="(" separator="," close=")" index="index" item="item" >
+            ${item}
+        </foreach>
+    </select>
+
+    <select id="findAllByObject" parameterType="map" resultMap="userKarmaLogs">
+        SELECT
+        <include refid="columns"></include>
+        FROM user_karma_logs <include refid="simpleConditions"></include>
+    </select>
+
+    <select id="findAllByCriterion" parameterType="map" resultMap="userKarmaLogs">
+        SELECT
+        <include refid="columns"></include>
+        FROM user_karma_logs WHERE <include refid="criterion"></include>
+    </select>
+
+    <select id="findPage" parameterType="map" resultMap="userKarmaLogs">
+        SELECT
+        <include refid="columns"></include>
+        FROM user_karma_logs <include refid="simpleConditions"></include> <include refid="sort"></include> <include refid="limit"></include>
+    </select>
+
+    <select id="findPageByCriterion" parameterType="map" resultMap="userKarmaLogs">
+        SELECT
+        <include refid="columns"></include>
+        FROM user_karma_logs WHERE <include refid="criterion"></include> <include refid="sort"></include> <include refid="limit"></include>
+    </select>
+
+    <select id="count" resultType="long">
+        SELECT COUNT(*) FROM user_karma_logs
+    </select>
+
+    <select id="countByCondition" parameterType="map" resultType="long">
+        SELECT COUNT(*) FROM user_karma_logs <include refid="simpleConditions"></include>
+    </select>
+
+    <select id="countByCriterion" parameterType="map" resultType="long">
+        SELECT COUNT(*) FROM user_karma_logs WHERE <include refid="criterion"></include>
+    </select>
+
+    <select id="exists" parameterType="long" resultType="long">
+        SELECT COUNT(*) FROM user_karma_logs WHERE id = #{id}
+    </select>
+
+</mapper>

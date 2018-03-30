@@ -1,0 +1,498 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.mifan.article.domain.ElasticFunctionScore">
+
+    <!-- result map -->
+    <resultMap id="elasticFunctionScore" type="com.mifan.article.domain.ElasticFunctionScore">
+        <id property="id" column="id" javaType="long"/>
+        <result property="title" column="title" javaType="string"/>
+        <result property="numericField" column="numeric_field" javaType="string"/>
+        <result property="filters" column="filters" javaType="string"/>
+        <result property="weight" column="weight" javaType="double"/>
+        <result property="functionModifier" column="function_modifier" javaType="string"/>
+        <result property="functionFactor" column="function_factor" javaType="double"/>
+        <result property="functionMissing" column="function_missing" javaType="double"/>
+        <result property="functionGlobal" column="function_global" javaType="int"/>
+        <result property="enabled" column="enabled" javaType="int"/>
+        <result property="creator" column="creator" javaType="long"/>
+        <result property="modifier" column="modifier" javaType="long"/>
+        <result property="created" column="created" javaType="date"/>
+        <result property="modified" column="modified" javaType="date"/>
+    </resultMap>
+
+    <!-- sql -->
+    <sql id="columns">
+        <choose>
+            <when test="fields != null and fields.size != 0">
+                <foreach collection="fields" separator="," item="item" index="index">
+                    ${item.fullname}
+                </foreach>
+            </when>
+            <otherwise>
+                id, title, numeric_field, filters, weight, function_modifier, function_factor, function_missing, function_global, enabled, creator, modifier, created, modified 
+            </otherwise>
+        </choose>
+    </sql>
+
+    <sql id="insertColumns">
+        <trim suffixOverrides=",">
+            <if test="id != null">
+                id,
+            </if>
+            <if test="title != null">
+                title,
+            </if>
+            <if test="numericField != null">
+                numeric_field,
+            </if>
+            <if test="filters != null">
+                filters,
+            </if>
+            <if test="weight != null">
+                weight,
+            </if>
+            <if test="functionModifier != null">
+                function_modifier,
+            </if>
+            <if test="functionFactor != null">
+                function_factor,
+            </if>
+            <if test="functionMissing != null">
+                function_missing,
+            </if>
+            <if test="functionGlobal != null">
+                function_global,
+            </if>
+            <if test="enabled != null">
+                enabled,
+            </if>
+            <if test="creator != null">
+                creator,
+            </if>
+            <if test="modifier != null">
+                modifier,
+            </if>
+            <if test="created != null">
+                created,
+            </if>
+            <if test="modified != null">
+                modified,
+            </if>
+        </trim>
+    </sql>
+
+    <sql id="insertEntityColumns">
+        <trim suffixOverrides=",">
+            <if test="insert.id != null">
+                id,
+            </if>
+            <if test="insert.title != null">
+                title,
+            </if>
+            <if test="insert.numericField != null">
+                numeric_field,
+            </if>
+            <if test="insert.filters != null">
+                filters,
+            </if>
+            <if test="insert.weight != null">
+                weight,
+            </if>
+            <if test="insert.functionModifier != null">
+                function_modifier,
+            </if>
+            <if test="insert.functionFactor != null">
+                function_factor,
+            </if>
+            <if test="insert.functionMissing != null">
+                function_missing,
+            </if>
+            <if test="insert.functionGlobal != null">
+                function_global,
+            </if>
+            <if test="insert.enabled != null">
+                enabled,
+            </if>
+            <if test="insert.creator != null">
+                creator,
+            </if>
+            <if test="insert.modifier != null">
+                modifier,
+            </if>
+            <if test="insert.created != null">
+                created,
+            </if>
+            <if test="insert.modified != null">
+                modified,
+            </if>
+        </trim>
+    </sql>
+
+    <sql id="insertValues">
+        <trim suffixOverrides=",">
+            <if test="id != null">
+                #{id},
+            </if>
+            <if test="title != null">
+                #{title},
+            </if>
+            <if test="numericField != null">
+                #{numericField},
+            </if>
+            <if test="filters != null">
+                #{filters},
+            </if>
+            <if test="weight != null">
+                #{weight},
+            </if>
+            <if test="functionModifier != null">
+                #{functionModifier},
+            </if>
+            <if test="functionFactor != null">
+                #{functionFactor},
+            </if>
+            <if test="functionMissing != null">
+                #{functionMissing},
+            </if>
+            <if test="functionGlobal != null">
+                #{functionGlobal},
+            </if>
+            <if test="enabled != null">
+                #{enabled},
+            </if>
+            <if test="creator != null">
+                #{creator},
+            </if>
+            <if test="modifier != null">
+                #{modifier},
+            </if>
+            <if test="created != null">
+                #{created},
+            </if>
+            <if test="modified != null">
+                #{modified},
+            </if>
+        </trim>
+    </sql>
+
+    <sql id="insertEntityValues">
+        <trim suffixOverrides=",">
+            <if test="insert.id != null">
+                #{insert.id},
+            </if>
+            <if test="insert.title != null">
+                #{insert.title},
+            </if>
+            <if test="insert.numericField != null">
+                #{insert.numericField},
+            </if>
+            <if test="insert.filters != null">
+                #{insert.filters},
+            </if>
+            <if test="insert.weight != null">
+                #{insert.weight},
+            </if>
+            <if test="insert.functionModifier != null">
+                #{insert.functionModifier},
+            </if>
+            <if test="insert.functionFactor != null">
+                #{insert.functionFactor},
+            </if>
+            <if test="insert.functionMissing != null">
+                #{insert.functionMissing},
+            </if>
+            <if test="insert.functionGlobal != null">
+                #{insert.functionGlobal},
+            </if>
+            <if test="insert.enabled != null">
+                #{insert.enabled},
+            </if>
+            <if test="insert.creator != null">
+                #{insert.creator},
+            </if>
+            <if test="insert.modifier != null">
+                #{insert.modifier},
+            </if>
+            <if test="insert.created != null">
+                #{insert.created},
+            </if>
+            <if test="insert.modified != null">
+                #{insert.modified},
+            </if>
+        </trim>
+    </sql>
+
+    <sql id="updateValues">
+        <trim suffixOverrides=",">
+            <if test="title != null">
+                title = #{title},
+            </if>
+            <if test="numericField != null">
+                numeric_field = #{numericField},
+            </if>
+            <if test="filters != null">
+                filters = #{filters},
+            </if>
+            <if test="weight != null">
+                weight = #{weight},
+            </if>
+            <if test="functionModifier != null">
+                function_modifier = #{functionModifier},
+            </if>
+            <if test="functionFactor != null">
+                function_factor = #{functionFactor},
+            </if>
+            <if test="functionMissing != null">
+                function_missing = #{functionMissing},
+            </if>
+            <if test="functionGlobal != null">
+                function_global = #{functionGlobal},
+            </if>
+            <if test="enabled != null">
+                enabled = #{enabled},
+            </if>
+            <if test="creator != null">
+                creator = #{creator},
+            </if>
+            <if test="modifier != null">
+                modifier = #{modifier},
+            </if>
+            <if test="created != null">
+                created = #{created},
+            </if>
+            <if test="modified != null">
+                modified = #{modified},
+            </if>
+        </trim>
+    </sql>
+
+    <sql id="updateValuesByCriterion">
+        <trim suffixOverrides=",">
+            <if test="entity.title != null">
+                title = #{entity.title},
+            </if>
+            <if test="entity.numericField != null">
+                numeric_field = #{entity.numericField},
+            </if>
+            <if test="entity.filters != null">
+                filters = #{entity.filters},
+            </if>
+            <if test="entity.weight != null">
+                weight = #{entity.weight},
+            </if>
+            <if test="entity.functionModifier != null">
+                function_modifier = #{entity.functionModifier},
+            </if>
+            <if test="entity.functionFactor != null">
+                function_factor = #{entity.functionFactor},
+            </if>
+            <if test="entity.functionMissing != null">
+                function_missing = #{entity.functionMissing},
+            </if>
+            <if test="entity.functionGlobal != null">
+                function_global = #{entity.functionGlobal},
+            </if>
+            <if test="entity.enabled != null">
+                enabled = #{entity.enabled},
+            </if>
+            <if test="entity.creator != null">
+                creator = #{entity.creator},
+            </if>
+            <if test="entity.modifier != null">
+                modifier = #{entity.modifier},
+            </if>
+            <if test="entity.created != null">
+                created = #{entity.created},
+            </if>
+            <if test="entity.modified != null">
+                modified = #{entity.modified},
+            </if>
+        </trim>
+    </sql>
+
+    <sql id="simpleConditions">
+        <trim prefix="WHERE" prefixOverrides="AND">
+            <if test="entity.id != null">
+                AND id = #{entity.id}
+            </if>
+            <if test="entity.title != null">
+                AND title = #{entity.title}
+            </if>
+            <if test="entity.numericField != null">
+                AND numeric_field = #{entity.numericField}
+            </if>
+            <if test="entity.filters != null">
+                AND filters = #{entity.filters}
+            </if>
+            <if test="entity.weight != null">
+                AND weight = #{entity.weight}
+            </if>
+            <if test="entity.functionModifier != null">
+                AND function_modifier = #{entity.functionModifier}
+            </if>
+            <if test="entity.functionFactor != null">
+                AND function_factor = #{entity.functionFactor}
+            </if>
+            <if test="entity.functionMissing != null">
+                AND function_missing = #{entity.functionMissing}
+            </if>
+            <if test="entity.functionGlobal != null">
+                AND function_global = #{entity.functionGlobal}
+            </if>
+            <if test="entity.enabled != null">
+                AND enabled = #{entity.enabled}
+            </if>
+            <if test="entity.creator != null">
+                AND creator = #{entity.creator}
+            </if>
+            <if test="entity.modifier != null">
+                AND modifier = #{entity.modifier}
+            </if>
+            <if test="entity.created != null">
+                AND created = #{entity.created}
+            </if>
+            <if test="entity.modified != null">
+                AND modified = #{entity.modified}
+            </if>
+        </trim>
+    </sql>
+
+    <sql id="sort">
+        <trim prefix="ORDER BY" suffixOverrides=",">
+            <foreach collection="orders" separator="," item="item" index="index">
+                ${item.property} ${item.direction}
+            </foreach>
+        </trim>
+    </sql>
+
+    <sql id="criterion">
+        <foreach collection="conditions.tokens" item="item">
+            <choose>
+                <when test="item.param">#{item.value}</when><otherwise>${item.value}</otherwise>
+            </choose>
+        </foreach>
+    </sql>
+
+    <sql id="limit">
+        LIMIT #{offset}, #{pageSize}
+    </sql>
+
+    <sql id="relationships">
+        <if test="relationships != null">
+            <foreach collection="relationships" item="join" index="index">
+                ${join.type()} ${join.table()} ON ${join.condition()}
+            </foreach>
+        </if>
+    </sql>
+
+    <!-- insert -->
+    <insert id="save" parameterType="com.mifan.article.domain.ElasticFunctionScore" keyProperty="id" useGeneratedKeys="true">
+        INSERT INTO elastic_function_score(<include refid="insertColumns"/>) VALUES (<include refid="insertValues"/>)
+    </insert>
+
+    <!-- insert into on duplicate -->
+    <insert id="insertOnDuplicate" parameterType="com.mifan.article.domain.ElasticFunctionScore" keyProperty="id" useGeneratedKeys="true">
+        INSERT INTO elastic_function_score(<include refid="insertEntityColumns"/>) VALUES (<include refid="insertEntityValues"/>) ON DUPLICATE KEY UPDATE <include refid="updateValuesByCriterion"/>
+    </insert>
+
+    <!-- insert into on duplicate -->
+    <insert id="saveOrUpdate" parameterType="com.mifan.article.domain.ElasticFunctionScore" keyProperty="id" useGeneratedKeys="true">
+        INSERT INTO elastic_function_score(<include refid="insertColumns"/>) VALUES (<include refid="insertValues"/>) ON DUPLICATE KEY UPDATE <include refid="updateValues"/>
+    </insert>
+
+    <!-- delete -->
+    <delete id="delete" parameterType="long">
+        DELETE FROM elastic_function_score WHERE id = #{id}
+    </delete>
+
+    <!-- update -->
+    <update id="update" parameterType="com.mifan.article.domain.ElasticFunctionScore">
+        UPDATE elastic_function_score SET <include refid="updateValues"/> WHERE id = #{id}
+    </update>
+
+    <update id="updateByCriterion" parameterType="com.mifan.article.domain.ElasticFunctionScore">
+        UPDATE elastic_function_score SET <include refid="updateValuesByCriterion"/> WHERE id = #{entity.id} AND <include refid="criterion"></include>
+    </update>
+
+    <update id="updateByMap" parameterType="map">
+        UPDATE elastic_function_score
+        <trim prefix="SET" suffixOverrides=",">
+            <foreach collection="increments" index="index" item="item">
+                ${item.key} = ${item.key} + #{item.value},
+            </foreach>
+            <foreach collection="fields" index="index" item="item">
+                ${item.key} = #{item.value},
+            </foreach>
+        </trim>
+        WHERE id = #{id}
+    </update>
+
+    <!-- select -->
+    <select id="findOne" parameterType="map" resultMap="elasticFunctionScore">
+        SELECT
+        <include refid="columns"></include>
+        FROM elastic_function_score WHERE id = #{id}
+    </select>
+
+    <select id="findOneByObject" parameterType="map" resultMap="elasticFunctionScore">
+        SELECT
+        <include refid="columns"></include>
+        FROM elastic_function_score <include refid="simpleConditions"></include>
+    </select>
+
+    <select id="findAll" parameterType="map" resultMap="elasticFunctionScore">
+        SELECT
+        <include refid="columns"></include>
+        FROM elastic_function_score WHERE ${field} IN
+        <foreach collection="ids" open="(" separator="," close=")" index="index" item="item" >
+            ${item}
+        </foreach>
+    </select>
+
+    <select id="findAllByObject" parameterType="map" resultMap="elasticFunctionScore">
+        SELECT
+        <include refid="columns"></include>
+        FROM elastic_function_score <include refid="simpleConditions"></include>
+    </select>
+
+    <select id="findAllByCriterion" parameterType="map" resultMap="elasticFunctionScore">
+        SELECT
+        <include refid="columns"></include>
+        FROM elastic_function_score WHERE <include refid="criterion"></include>
+    </select>
+
+    <select id="findPage" parameterType="map" resultMap="elasticFunctionScore">
+        SELECT
+        <include refid="columns"></include>
+        FROM elastic_function_score <include refid="simpleConditions"></include> <include refid="sort"></include> <include refid="limit"></include>
+    </select>
+
+    <select id="findPageByCriterion" parameterType="map" resultMap="elasticFunctionScore">
+        SELECT
+        <include refid="columns"></include>
+        FROM elastic_function_score
+        <include refid="relationships"></include>
+        WHERE <include refid="criterion"></include> <include refid="sort"></include> <include refid="limit"></include>
+    </select>
+
+    <select id="count" resultType="long">
+        SELECT COUNT(*) FROM elastic_function_score
+    </select>
+
+    <select id="countByCondition" parameterType="map" resultType="long">
+        SELECT COUNT(*) FROM elastic_function_score <include refid="simpleConditions"></include>
+    </select>
+
+    <select id="countByCriterion" parameterType="map" resultType="long">
+        SELECT COUNT(*) FROM elastic_function_score
+        <include refid="relationships"></include>
+        WHERE <include refid="criterion"></include>
+    </select>
+
+    <select id="exists" parameterType="long" resultType="long">
+        SELECT COUNT(*) FROM elastic_function_score WHERE id = #{id}
+    </select>
+
+</mapper>

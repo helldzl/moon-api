@@ -1,0 +1,482 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.mifan.reward.domain.PrizeInfo">
+
+    <!-- result map -->
+    <resultMap id="prizeInfo" type="com.mifan.reward.domain.PrizeInfo">
+        <id property="id" column="id" javaType="long"/>
+        <result property="lotteryPeriod" column="lottery_period" javaType="long"/>
+        <result property="lotteryCode" column="lottery_code" javaType="int"/>
+        <result property="lotteryTime" column="lottery_time" javaType="date"/>
+        <result property="recordTimeTotal" column="record_time_total" javaType="long"/>
+        <result property="luckCode" column="luck_code" javaType="long"/>
+        <result property="luckUserId" column="luck_user_id" javaType="long"/>
+        <result property="finishTime" column="finish_time" javaType="date"/>
+        <result property="enabled" column="enabled" javaType="int"/>
+        <result property="creator" column="creator" javaType="long"/>
+        <result property="modifier" column="modifier" javaType="long"/>
+        <result property="created" column="created" javaType="date"/>
+        <result property="modified" column="modified" javaType="date"/>
+    </resultMap>
+
+    <!-- sql -->
+    <sql id="columns">
+        <choose>
+            <when test="fields != null and fields.size != 0">
+                <foreach collection="fields" separator="," item="item" index="index">
+                    `${item.fullname}`
+                </foreach>
+            </when>
+            <otherwise>
+                `id`, `lottery_period`, `lottery_code`, `lottery_time`, `record_time_total`, `luck_code`, `luck_user_id`, `finish_time`, `enabled`, `creator`, `modifier`, `created`, `modified` 
+            </otherwise>
+        </choose>
+    </sql>
+
+    <sql id="insertColumns">
+        <trim suffixOverrides=",">
+            <if test="id != null">
+                `id`,
+            </if>
+            <if test="lotteryPeriod != null">
+                `lottery_period`,
+            </if>
+            <if test="lotteryCode != null">
+                `lottery_code`,
+            </if>
+            <if test="lotteryTime != null">
+                `lottery_time`,
+            </if>
+            <if test="recordTimeTotal != null">
+                `record_time_total`,
+            </if>
+            <if test="luckCode != null">
+                `luck_code`,
+            </if>
+            <if test="luckUserId != null">
+                `luck_user_id`,
+            </if>
+            <if test="finishTime != null">
+                `finish_time`,
+            </if>
+            <if test="enabled != null">
+                `enabled`,
+            </if>
+            <if test="creator != null">
+                `creator`,
+            </if>
+            <if test="modifier != null">
+                `modifier`,
+            </if>
+            <if test="created != null">
+                `created`,
+            </if>
+            <if test="modified != null">
+                `modified`,
+            </if>
+        </trim>
+    </sql>
+
+    <sql id="insertEntityColumns">
+        <trim suffixOverrides=",">
+            <if test="insert.id != null">
+                `id`,
+            </if>
+            <if test="insert.lotteryPeriod != null">
+                `lottery_period`,
+            </if>
+            <if test="insert.lotteryCode != null">
+                `lottery_code`,
+            </if>
+            <if test="insert.lotteryTime != null">
+                `lottery_time`,
+            </if>
+            <if test="insert.recordTimeTotal != null">
+                `record_time_total`,
+            </if>
+            <if test="insert.luckCode != null">
+                `luck_code`,
+            </if>
+            <if test="insert.luckUserId != null">
+                `luck_user_id`,
+            </if>
+            <if test="insert.finishTime != null">
+                `finish_time`,
+            </if>
+            <if test="insert.enabled != null">
+                `enabled`,
+            </if>
+            <if test="insert.creator != null">
+                `creator`,
+            </if>
+            <if test="insert.modifier != null">
+                `modifier`,
+            </if>
+            <if test="insert.created != null">
+                `created`,
+            </if>
+            <if test="insert.modified != null">
+                `modified`,
+            </if>
+        </trim>
+    </sql>
+
+    <sql id="insertValues">
+        <trim suffixOverrides=",">
+            <if test="id != null">
+                #{id},
+            </if>
+            <if test="lotteryPeriod != null">
+                #{lotteryPeriod},
+            </if>
+            <if test="lotteryCode != null">
+                #{lotteryCode},
+            </if>
+            <if test="lotteryTime != null">
+                #{lotteryTime},
+            </if>
+            <if test="recordTimeTotal != null">
+                #{recordTimeTotal},
+            </if>
+            <if test="luckCode != null">
+                #{luckCode},
+            </if>
+            <if test="luckUserId != null">
+                #{luckUserId},
+            </if>
+            <if test="finishTime != null">
+                #{finishTime},
+            </if>
+            <if test="enabled != null">
+                #{enabled},
+            </if>
+            <if test="creator != null">
+                #{creator},
+            </if>
+            <if test="modifier != null">
+                #{modifier},
+            </if>
+            <if test="created != null">
+                #{created},
+            </if>
+            <if test="modified != null">
+                #{modified},
+            </if>
+        </trim>
+    </sql>
+
+    <sql id="insertEntityValues">
+        <trim suffixOverrides=",">
+            <if test="insert.id != null">
+                #{insert.id},
+            </if>
+            <if test="insert.lotteryPeriod != null">
+                #{insert.lotteryPeriod},
+            </if>
+            <if test="insert.lotteryCode != null">
+                #{insert.lotteryCode},
+            </if>
+            <if test="insert.lotteryTime != null">
+                #{insert.lotteryTime},
+            </if>
+            <if test="insert.recordTimeTotal != null">
+                #{insert.recordTimeTotal},
+            </if>
+            <if test="insert.luckCode != null">
+                #{insert.luckCode},
+            </if>
+            <if test="insert.luckUserId != null">
+                #{insert.luckUserId},
+            </if>
+            <if test="insert.finishTime != null">
+                #{insert.finishTime},
+            </if>
+            <if test="insert.enabled != null">
+                #{insert.enabled},
+            </if>
+            <if test="insert.creator != null">
+                #{insert.creator},
+            </if>
+            <if test="insert.modifier != null">
+                #{insert.modifier},
+            </if>
+            <if test="insert.created != null">
+                #{insert.created},
+            </if>
+            <if test="insert.modified != null">
+                #{insert.modified},
+            </if>
+        </trim>
+    </sql>
+
+    <sql id="updateValues">
+        <trim suffixOverrides=",">
+            <if test="lotteryPeriod != null">
+                `lottery_period` = #{lotteryPeriod},
+            </if>
+            <if test="lotteryCode != null">
+                `lottery_code` = #{lotteryCode},
+            </if>
+            <if test="lotteryTime != null">
+                `lottery_time` = #{lotteryTime},
+            </if>
+            <if test="recordTimeTotal != null">
+                `record_time_total` = #{recordTimeTotal},
+            </if>
+            <if test="luckCode != null">
+                `luck_code` = #{luckCode},
+            </if>
+            <if test="luckUserId != null">
+                `luck_user_id` = #{luckUserId},
+            </if>
+            <if test="finishTime != null">
+                `finish_time` = #{finishTime},
+            </if>
+            <if test="enabled != null">
+                `enabled` = #{enabled},
+            </if>
+            <if test="creator != null">
+                `creator` = #{creator},
+            </if>
+            <if test="modifier != null">
+                `modifier` = #{modifier},
+            </if>
+            <if test="created != null">
+                `created` = #{created},
+            </if>
+            <if test="modified != null">
+                `modified` = #{modified},
+            </if>
+        </trim>
+    </sql>
+
+    <sql id="updateValuesByCriterion">
+        <trim suffixOverrides=",">
+            <if test="entity.lotteryPeriod != null">
+                `lottery_period` = #{entity.lotteryPeriod},
+            </if>
+            <if test="entity.lotteryCode != null">
+                `lottery_code` = #{entity.lotteryCode},
+            </if>
+            <if test="entity.lotteryTime != null">
+                `lottery_time` = #{entity.lotteryTime},
+            </if>
+            <if test="entity.recordTimeTotal != null">
+                `record_time_total` = #{entity.recordTimeTotal},
+            </if>
+            <if test="entity.luckCode != null">
+                `luck_code` = #{entity.luckCode},
+            </if>
+            <if test="entity.luckUserId != null">
+                `luck_user_id` = #{entity.luckUserId},
+            </if>
+            <if test="entity.finishTime != null">
+                `finish_time` = #{entity.finishTime},
+            </if>
+            <if test="entity.enabled != null">
+                `enabled` = #{entity.enabled},
+            </if>
+            <if test="entity.creator != null">
+                `creator` = #{entity.creator},
+            </if>
+            <if test="entity.modifier != null">
+                `modifier` = #{entity.modifier},
+            </if>
+            <if test="entity.created != null">
+                `created` = #{entity.created},
+            </if>
+            <if test="entity.modified != null">
+                `modified` = #{entity.modified},
+            </if>
+        </trim>
+    </sql>
+
+    <sql id="simpleConditions">
+        <trim prefix="WHERE" prefixOverrides="AND">
+            <if test="entity.id != null">
+                AND `id` = #{entity.id}
+            </if>
+            <if test="entity.lotteryPeriod != null">
+                AND `lottery_period` = #{entity.lotteryPeriod}
+            </if>
+            <if test="entity.lotteryCode != null">
+                AND `lottery_code` = #{entity.lotteryCode}
+            </if>
+            <if test="entity.lotteryTime != null">
+                AND `lottery_time` = #{entity.lotteryTime}
+            </if>
+            <if test="entity.recordTimeTotal != null">
+                AND `record_time_total` = #{entity.recordTimeTotal}
+            </if>
+            <if test="entity.luckCode != null">
+                AND `luck_code` = #{entity.luckCode}
+            </if>
+            <if test="entity.luckUserId != null">
+                AND `luck_user_id` = #{entity.luckUserId}
+            </if>
+            <if test="entity.finishTime != null">
+                AND `finish_time` = #{entity.finishTime}
+            </if>
+            <if test="entity.enabled != null">
+                AND `enabled` = #{entity.enabled}
+            </if>
+            <if test="entity.creator != null">
+                AND `creator` = #{entity.creator}
+            </if>
+            <if test="entity.modifier != null">
+                AND `modifier` = #{entity.modifier}
+            </if>
+            <if test="entity.created != null">
+                AND `created` = #{entity.created}
+            </if>
+            <if test="entity.modified != null">
+                AND `modified` = #{entity.modified}
+            </if>
+        </trim>
+    </sql>
+
+    <sql id="sort">
+        <trim prefix="ORDER BY" suffixOverrides=",">
+            <foreach collection="orders" separator="," item="item" index="index">
+                ${item.property} ${item.direction}
+            </foreach>
+        </trim>
+    </sql>
+
+    <sql id="criterion">
+        <foreach collection="conditions.tokens" item="item">
+            <choose>
+                <when test="item.param">#{item.value}</when><otherwise>${item.value}</otherwise>
+            </choose>
+        </foreach>
+    </sql>
+
+    <sql id="limit">
+        LIMIT #{offset}, #{pageSize}
+    </sql>
+
+    <sql id="relationships">
+        <if test="relationships != null">
+            <foreach collection="relationships" item="join" index="index">
+                ${join.type()} ${join.table()} ON ${join.condition()}
+            </foreach>
+        </if>
+    </sql>
+
+    <!-- insert -->
+    <insert id="save" parameterType="com.mifan.reward.domain.PrizeInfo" keyProperty="id" useGeneratedKeys="true">
+        INSERT INTO prize_info(<include refid="insertColumns"/>) VALUES (<include refid="insertValues"/>)
+    </insert>
+
+    <!-- insert into on duplicate -->
+    <insert id="insertOnDuplicate" parameterType="com.mifan.reward.domain.PrizeInfo" keyProperty="id" useGeneratedKeys="true">
+        INSERT INTO prize_info(<include refid="insertEntityColumns"/>) VALUES (<include refid="insertEntityValues"/>) ON DUPLICATE KEY UPDATE <include refid="updateValuesByCriterion"/>
+    </insert>
+
+    <!-- insert into on duplicate -->
+    <insert id="saveOrUpdate" parameterType="com.mifan.reward.domain.PrizeInfo" keyProperty="id" useGeneratedKeys="true">
+        INSERT INTO prize_info(<include refid="insertColumns"/>) VALUES (<include refid="insertValues"/>) ON DUPLICATE KEY UPDATE <include refid="updateValues"/>
+    </insert>
+
+    <!-- delete -->
+    <delete id="delete" parameterType="long">
+        DELETE FROM prize_info WHERE id = #{id}
+    </delete>
+
+    <!-- update -->
+    <update id="update" parameterType="com.mifan.reward.domain.PrizeInfo">
+        UPDATE prize_info SET <include refid="updateValues"/> WHERE id = #{id}
+    </update>
+
+    <update id="updateByCriterion" parameterType="com.mifan.reward.domain.PrizeInfo">
+        UPDATE prize_info SET <include refid="updateValuesByCriterion"/> WHERE id = #{entity.id} AND <include refid="criterion"></include>
+    </update>
+
+    <update id="updateByMap" parameterType="map">
+        UPDATE prize_info
+        <trim prefix="SET" suffixOverrides=",">
+            <foreach collection="increments" index="index" item="item">
+                ${item.key} = ${item.key} + #{item.value},
+            </foreach>
+            <foreach collection="fields" index="index" item="item">
+                ${item.key} = #{item.value},
+            </foreach>
+        </trim>
+        WHERE id = #{id}
+    </update>
+
+    <!-- select -->
+    <select id="findOne" parameterType="map" resultMap="prizeInfo">
+        SELECT
+        <include refid="columns"></include>
+        FROM prize_info WHERE id = #{id}
+    </select>
+
+    <select id="findOneByObject" parameterType="map" resultMap="prizeInfo">
+        SELECT
+        <include refid="columns"></include>
+        FROM prize_info <include refid="simpleConditions"></include>
+    </select>
+
+    <select id="findOneByCriterion" parameterType="map" resultMap="prizeInfo">
+        SELECT
+        <include refid="columns"></include>
+        FROM prize_info WHERE <include refid="criterion"></include> LIMIT 1
+    </select>
+
+    <select id="findAll" parameterType="map" resultMap="prizeInfo">
+        SELECT
+        <include refid="columns"></include>
+        FROM prize_info WHERE ${field} IN
+        <foreach collection="ids" open="(" separator="," close=")" index="index" item="item" >
+            ${item}
+        </foreach>
+    </select>
+
+    <select id="findAllByObject" parameterType="map" resultMap="prizeInfo">
+        SELECT
+        <include refid="columns"></include>
+        FROM prize_info <include refid="simpleConditions"></include>
+    </select>
+
+    <select id="findAllByCriterion" parameterType="map" resultMap="prizeInfo">
+        SELECT
+        <include refid="columns"></include>
+        FROM prize_info WHERE <include refid="criterion"></include>
+    </select>
+
+    <select id="findPage" parameterType="map" resultMap="prizeInfo">
+        SELECT
+        <include refid="columns"></include>
+        FROM prize_info <include refid="simpleConditions"></include> <include refid="sort"></include> <include refid="limit"></include>
+    </select>
+
+    <select id="findPageByCriterion" parameterType="map" resultMap="prizeInfo">
+        SELECT
+        <include refid="columns"></include>
+        FROM prize_info
+        <include refid="relationships"></include>
+        WHERE <include refid="criterion"></include> <include refid="sort"></include> <include refid="limit"></include>
+    </select>
+
+    <select id="count" resultType="long">
+        SELECT COUNT(*) FROM prize_info
+    </select>
+
+    <select id="countByCondition" parameterType="map" resultType="long">
+        SELECT COUNT(*) FROM prize_info <include refid="simpleConditions"></include>
+    </select>
+
+    <select id="countByCriterion" parameterType="map" resultType="long">
+        SELECT COUNT(*) FROM prize_info
+        <include refid="relationships"></include>
+        WHERE <include refid="criterion"></include>
+    </select>
+
+    <select id="exists" parameterType="long" resultType="long">
+        SELECT COUNT(*) FROM prize_info WHERE id = #{id}
+    </select>
+
+</mapper>

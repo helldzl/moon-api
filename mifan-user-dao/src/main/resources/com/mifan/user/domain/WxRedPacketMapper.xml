@@ -1,0 +1,498 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.mifan.user.domain.WxRedPacket">
+
+    <!-- result map -->
+    <resultMap id="wxRedPacket" type="com.mifan.user.domain.WxRedPacket">
+        <id property="id" column="id" javaType="long"/>
+        <result property="reOpenid" column="re_openid" javaType="string"/>
+        <result property="totalAmount" column="total_amount" javaType="double"/>
+        <result property="userId" column="user_id" javaType="long"/>
+        <result property="wxUserId" column="wx_user_id" javaType="long"/>
+        <result property="isSuccess" column="is_success" javaType="int"/>
+        <result property="mchBillno" column="mch_billno" javaType="string"/>
+        <result property="sendListid" column="send_listid" javaType="string"/>
+        <result property="nonceStr" column="nonce_str" javaType="string"/>
+        <result property="errCode" column="err_code" javaType="string"/>
+        <result property="errCodeDes" column="err_code_des" javaType="string"/>
+        <result property="enabled" column="enabled" javaType="int"/>
+        <result property="modified" column="modified" javaType="date"/>
+        <result property="created" column="created" javaType="date"/>
+    </resultMap>
+
+    <!-- sql -->
+    <sql id="columns">
+        <choose>
+            <when test="fields != null and fields.size != 0">
+                <foreach collection="fields" separator="," item="item" index="index">
+                    ${item.fullname}
+                </foreach>
+            </when>
+            <otherwise>
+                id, re_openid, total_amount, user_id, wx_user_id, is_success, mch_billno, send_listid, nonce_str, err_code, err_code_des, enabled, modified, created 
+            </otherwise>
+        </choose>
+    </sql>
+
+    <sql id="insertColumns">
+        <trim suffixOverrides=",">
+            <if test="id != null">
+                id,
+            </if>
+            <if test="reOpenid != null">
+                re_openid,
+            </if>
+            <if test="totalAmount != null">
+                total_amount,
+            </if>
+            <if test="userId != null">
+                user_id,
+            </if>
+            <if test="wxUserId != null">
+                wx_user_id,
+            </if>
+            <if test="isSuccess != null">
+                is_success,
+            </if>
+            <if test="mchBillno != null">
+                mch_billno,
+            </if>
+            <if test="sendListid != null">
+                send_listid,
+            </if>
+            <if test="nonceStr != null">
+                nonce_str,
+            </if>
+            <if test="errCode != null">
+                err_code,
+            </if>
+            <if test="errCodeDes != null">
+                err_code_des,
+            </if>
+            <if test="enabled != null">
+                enabled,
+            </if>
+            <if test="modified != null">
+                modified,
+            </if>
+            <if test="created != null">
+                created,
+            </if>
+        </trim>
+    </sql>
+
+    <sql id="insertEntityColumns">
+        <trim suffixOverrides=",">
+            <if test="insert.id != null">
+                id,
+            </if>
+            <if test="insert.reOpenid != null">
+                re_openid,
+            </if>
+            <if test="insert.totalAmount != null">
+                total_amount,
+            </if>
+            <if test="insert.userId != null">
+                user_id,
+            </if>
+            <if test="insert.wxUserId != null">
+                wx_user_id,
+            </if>
+            <if test="insert.isSuccess != null">
+                is_success,
+            </if>
+            <if test="insert.mchBillno != null">
+                mch_billno,
+            </if>
+            <if test="insert.sendListid != null">
+                send_listid,
+            </if>
+            <if test="insert.nonceStr != null">
+                nonce_str,
+            </if>
+            <if test="insert.errCode != null">
+                err_code,
+            </if>
+            <if test="insert.errCodeDes != null">
+                err_code_des,
+            </if>
+            <if test="insert.enabled != null">
+                enabled,
+            </if>
+            <if test="insert.modified != null">
+                modified,
+            </if>
+            <if test="insert.created != null">
+                created,
+            </if>
+        </trim>
+    </sql>
+
+    <sql id="insertValues">
+        <trim suffixOverrides=",">
+            <if test="id != null">
+                #{id},
+            </if>
+            <if test="reOpenid != null">
+                #{reOpenid},
+            </if>
+            <if test="totalAmount != null">
+                #{totalAmount},
+            </if>
+            <if test="userId != null">
+                #{userId},
+            </if>
+            <if test="wxUserId != null">
+                #{wxUserId},
+            </if>
+            <if test="isSuccess != null">
+                #{isSuccess},
+            </if>
+            <if test="mchBillno != null">
+                #{mchBillno},
+            </if>
+            <if test="sendListid != null">
+                #{sendListid},
+            </if>
+            <if test="nonceStr != null">
+                #{nonceStr},
+            </if>
+            <if test="errCode != null">
+                #{errCode},
+            </if>
+            <if test="errCodeDes != null">
+                #{errCodeDes},
+            </if>
+            <if test="enabled != null">
+                #{enabled},
+            </if>
+            <if test="modified != null">
+                #{modified},
+            </if>
+            <if test="created != null">
+                #{created},
+            </if>
+        </trim>
+    </sql>
+
+    <sql id="insertEntityValues">
+        <trim suffixOverrides=",">
+            <if test="insert.id != null">
+                #{insert.id},
+            </if>
+            <if test="insert.reOpenid != null">
+                #{insert.reOpenid},
+            </if>
+            <if test="insert.totalAmount != null">
+                #{insert.totalAmount},
+            </if>
+            <if test="insert.userId != null">
+                #{insert.userId},
+            </if>
+            <if test="insert.wxUserId != null">
+                #{insert.wxUserId},
+            </if>
+            <if test="insert.isSuccess != null">
+                #{insert.isSuccess},
+            </if>
+            <if test="insert.mchBillno != null">
+                #{insert.mchBillno},
+            </if>
+            <if test="insert.sendListid != null">
+                #{insert.sendListid},
+            </if>
+            <if test="insert.nonceStr != null">
+                #{insert.nonceStr},
+            </if>
+            <if test="insert.errCode != null">
+                #{insert.errCode},
+            </if>
+            <if test="insert.errCodeDes != null">
+                #{insert.errCodeDes},
+            </if>
+            <if test="insert.enabled != null">
+                #{insert.enabled},
+            </if>
+            <if test="insert.modified != null">
+                #{insert.modified},
+            </if>
+            <if test="insert.created != null">
+                #{insert.created},
+            </if>
+        </trim>
+    </sql>
+
+    <sql id="updateValues">
+        <trim suffixOverrides=",">
+            <if test="reOpenid != null">
+                re_openid = #{reOpenid},
+            </if>
+            <if test="totalAmount != null">
+                total_amount = #{totalAmount},
+            </if>
+            <if test="userId != null">
+                user_id = #{userId},
+            </if>
+            <if test="wxUserId != null">
+                wx_user_id = #{wxUserId},
+            </if>
+            <if test="isSuccess != null">
+                is_success = #{isSuccess},
+            </if>
+            <if test="mchBillno != null">
+                mch_billno = #{mchBillno},
+            </if>
+            <if test="sendListid != null">
+                send_listid = #{sendListid},
+            </if>
+            <if test="nonceStr != null">
+                nonce_str = #{nonceStr},
+            </if>
+            <if test="errCode != null">
+                err_code = #{errCode},
+            </if>
+            <if test="errCodeDes != null">
+                err_code_des = #{errCodeDes},
+            </if>
+            <if test="enabled != null">
+                enabled = #{enabled},
+            </if>
+            <if test="modified != null">
+                modified = #{modified},
+            </if>
+            <if test="created != null">
+                created = #{created},
+            </if>
+        </trim>
+    </sql>
+
+    <sql id="updateValuesByCriterion">
+        <trim suffixOverrides=",">
+            <if test="entity.reOpenid != null">
+                re_openid = #{entity.reOpenid},
+            </if>
+            <if test="entity.totalAmount != null">
+                total_amount = #{entity.totalAmount},
+            </if>
+            <if test="entity.userId != null">
+                user_id = #{entity.userId},
+            </if>
+            <if test="entity.wxUserId != null">
+                wx_user_id = #{entity.wxUserId},
+            </if>
+            <if test="entity.isSuccess != null">
+                is_success = #{entity.isSuccess},
+            </if>
+            <if test="entity.mchBillno != null">
+                mch_billno = #{entity.mchBillno},
+            </if>
+            <if test="entity.sendListid != null">
+                send_listid = #{entity.sendListid},
+            </if>
+            <if test="entity.nonceStr != null">
+                nonce_str = #{entity.nonceStr},
+            </if>
+            <if test="entity.errCode != null">
+                err_code = #{entity.errCode},
+            </if>
+            <if test="entity.errCodeDes != null">
+                err_code_des = #{entity.errCodeDes},
+            </if>
+            <if test="entity.enabled != null">
+                enabled = #{entity.enabled},
+            </if>
+            <if test="entity.modified != null">
+                modified = #{entity.modified},
+            </if>
+            <if test="entity.created != null">
+                created = #{entity.created},
+            </if>
+        </trim>
+    </sql>
+
+    <sql id="simpleConditions">
+        <trim prefix="WHERE" prefixOverrides="AND">
+            <if test="entity.id != null">
+                AND id = #{entity.id}
+            </if>
+            <if test="entity.reOpenid != null">
+                AND re_openid = #{entity.reOpenid}
+            </if>
+            <if test="entity.totalAmount != null">
+                AND total_amount = #{entity.totalAmount}
+            </if>
+            <if test="entity.userId != null">
+                AND user_id = #{entity.userId}
+            </if>
+            <if test="entity.wxUserId != null">
+                AND wx_user_id = #{entity.wxUserId}
+            </if>
+            <if test="entity.isSuccess != null">
+                AND is_success = #{entity.isSuccess}
+            </if>
+            <if test="entity.mchBillno != null">
+                AND mch_billno = #{entity.mchBillno}
+            </if>
+            <if test="entity.sendListid != null">
+                AND send_listid = #{entity.sendListid}
+            </if>
+            <if test="entity.nonceStr != null">
+                AND nonce_str = #{entity.nonceStr}
+            </if>
+            <if test="entity.errCode != null">
+                AND err_code = #{entity.errCode}
+            </if>
+            <if test="entity.errCodeDes != null">
+                AND err_code_des = #{entity.errCodeDes}
+            </if>
+            <if test="entity.enabled != null">
+                AND enabled = #{entity.enabled}
+            </if>
+            <if test="entity.modified != null">
+                AND modified = #{entity.modified}
+            </if>
+            <if test="entity.created != null">
+                AND created = #{entity.created}
+            </if>
+        </trim>
+    </sql>
+
+    <sql id="sort">
+        <trim prefix="ORDER BY" suffixOverrides=",">
+            <foreach collection="orders" separator="," item="item" index="index">
+                ${item.property} ${item.direction}
+            </foreach>
+        </trim>
+    </sql>
+
+    <sql id="criterion">
+        <foreach collection="conditions.tokens" item="item">
+            <choose>
+                <when test="item.param">#{item.value}</when><otherwise>${item.value}</otherwise>
+            </choose>
+        </foreach>
+    </sql>
+
+    <sql id="limit">
+        LIMIT #{offset}, #{pageSize}
+    </sql>
+
+    <sql id="relationships">
+        <if test="relationships != null">
+            <foreach collection="relationships" item="join" index="index">
+                ${join.type()} ${join.table()} ON ${join.condition()}
+            </foreach>
+        </if>
+    </sql>
+
+    <!-- insert -->
+    <insert id="save" parameterType="com.mifan.user.domain.WxRedPacket" keyProperty="id" useGeneratedKeys="true">
+        INSERT INTO wx_red_packet(<include refid="insertColumns"/>) VALUES (<include refid="insertValues"/>)
+    </insert>
+
+    <!-- insert into on duplicate -->
+    <insert id="insertOnDuplicate" parameterType="com.mifan.user.domain.WxRedPacket" keyProperty="id" useGeneratedKeys="true">
+        INSERT INTO wx_red_packet(<include refid="insertEntityColumns"/>) VALUES (<include refid="insertEntityValues"/>) ON DUPLICATE KEY UPDATE <include refid="updateValuesByCriterion"/>
+    </insert>
+
+    <!-- insert into on duplicate -->
+    <insert id="saveOrUpdate" parameterType="com.mifan.user.domain.WxRedPacket" keyProperty="id" useGeneratedKeys="true">
+        INSERT INTO wx_red_packet(<include refid="insertColumns"/>) VALUES (<include refid="insertValues"/>) ON DUPLICATE KEY UPDATE <include refid="updateValues"/>
+    </insert>
+
+    <!-- delete -->
+    <delete id="delete" parameterType="long">
+        DELETE FROM wx_red_packet WHERE id = #{id}
+    </delete>
+
+    <!-- update -->
+    <update id="update" parameterType="com.mifan.user.domain.WxRedPacket">
+        UPDATE wx_red_packet SET <include refid="updateValues"/> WHERE id = #{id}
+    </update>
+
+    <update id="updateByCriterion" parameterType="com.mifan.user.domain.WxRedPacket">
+        UPDATE wx_red_packet SET <include refid="updateValuesByCriterion"/> WHERE id = #{entity.id} AND <include refid="criterion"></include>
+    </update>
+
+    <update id="updateByMap" parameterType="map">
+        UPDATE wx_red_packet
+        <trim prefix="SET" suffixOverrides=",">
+            <foreach collection="increments" index="index" item="item">
+                ${item.key} = ${item.key} + #{item.value},
+            </foreach>
+            <foreach collection="fields" index="index" item="item">
+                ${item.key} = #{item.value},
+            </foreach>
+        </trim>
+        WHERE id = #{id}
+    </update>
+
+    <!-- select -->
+    <select id="findOne" parameterType="map" resultMap="wxRedPacket">
+        SELECT
+        <include refid="columns"></include>
+        FROM wx_red_packet WHERE id = #{id}
+    </select>
+
+    <select id="findOneByObject" parameterType="map" resultMap="wxRedPacket">
+        SELECT
+        <include refid="columns"></include>
+        FROM wx_red_packet <include refid="simpleConditions"></include>
+    </select>
+
+    <select id="findAll" parameterType="map" resultMap="wxRedPacket">
+        SELECT
+        <include refid="columns"></include>
+        FROM wx_red_packet WHERE ${field} IN
+        <foreach collection="ids" open="(" separator="," close=")" index="index" item="item" >
+            ${item}
+        </foreach>
+    </select>
+
+    <select id="findAllByObject" parameterType="map" resultMap="wxRedPacket">
+        SELECT
+        <include refid="columns"></include>
+        FROM wx_red_packet <include refid="simpleConditions"></include>
+    </select>
+
+    <select id="findAllByCriterion" parameterType="map" resultMap="wxRedPacket">
+        SELECT
+        <include refid="columns"></include>
+        FROM wx_red_packet WHERE <include refid="criterion"></include>
+    </select>
+
+    <select id="findPage" parameterType="map" resultMap="wxRedPacket">
+        SELECT
+        <include refid="columns"></include>
+        FROM wx_red_packet <include refid="simpleConditions"></include> <include refid="sort"></include> <include refid="limit"></include>
+    </select>
+
+    <select id="findPageByCriterion" parameterType="map" resultMap="wxRedPacket">
+        SELECT
+        <include refid="columns"></include>
+        FROM wx_red_packet
+        <include refid="relationships"></include>
+        WHERE <include refid="criterion"></include> <include refid="sort"></include> <include refid="limit"></include>
+    </select>
+
+    <select id="count" resultType="long">
+        SELECT COUNT(*) FROM wx_red_packet
+    </select>
+
+    <select id="countByCondition" parameterType="map" resultType="long">
+        SELECT COUNT(*) FROM wx_red_packet <include refid="simpleConditions"></include>
+    </select>
+
+    <select id="countByCriterion" parameterType="map" resultType="long">
+        SELECT COUNT(*) FROM wx_red_packet
+        <include refid="relationships"></include>
+        WHERE <include refid="criterion"></include>
+    </select>
+
+    <select id="exists" parameterType="long" resultType="long">
+        SELECT COUNT(*) FROM wx_red_packet WHERE id = #{id}
+    </select>
+
+</mapper>

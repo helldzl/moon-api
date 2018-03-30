@@ -1,0 +1,322 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.mifan.article.domain.TopicsAttachments">
+
+    <!-- result map -->
+    <resultMap id="topicsAttachments" type="com.mifan.article.domain.TopicsAttachments">
+        <id property="id" column="id" javaType="long"/>
+        <result property="topicId" column="topic_id" javaType="long"/>
+        <result property="attachmentId" column="attachment_id" javaType="long"/>
+        <result property="enabled" column="enabled" javaType="int"/>
+        <result property="created" column="created" javaType="date"/>
+        <result property="modified" column="modified" javaType="date"/>
+    </resultMap>
+
+    <!-- sql -->
+    <sql id="columns">
+        <choose>
+            <when test="fields != null and fields.size != 0">
+                <foreach collection="fields" separator="," item="item" index="index">
+                    ${item.fullname}
+                </foreach>
+            </when>
+            <otherwise>
+                id, topic_id, attachment_id, enabled, created, modified 
+            </otherwise>
+        </choose>
+    </sql>
+
+    <sql id="insertColumns">
+        <trim suffixOverrides=",">
+            <if test="id != null">
+                id,
+            </if>
+            <if test="topicId != null">
+                topic_id,
+            </if>
+            <if test="attachmentId != null">
+                attachment_id,
+            </if>
+            <if test="enabled != null">
+                enabled,
+            </if>
+            <if test="created != null">
+                created,
+            </if>
+            <if test="modified != null">
+                modified,
+            </if>
+        </trim>
+    </sql>
+
+    <sql id="insertEntityColumns">
+        <trim suffixOverrides=",">
+            <if test="insert.id != null">
+                id,
+            </if>
+            <if test="insert.topicId != null">
+                topic_id,
+            </if>
+            <if test="insert.attachmentId != null">
+                attachment_id,
+            </if>
+            <if test="insert.enabled != null">
+                enabled,
+            </if>
+            <if test="insert.created != null">
+                created,
+            </if>
+            <if test="insert.modified != null">
+                modified,
+            </if>
+        </trim>
+    </sql>
+
+    <sql id="insertValues">
+        <trim suffixOverrides=",">
+            <if test="id != null">
+                #{id},
+            </if>
+            <if test="topicId != null">
+                #{topicId},
+            </if>
+            <if test="attachmentId != null">
+                #{attachmentId},
+            </if>
+            <if test="enabled != null">
+                #{enabled},
+            </if>
+            <if test="created != null">
+                #{created},
+            </if>
+            <if test="modified != null">
+                #{modified},
+            </if>
+        </trim>
+    </sql>
+
+    <sql id="insertEntityValues">
+        <trim suffixOverrides=",">
+            <if test="insert.id != null">
+                #{insert.id},
+            </if>
+            <if test="insert.topicId != null">
+                #{insert.topicId},
+            </if>
+            <if test="insert.attachmentId != null">
+                #{insert.attachmentId},
+            </if>
+            <if test="insert.enabled != null">
+                #{insert.enabled},
+            </if>
+            <if test="insert.created != null">
+                #{insert.created},
+            </if>
+            <if test="insert.modified != null">
+                #{insert.modified},
+            </if>
+        </trim>
+    </sql>
+
+    <sql id="updateValues">
+        <trim suffixOverrides=",">
+            <if test="topicId != null">
+                topic_id = #{topicId},
+            </if>
+            <if test="attachmentId != null">
+                attachment_id = #{attachmentId},
+            </if>
+            <if test="enabled != null">
+                enabled = #{enabled},
+            </if>
+            <if test="created != null">
+                created = #{created},
+            </if>
+            <if test="modified != null">
+                modified = #{modified},
+            </if>
+        </trim>
+    </sql>
+
+    <sql id="updateValuesByCriterion">
+        <trim suffixOverrides=",">
+            <if test="entity.topicId != null">
+                topic_id = #{entity.topicId},
+            </if>
+            <if test="entity.attachmentId != null">
+                attachment_id = #{entity.attachmentId},
+            </if>
+            <if test="entity.enabled != null">
+                enabled = #{entity.enabled},
+            </if>
+            <if test="entity.created != null">
+                created = #{entity.created},
+            </if>
+            <if test="entity.modified != null">
+                modified = #{entity.modified},
+            </if>
+        </trim>
+    </sql>
+
+    <sql id="simpleConditions">
+        <trim prefix="WHERE" prefixOverrides="AND">
+            <if test="entity.id != null">
+                AND id = #{entity.id}
+            </if>
+            <if test="entity.topicId != null">
+                AND topic_id = #{entity.topicId}
+            </if>
+            <if test="entity.attachmentId != null">
+                AND attachment_id = #{entity.attachmentId}
+            </if>
+            <if test="entity.enabled != null">
+                AND enabled = #{entity.enabled}
+            </if>
+            <if test="entity.created != null">
+                AND created = #{entity.created}
+            </if>
+            <if test="entity.modified != null">
+                AND modified = #{entity.modified}
+            </if>
+        </trim>
+    </sql>
+
+    <sql id="sort">
+        <trim prefix="ORDER BY" suffixOverrides=",">
+            <foreach collection="orders" separator="," item="item" index="index">
+                ${item.property} ${item.direction}
+            </foreach>
+        </trim>
+    </sql>
+
+    <sql id="criterion">
+        <foreach collection="conditions.tokens" item="item">
+            <choose>
+                <when test="item.param">#{item.value}</when><otherwise>${item.value}</otherwise>
+            </choose>
+        </foreach>
+    </sql>
+
+    <sql id="limit">
+        LIMIT #{offset}, #{pageSize}
+    </sql>
+
+    <sql id="relationships">
+        <if test="relationships != null">
+            <foreach collection="relationships" item="join" index="index">
+                ${join.type()} ${join.table()} ON ${join.condition()}
+            </foreach>
+        </if>
+    </sql>
+
+    <!-- insert -->
+    <insert id="save" parameterType="com.mifan.article.domain.TopicsAttachments" keyProperty="id" useGeneratedKeys="true">
+        INSERT INTO topics_attachments(<include refid="insertColumns"/>) VALUES (<include refid="insertValues"/>)
+    </insert>
+
+    <!-- insert into on duplicate -->
+    <insert id="insertOnDuplicate" parameterType="com.mifan.article.domain.TopicsAttachments" keyProperty="id" useGeneratedKeys="true">
+        INSERT INTO topics_attachments(<include refid="insertEntityColumns"/>) VALUES (<include refid="insertEntityValues"/>) ON DUPLICATE KEY UPDATE <include refid="updateValuesByCriterion"/>
+    </insert>
+
+    <!-- insert into on duplicate -->
+    <insert id="saveOrUpdate" parameterType="com.mifan.article.domain.TopicsAttachments" keyProperty="id" useGeneratedKeys="true">
+        INSERT INTO topics_attachments(<include refid="insertColumns"/>) VALUES (<include refid="insertValues"/>) ON DUPLICATE KEY UPDATE <include refid="updateValues"/>
+    </insert>
+
+    <!-- delete -->
+    <delete id="delete" parameterType="long">
+        DELETE FROM topics_attachments WHERE id = #{id}
+    </delete>
+
+    <!-- update -->
+    <update id="update" parameterType="com.mifan.article.domain.TopicsAttachments">
+        UPDATE topics_attachments SET <include refid="updateValues"/> WHERE id = #{id}
+    </update>
+
+    <update id="updateByCriterion" parameterType="com.mifan.article.domain.TopicsAttachments">
+        UPDATE topics_attachments SET <include refid="updateValuesByCriterion"/> WHERE id = #{entity.id} AND <include refid="criterion"></include>
+    </update>
+
+    <update id="updateByMap" parameterType="map">
+        UPDATE topics_attachments
+        <trim prefix="SET" suffixOverrides=",">
+            <foreach collection="increments" index="index" item="item">
+                ${item.key} = ${item.key} + #{item.value},
+            </foreach>
+            <foreach collection="fields" index="index" item="item">
+                ${item.key} = #{item.value},
+            </foreach>
+        </trim>
+        WHERE id = #{id}
+    </update>
+
+    <!-- select -->
+    <select id="findOne" parameterType="map" resultMap="topicsAttachments">
+        SELECT
+        <include refid="columns"></include>
+        FROM topics_attachments WHERE id = #{id}
+    </select>
+
+    <select id="findOneByObject" parameterType="map" resultMap="topicsAttachments">
+        SELECT
+        <include refid="columns"></include>
+        FROM topics_attachments <include refid="simpleConditions"></include>
+    </select>
+
+    <select id="findAll" parameterType="map" resultMap="topicsAttachments">
+        SELECT
+        <include refid="columns"></include>
+        FROM topics_attachments WHERE ${field} IN
+        <foreach collection="ids" open="(" separator="," close=")" index="index" item="item" >
+            ${item}
+        </foreach>
+    </select>
+
+    <select id="findAllByObject" parameterType="map" resultMap="topicsAttachments">
+        SELECT
+        <include refid="columns"></include>
+        FROM topics_attachments <include refid="simpleConditions"></include>
+    </select>
+
+    <select id="findAllByCriterion" parameterType="map" resultMap="topicsAttachments">
+        SELECT
+        <include refid="columns"></include>
+        FROM topics_attachments WHERE <include refid="criterion"></include>
+    </select>
+
+    <select id="findPage" parameterType="map" resultMap="topicsAttachments">
+        SELECT
+        <include refid="columns"></include>
+        FROM topics_attachments <include refid="simpleConditions"></include> <include refid="sort"></include> <include refid="limit"></include>
+    </select>
+
+    <select id="findPageByCriterion" parameterType="map" resultMap="topicsAttachments">
+        SELECT
+        <include refid="columns"></include>
+        FROM topics_attachments
+        <include refid="relationships"></include>
+        WHERE <include refid="criterion"></include> <include refid="sort"></include> <include refid="limit"></include>
+    </select>
+
+    <select id="count" resultType="long">
+        SELECT COUNT(*) FROM topics_attachments
+    </select>
+
+    <select id="countByCondition" parameterType="map" resultType="long">
+        SELECT COUNT(*) FROM topics_attachments <include refid="simpleConditions"></include>
+    </select>
+
+    <select id="countByCriterion" parameterType="map" resultType="long">
+        SELECT COUNT(*) FROM topics_attachments
+        <include refid="relationships"></include>
+        WHERE <include refid="criterion"></include>
+    </select>
+
+    <select id="exists" parameterType="long" resultType="long">
+        SELECT COUNT(*) FROM topics_attachments WHERE id = #{id}
+    </select>
+
+</mapper>

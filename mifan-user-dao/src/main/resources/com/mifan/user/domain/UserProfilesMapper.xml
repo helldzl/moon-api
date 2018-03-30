@@ -1,0 +1,1171 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.mifan.user.domain.UserProfiles">
+
+    <!-- result map -->
+    <resultMap id="userProfiles" type="com.mifan.user.domain.UserProfiles">
+        <id property="id" column="id" javaType="long"/>
+        <result property="bitRoles" column="bit_roles" javaType="int"/>
+        <result property="gender" column="gender" javaType="int"/>
+        <result property="birthday" column="birthday" javaType="date"/>
+        <result property="nickname" column="nickname" javaType="string"/>
+        <result property="fullname" column="fullname" javaType="string"/>
+        <result property="firstname" column="firstname" javaType="string"/>
+        <result property="lastname" column="lastname" javaType="string"/>
+        <result property="postalCode" column="postal_code" javaType="string"/>
+        <result property="country" column="country" javaType="string"/>
+        <result property="province" column="province" javaType="string"/>
+        <result property="city" column="city" javaType="string"/>
+        <result property="district" column="district" javaType="string"/>
+        <result property="mobile" column="mobile" javaType="string"/>
+        <result property="email" column="email" javaType="string"/>
+        <result property="fax" column="fax" javaType="string"/>
+        <result property="qq" column="qq" javaType="string"/>
+        <result property="weibo" column="weibo" javaType="string"/>
+        <result property="wechat" column="wechat" javaType="string"/>
+        <result property="themeId" column="theme_id" javaType="long"/>
+        <result property="userLevel" column="user_level" javaType="int"/>
+        <result property="userKarma" column="user_karma" javaType="int"/>
+        <result property="userPosts" column="user_posts" javaType="int"/>
+        <result property="userNewPrivmsg" column="user_new_privmsg" javaType="int"/>
+        <result property="userUnreadPrivmsg" column="user_unread_privmsg" javaType="int"/>
+        <result property="userLastPrivmsg" column="user_last_privmsg" javaType="date"/>
+        <result property="userLastvisit" column="user_lastvisit" javaType="date"/>
+        <result property="userAllowPm" column="user_allow_pm" javaType="int"/>
+        <result property="userAllowViewonline" column="user_allow_viewonline" javaType="int"/>
+        <result property="userAllowAvatar" column="user_allow_avatar" javaType="int"/>
+        <result property="userPopupPm" column="user_popup_pm" javaType="int"/>
+        <result property="userNotify" column="user_notify" javaType="int"/>
+        <result property="userNotifyAlways" column="user_notify_always" javaType="int"/>
+        <result property="userNotifyText" column="user_notify_text" javaType="int"/>
+        <result property="userViewEmail" column="user_view_email" javaType="int"/>
+        <result property="userFrom" column="user_from" javaType="string"/>
+        <result property="userEducation" column="user_education" javaType="string"/>
+        <result property="userBiography" column="user_biography" javaType="string"/>
+        <result property="userSig" column="user_sig" javaType="string"/>
+        <result property="userAvatar" column="user_avatar" javaType="string"/>
+        <result property="userSkills" column="user_skills" javaType="string"/>
+        <result property="userAwards" column="user_awards" javaType="string"/>
+        <result property="userInterests" column="user_interests" javaType="string"/>
+        <result property="userWebsite" column="user_website" javaType="string"/>
+        <result property="userWebsiteImage" column="user_website_image" javaType="string"/>
+        <result property="securityHash" column="security_hash" javaType="string"/>
+        <result property="securityAuth" column="security_auth" javaType="string"/>
+        <result property="categories" column="categories" javaType="string"/>
+        <result property="services" column="services" javaType="string"/>
+        <result property="serviceRegions" column="service_regions" javaType="string"/>
+        <result property="contactPhone" column="contact_phone" javaType="string"/>
+        <result property="countryId" column="country_id" javaType="long"/>
+        <result property="cityId" column="city_id" javaType="long"/>
+        <result property="location" column="location" javaType="string"/>
+        <result property="company" column="company" javaType="string"/>
+        <result property="profession" column="profession" javaType="string"/>
+        <result property="creator" column="creator" javaType="long"/>
+        <result property="modifier" column="modifier" javaType="long"/>
+        <result property="created" column="created" javaType="date"/>
+        <result property="modified" column="modified" javaType="date"/>
+        <result property="signCount" column="sign_count" javaType="int"/>
+        <result property="signCountContinuos" column="sign_count_continuos" javaType="int"/>
+        <result property="signTime" column="sign_time" javaType="date"/>
+    </resultMap>
+
+    <!-- sql -->
+    <sql id="columns">
+        <choose>
+            <when test="fields != null and fields.size != 0">
+                <foreach collection="fields" separator="," item="item" index="index">
+                    ${item.fullname}
+                </foreach>
+            </when>
+            <otherwise>
+                id, bit_roles, gender, birthday, nickname, fullname, firstname, lastname, postal_code, country, province, city, district, mobile, email, fax, qq, weibo, wechat, theme_id, user_level, user_karma, user_posts, user_new_privmsg, user_unread_privmsg, user_last_privmsg, user_lastvisit, user_allow_pm, user_allow_viewonline, user_allow_avatar, user_popup_pm, user_notify, user_notify_always, user_notify_text, user_view_email, user_from, user_education, user_biography, user_sig, user_avatar, user_skills, user_awards, user_interests, user_website, user_website_image, security_hash, security_auth, categories, services, service_regions, contact_phone, country_id, city_id, location, company, profession, creator, modifier, created, modified, sign_count, sign_count_continuos, sign_time
+            </otherwise>
+        </choose>
+    </sql>
+
+    <sql id="insertColumns">
+        <trim suffixOverrides=",">
+            <if test="id != null">
+                id,
+            </if>
+            <if test="bitRoles != null">
+                bit_roles,
+            </if>
+            <if test="gender != null">
+                gender,
+            </if>
+            <if test="birthday != null">
+                birthday,
+            </if>
+            <if test="nickname != null">
+                nickname,
+            </if>
+            <if test="fullname != null">
+                fullname,
+            </if>
+            <if test="firstname != null">
+                firstname,
+            </if>
+            <if test="lastname != null">
+                lastname,
+            </if>
+            <if test="postalCode != null">
+                postal_code,
+            </if>
+            <if test="country != null">
+                country,
+            </if>
+            <if test="province != null">
+                province,
+            </if>
+            <if test="city != null">
+                city,
+            </if>
+            <if test="district != null">
+                district,
+            </if>
+            <if test="mobile != null">
+                mobile,
+            </if>
+            <if test="email != null">
+                email,
+            </if>
+            <if test="fax != null">
+                fax,
+            </if>
+            <if test="qq != null">
+                qq,
+            </if>
+            <if test="weibo != null">
+                weibo,
+            </if>
+            <if test="wechat != null">
+                wechat,
+            </if>
+            <if test="themeId != null">
+                theme_id,
+            </if>
+            <if test="userLevel != null">
+                user_level,
+            </if>
+            <if test="userKarma != null">
+                user_karma,
+            </if>
+            <if test="userPosts != null">
+                user_posts,
+            </if>
+            <if test="userNewPrivmsg != null">
+                user_new_privmsg,
+            </if>
+            <if test="userUnreadPrivmsg != null">
+                user_unread_privmsg,
+            </if>
+            <if test="userLastPrivmsg != null">
+                user_last_privmsg,
+            </if>
+            <if test="userLastvisit != null">
+                user_lastvisit,
+            </if>
+            <if test="userAllowPm != null">
+                user_allow_pm,
+            </if>
+            <if test="userAllowViewonline != null">
+                user_allow_viewonline,
+            </if>
+            <if test="userAllowAvatar != null">
+                user_allow_avatar,
+            </if>
+            <if test="userPopupPm != null">
+                user_popup_pm,
+            </if>
+            <if test="userNotify != null">
+                user_notify,
+            </if>
+            <if test="userNotifyAlways != null">
+                user_notify_always,
+            </if>
+            <if test="userNotifyText != null">
+                user_notify_text,
+            </if>
+            <if test="userViewEmail != null">
+                user_view_email,
+            </if>
+            <if test="userFrom != null">
+                user_from,
+            </if>
+            <if test="userEducation != null">
+                user_education,
+            </if>
+            <if test="userBiography != null">
+                user_biography,
+            </if>
+            <if test="userSig != null">
+                user_sig,
+            </if>
+            <if test="userAvatar != null">
+                user_avatar,
+            </if>
+            <if test="userSkills != null">
+                user_skills,
+            </if>
+            <if test="userAwards != null">
+                user_awards,
+            </if>
+            <if test="userInterests != null">
+                user_interests,
+            </if>
+            <if test="userWebsite != null">
+                user_website,
+            </if>
+            <if test="userWebsiteImage != null">
+                user_website_image,
+            </if>
+            <if test="securityHash != null">
+                security_hash,
+            </if>
+            <if test="securityAuth != null">
+                security_auth,
+            </if>
+            <if test="categories != null">
+                categories,
+            </if>
+            <if test="services != null">
+                services,
+            </if>
+            <if test="serviceRegions != null">
+                service_regions,
+            </if>
+            <if test="contactPhone != null">
+                contact_phone,
+            </if>
+            <if test="countryId != null">
+                country_id,
+            </if>
+            <if test="cityId != null">
+                city_id,
+            </if>
+            <if test="location != null">
+                location,
+            </if>
+            <if test="company != null">
+                company,
+            </if>
+            <if test="profession != null">
+                profession,
+            </if>
+            <if test="creator != null">
+                creator,
+            </if>
+            <if test="modifier != null">
+                modifier,
+            </if>
+            <if test="created != null">
+                created,
+            </if>
+            <if test="modified != null">
+                modified,
+            </if>
+            <if test="signCount != null">
+                sign_count,
+            </if>
+            <if test="signCountContinuos != null">
+                sign_count_continuos,
+            </if>
+            <if test="signTime != null">
+                sign_time,
+            </if>
+        </trim>
+    </sql>
+
+    <sql id="insertValues">
+        <trim suffixOverrides=",">
+            <if test="id != null">
+                #{id},
+            </if>
+            <if test="bitRoles != null">
+                #{bitRoles},
+            </if>
+            <if test="gender != null">
+                #{gender},
+            </if>
+            <if test="birthday != null">
+                #{birthday},
+            </if>
+            <if test="nickname != null">
+                #{nickname},
+            </if>
+            <if test="fullname != null">
+                #{fullname},
+            </if>
+            <if test="firstname != null">
+                #{firstname},
+            </if>
+            <if test="lastname != null">
+                #{lastname},
+            </if>
+            <if test="postalCode != null">
+                #{postalCode},
+            </if>
+            <if test="country != null">
+                #{country},
+            </if>
+            <if test="province != null">
+                #{province},
+            </if>
+            <if test="city != null">
+                #{city},
+            </if>
+            <if test="district != null">
+                #{district},
+            </if>
+            <if test="mobile != null">
+                #{mobile},
+            </if>
+            <if test="email != null">
+                #{email},
+            </if>
+            <if test="fax != null">
+                #{fax},
+            </if>
+            <if test="qq != null">
+                #{qq},
+            </if>
+            <if test="weibo != null">
+                #{weibo},
+            </if>
+            <if test="wechat != null">
+                #{wechat},
+            </if>
+            <if test="themeId != null">
+                #{themeId},
+            </if>
+            <if test="userLevel != null">
+                #{userLevel},
+            </if>
+            <if test="userKarma != null">
+                #{userKarma},
+            </if>
+            <if test="userPosts != null">
+                #{userPosts},
+            </if>
+            <if test="userNewPrivmsg != null">
+                #{userNewPrivmsg},
+            </if>
+            <if test="userUnreadPrivmsg != null">
+                #{userUnreadPrivmsg},
+            </if>
+            <if test="userLastPrivmsg != null">
+                #{userLastPrivmsg},
+            </if>
+            <if test="userLastvisit != null">
+                #{userLastvisit},
+            </if>
+            <if test="userAllowPm != null">
+                #{userAllowPm},
+            </if>
+            <if test="userAllowViewonline != null">
+                #{userAllowViewonline},
+            </if>
+            <if test="userAllowAvatar != null">
+                #{userAllowAvatar},
+            </if>
+            <if test="userPopupPm != null">
+                #{userPopupPm},
+            </if>
+            <if test="userNotify != null">
+                #{userNotify},
+            </if>
+            <if test="userNotifyAlways != null">
+                #{userNotifyAlways},
+            </if>
+            <if test="userNotifyText != null">
+                #{userNotifyText},
+            </if>
+            <if test="userViewEmail != null">
+                #{userViewEmail},
+            </if>
+            <if test="userFrom != null">
+                #{userFrom},
+            </if>
+            <if test="userEducation != null">
+                #{userEducation},
+            </if>
+            <if test="userBiography != null">
+                #{userBiography},
+            </if>
+            <if test="userSig != null">
+                #{userSig},
+            </if>
+            <if test="userAvatar != null">
+                #{userAvatar},
+            </if>
+            <if test="userSkills != null">
+                #{userSkills},
+            </if>
+            <if test="userAwards != null">
+                #{userAwards},
+            </if>
+            <if test="userInterests != null">
+                #{userInterests},
+            </if>
+            <if test="userWebsite != null">
+                #{userWebsite},
+            </if>
+            <if test="userWebsiteImage != null">
+                #{userWebsiteImage},
+            </if>
+            <if test="securityHash != null">
+                #{securityHash},
+            </if>
+            <if test="securityAuth != null">
+                #{securityAuth},
+            </if>
+            <if test="categories != null">
+                #{categories},
+            </if>
+            <if test="services != null">
+                #{services},
+            </if>
+            <if test="serviceRegions != null">
+                #{serviceRegions},
+            </if>
+            <if test="contactPhone != null">
+                #{contactPhone},
+            </if>
+            <if test="countryId != null">
+                #{countryId},
+            </if>
+            <if test="cityId != null">
+                #{cityId},
+            </if>
+            <if test="location != null">
+                #{location},
+            </if>
+            <if test="company != null">
+                #{company},
+            </if>
+            <if test="profession != null">
+                #{profession},
+            </if>
+            <if test="creator != null">
+                #{creator},
+            </if>
+            <if test="modifier != null">
+                #{modifier},
+            </if>
+            <if test="created != null">
+                #{created},
+            </if>
+            <if test="modified != null">
+                #{modified},
+            </if>
+            <if test="signCount != null">
+                #{signCount},
+            </if>
+            <if test="signCountContinuos != null">
+                #{signCountContinuos},
+            </if>
+            <if test="signTime != null">
+                #{signTime},
+            </if>
+        </trim>
+    </sql>
+
+    <sql id="updateValues">
+        <trim suffixOverrides=",">
+            <if test="bitRoles != null">
+                bit_roles = #{bitRoles},
+            </if>
+            <if test="gender != null">
+                gender = #{gender},
+            </if>
+            <if test="birthday != null">
+                birthday = #{birthday},
+            </if>
+            <if test="nickname != null">
+                nickname = #{nickname},
+            </if>
+            <if test="fullname != null">
+                fullname = #{fullname},
+            </if>
+            <if test="firstname != null">
+                firstname = #{firstname},
+            </if>
+            <if test="lastname != null">
+                lastname = #{lastname},
+            </if>
+            <if test="postalCode != null">
+                postal_code = #{postalCode},
+            </if>
+            <if test="country != null">
+                country = #{country},
+            </if>
+            <if test="province != null">
+                province = #{province},
+            </if>
+            <if test="city != null">
+                city = #{city},
+            </if>
+            <if test="district != null">
+                district = #{district},
+            </if>
+            <if test="mobile != null">
+                mobile = #{mobile},
+            </if>
+            <if test="email != null">
+                email = #{email},
+            </if>
+            <if test="fax != null">
+                fax = #{fax},
+            </if>
+            <if test="qq != null">
+                qq = #{qq},
+            </if>
+            <if test="weibo != null">
+                weibo = #{weibo},
+            </if>
+            <if test="wechat != null">
+                wechat = #{wechat},
+            </if>
+            <if test="themeId != null">
+                theme_id = #{themeId},
+            </if>
+            <if test="userLevel != null">
+                user_level = #{userLevel},
+            </if>
+            <if test="userKarma != null">
+                user_karma = #{userKarma},
+            </if>
+            <if test="userPosts != null">
+                user_posts = #{userPosts},
+            </if>
+            <if test="userNewPrivmsg != null">
+                user_new_privmsg = #{userNewPrivmsg},
+            </if>
+            <if test="userUnreadPrivmsg != null">
+                user_unread_privmsg = #{userUnreadPrivmsg},
+            </if>
+            <if test="userLastPrivmsg != null">
+                user_last_privmsg = #{userLastPrivmsg},
+            </if>
+            <if test="userLastvisit != null">
+                user_lastvisit = #{userLastvisit},
+            </if>
+            <if test="userAllowPm != null">
+                user_allow_pm = #{userAllowPm},
+            </if>
+            <if test="userAllowViewonline != null">
+                user_allow_viewonline = #{userAllowViewonline},
+            </if>
+            <if test="userAllowAvatar != null">
+                user_allow_avatar = #{userAllowAvatar},
+            </if>
+            <if test="userPopupPm != null">
+                user_popup_pm = #{userPopupPm},
+            </if>
+            <if test="userNotify != null">
+                user_notify = #{userNotify},
+            </if>
+            <if test="userNotifyAlways != null">
+                user_notify_always = #{userNotifyAlways},
+            </if>
+            <if test="userNotifyText != null">
+                user_notify_text = #{userNotifyText},
+            </if>
+            <if test="userViewEmail != null">
+                user_view_email = #{userViewEmail},
+            </if>
+            <if test="userFrom != null">
+                user_from = #{userFrom},
+            </if>
+            <if test="userEducation != null">
+                user_education = #{userEducation},
+            </if>
+            <if test="userBiography != null">
+                user_biography = #{userBiography},
+            </if>
+            <if test="userSig != null">
+                user_sig = #{userSig},
+            </if>
+            <if test="userAvatar != null">
+                user_avatar = #{userAvatar},
+            </if>
+            <if test="userSkills != null">
+                user_skills = #{userSkills},
+            </if>
+            <if test="userAwards != null">
+                user_awards = #{userAwards},
+            </if>
+            <if test="userInterests != null">
+                user_interests = #{userInterests},
+            </if>
+            <if test="userWebsite != null">
+                user_website = #{userWebsite},
+            </if>
+            <if test="userWebsiteImage != null">
+                user_website_image = #{userWebsiteImage},
+            </if>
+            <if test="securityHash != null">
+                security_hash = #{securityHash},
+            </if>
+            <if test="securityAuth != null">
+                security_auth = #{securityAuth},
+            </if>
+            <if test="categories != null">
+                categories = #{categories},
+            </if>
+            <if test="services != null">
+                services = #{services},
+            </if>
+            <if test="serviceRegions != null">
+                service_regions = #{serviceRegions},
+            </if>
+            <if test="contactPhone != null">
+                contact_phone = #{contactPhone},
+            </if>
+            <if test="countryId != null">
+                country_id = #{countryId},
+            </if>
+            <if test="cityId != null">
+                city_id = #{cityId},
+            </if>
+            <if test="location != null">
+                location = #{location},
+            </if>
+            <if test="company != null">
+                company = #{company},
+            </if>
+            <if test="profession != null">
+                profession = #{profession},
+            </if>
+            <if test="creator != null">
+                creator = #{creator},
+            </if>
+            <if test="modifier != null">
+                modifier = #{modifier},
+            </if>
+            <if test="created != null">
+                created = #{created},
+            </if>
+            <if test="modified != null">
+                modified = #{modified},
+            </if>
+            <if test="signCount != null">
+                sign_count = #{signCount},
+            </if>
+            <if test="signCountContinuos != null">
+                sign_count_continuos = #{signCountContinuos},
+            </if>
+            <if test="signTime != null">
+                sign_time = #{signTime},
+            </if>
+        </trim>
+    </sql>
+
+    <sql id="updateValuesByCriterion">
+        <trim suffixOverrides=",">
+            <if test="entity.bitRoles != null">
+                bit_roles = #{entity.bitRoles},
+            </if>
+            <if test="entity.gender != null">
+                gender = #{entity.gender},
+            </if>
+            <if test="entity.birthday != null">
+                birthday = #{entity.birthday},
+            </if>
+            <if test="entity.nickname != null">
+                nickname = #{entity.nickname},
+            </if>
+            <if test="entity.fullname != null">
+                fullname = #{entity.fullname},
+            </if>
+            <if test="entity.firstname != null">
+                firstname = #{entity.firstname},
+            </if>
+            <if test="entity.lastname != null">
+                lastname = #{entity.lastname},
+            </if>
+            <if test="entity.postalCode != null">
+                postal_code = #{entity.postalCode},
+            </if>
+            <if test="entity.country != null">
+                country = #{entity.country},
+            </if>
+            <if test="entity.province != null">
+                province = #{entity.province},
+            </if>
+            <if test="entity.city != null">
+                city = #{entity.city},
+            </if>
+            <if test="entity.district != null">
+                district = #{entity.district},
+            </if>
+            <if test="entity.mobile != null">
+                mobile = #{entity.mobile},
+            </if>
+            <if test="entity.email != null">
+                email = #{entity.email},
+            </if>
+            <if test="entity.fax != null">
+                fax = #{entity.fax},
+            </if>
+            <if test="entity.qq != null">
+                qq = #{entity.qq},
+            </if>
+            <if test="entity.weibo != null">
+                weibo = #{entity.weibo},
+            </if>
+            <if test="entity.wechat != null">
+                wechat = #{entity.wechat},
+            </if>
+            <if test="entity.themeId != null">
+                theme_id = #{entity.themeId},
+            </if>
+            <if test="entity.userLevel != null">
+                user_level = #{entity.userLevel},
+            </if>
+            <if test="entity.userKarma != null">
+                user_karma = #{entity.userKarma},
+            </if>
+            <if test="entity.userPosts != null">
+                user_posts = #{entity.userPosts},
+            </if>
+            <if test="entity.userNewPrivmsg != null">
+                user_new_privmsg = #{entity.userNewPrivmsg},
+            </if>
+            <if test="entity.userUnreadPrivmsg != null">
+                user_unread_privmsg = #{entity.userUnreadPrivmsg},
+            </if>
+            <if test="entity.userLastPrivmsg != null">
+                user_last_privmsg = #{entity.userLastPrivmsg},
+            </if>
+            <if test="entity.userLastvisit != null">
+                user_lastvisit = #{entity.userLastvisit},
+            </if>
+            <if test="entity.userAllowPm != null">
+                user_allow_pm = #{entity.userAllowPm},
+            </if>
+            <if test="entity.userAllowViewonline != null">
+                user_allow_viewonline = #{entity.userAllowViewonline},
+            </if>
+            <if test="entity.userAllowAvatar != null">
+                user_allow_avatar = #{entity.userAllowAvatar},
+            </if>
+            <if test="entity.userPopupPm != null">
+                user_popup_pm = #{entity.userPopupPm},
+            </if>
+            <if test="entity.userNotify != null">
+                user_notify = #{entity.userNotify},
+            </if>
+            <if test="entity.userNotifyAlways != null">
+                user_notify_always = #{entity.userNotifyAlways},
+            </if>
+            <if test="entity.userNotifyText != null">
+                user_notify_text = #{entity.userNotifyText},
+            </if>
+            <if test="entity.userViewEmail != null">
+                user_view_email = #{entity.userViewEmail},
+            </if>
+            <if test="entity.userFrom != null">
+                user_from = #{entity.userFrom},
+            </if>
+            <if test="entity.userEducation != null">
+                user_education = #{entity.userEducation},
+            </if>
+            <if test="entity.userBiography != null">
+                user_biography = #{entity.userBiography},
+            </if>
+            <if test="entity.userSig != null">
+                user_sig = #{entity.userSig},
+            </if>
+            <if test="entity.userAvatar != null">
+                user_avatar = #{entity.userAvatar},
+            </if>
+            <if test="entity.userSkills != null">
+                user_skills = #{entity.userSkills},
+            </if>
+            <if test="entity.userAwards != null">
+                user_awards = #{entity.userAwards},
+            </if>
+            <if test="entity.userInterests != null">
+                user_interests = #{entity.userInterests},
+            </if>
+            <if test="entity.userWebsite != null">
+                user_website = #{entity.userWebsite},
+            </if>
+            <if test="entity.userWebsiteImage != null">
+                user_website_image = #{entity.userWebsiteImage},
+            </if>
+            <if test="entity.securityHash != null">
+                security_hash = #{entity.securityHash},
+            </if>
+            <if test="entity.securityAuth != null">
+                security_auth = #{entity.securityAuth},
+            </if>
+            <if test="entity.categories != null">
+                categories = #{entity.categories},
+            </if>
+            <if test="entity.services != null">
+                services = #{entity.services},
+            </if>
+            <if test="entity.serviceRegions != null">
+                service_regions = #{entity.serviceRegions},
+            </if>
+            <if test="entity.contactPhone != null">
+                contact_phone = #{entity.contactPhone},
+            </if>
+            <if test="entity.countryId != null">
+                country_id = #{entity.countryId},
+            </if>
+            <if test="entity.cityId != null">
+                city_id = #{entity.cityId},
+            </if>
+            <if test="entity.location != null">
+                location = #{entity.location},
+            </if>
+            <if test="entity.company != null">
+                company = #{entity.company},
+            </if>
+            <if test="entity.profession != null">
+                profession = #{entity.profession},
+            </if>
+            <if test="entity.creator != null">
+                creator = #{entity.creator},
+            </if>
+            <if test="entity.modifier != null">
+                modifier = #{entity.modifier},
+            </if>
+            <if test="entity.created != null">
+                created = #{entity.created},
+            </if>
+            <if test="entity.modified != null">
+                modified = #{entity.modified},
+            </if>
+            <if test="entity.signCount != null">
+                sign_count = #{entity.signCount},
+            </if>
+            <if test="entity.signCountContinuos != null">
+                sign_count_continuos = #{entity.signCountContinuos},
+            </if>
+            <if test="entity.signTime != null">
+                sign_time = #{entity.signTime},
+            </if>
+        </trim>
+    </sql>
+
+    <sql id="simpleConditions">
+        <trim prefix="WHERE" prefixOverrides="AND">
+            <if test="entity.id != null">
+                AND id = #{entity.id}
+            </if>
+            <if test="entity.bitRoles != null">
+                AND bit_roles = #{entity.bitRoles}
+            </if>
+            <if test="entity.gender != null">
+                AND gender = #{entity.gender}
+            </if>
+            <if test="entity.birthday != null">
+                AND birthday = #{entity.birthday}
+            </if>
+            <if test="entity.nickname != null">
+                AND nickname = #{entity.nickname}
+            </if>
+            <if test="entity.fullname != null">
+                AND fullname = #{entity.fullname}
+            </if>
+            <if test="entity.firstname != null">
+                AND firstname = #{entity.firstname}
+            </if>
+            <if test="entity.lastname != null">
+                AND lastname = #{entity.lastname}
+            </if>
+            <if test="entity.postalCode != null">
+                AND postal_code = #{entity.postalCode}
+            </if>
+            <if test="entity.country != null">
+                AND country = #{entity.country}
+            </if>
+            <if test="entity.province != null">
+                AND province = #{entity.province}
+            </if>
+            <if test="entity.city != null">
+                AND city = #{entity.city}
+            </if>
+            <if test="entity.district != null">
+                AND district = #{entity.district}
+            </if>
+            <if test="entity.mobile != null">
+                AND mobile = #{entity.mobile}
+            </if>
+            <if test="entity.email != null">
+                AND email = #{entity.email}
+            </if>
+            <if test="entity.fax != null">
+                AND fax = #{entity.fax}
+            </if>
+            <if test="entity.qq != null">
+                AND qq = #{entity.qq}
+            </if>
+            <if test="entity.weibo != null">
+                AND weibo = #{entity.weibo}
+            </if>
+            <if test="entity.wechat != null">
+                AND wechat = #{entity.wechat}
+            </if>
+            <if test="entity.themeId != null">
+                AND theme_id = #{entity.themeId}
+            </if>
+            <if test="entity.userLevel != null">
+                AND user_level = #{entity.userLevel}
+            </if>
+            <if test="entity.userKarma != null">
+                AND user_karma = #{entity.userKarma}
+            </if>
+            <if test="entity.userPosts != null">
+                AND user_posts = #{entity.userPosts}
+            </if>
+            <if test="entity.userNewPrivmsg != null">
+                AND user_new_privmsg = #{entity.userNewPrivmsg}
+            </if>
+            <if test="entity.userUnreadPrivmsg != null">
+                AND user_unread_privmsg = #{entity.userUnreadPrivmsg}
+            </if>
+            <if test="entity.userLastPrivmsg != null">
+                AND user_last_privmsg = #{entity.userLastPrivmsg}
+            </if>
+            <if test="entity.userLastvisit != null">
+                AND user_lastvisit = #{entity.userLastvisit}
+            </if>
+            <if test="entity.userAllowPm != null">
+                AND user_allow_pm = #{entity.userAllowPm}
+            </if>
+            <if test="entity.userAllowViewonline != null">
+                AND user_allow_viewonline = #{entity.userAllowViewonline}
+            </if>
+            <if test="entity.userAllowAvatar != null">
+                AND user_allow_avatar = #{entity.userAllowAvatar}
+            </if>
+            <if test="entity.userPopupPm != null">
+                AND user_popup_pm = #{entity.userPopupPm}
+            </if>
+            <if test="entity.userNotify != null">
+                AND user_notify = #{entity.userNotify}
+            </if>
+            <if test="entity.userNotifyAlways != null">
+                AND user_notify_always = #{entity.userNotifyAlways}
+            </if>
+            <if test="entity.userNotifyText != null">
+                AND user_notify_text = #{entity.userNotifyText}
+            </if>
+            <if test="entity.userViewEmail != null">
+                AND user_view_email = #{entity.userViewEmail}
+            </if>
+            <if test="entity.userFrom != null">
+                AND user_from = #{entity.userFrom}
+            </if>
+            <if test="entity.userEducation != null">
+                AND user_education = #{entity.userEducation}
+            </if>
+            <if test="entity.userBiography != null">
+                AND user_biography = #{entity.userBiography}
+            </if>
+            <if test="entity.userSig != null">
+                AND user_sig = #{entity.userSig}
+            </if>
+            <if test="entity.userAvatar != null">
+                AND user_avatar = #{entity.userAvatar}
+            </if>
+            <if test="entity.userSkills != null">
+                AND user_skills = #{entity.userSkills}
+            </if>
+            <if test="entity.userAwards != null">
+                AND user_awards = #{entity.userAwards}
+            </if>
+            <if test="entity.userInterests != null">
+                AND user_interests = #{entity.userInterests}
+            </if>
+            <if test="entity.userWebsite != null">
+                AND user_website = #{entity.userWebsite}
+            </if>
+            <if test="entity.userWebsiteImage != null">
+                AND user_website_image = #{entity.userWebsiteImage}
+            </if>
+            <if test="entity.securityHash != null">
+                AND security_hash = #{entity.securityHash}
+            </if>
+            <if test="entity.securityAuth != null">
+                AND security_auth = #{entity.securityAuth}
+            </if>
+            <if test="entity.categories != null">
+                AND categories = #{entity.categories}
+            </if>
+            <if test="entity.services != null">
+                AND services = #{entity.services}
+            </if>
+            <if test="entity.serviceRegions != null">
+                AND service_regions = #{entity.serviceRegions}
+            </if>
+            <if test="entity.contactPhone != null">
+                AND contact_phone = #{entity.contactPhone}
+            </if>
+            <if test="entity.countryId != null">
+                AND country_id = #{entity.countryId}
+            </if>
+            <if test="entity.cityId != null">
+                AND city_id = #{entity.cityId}
+            </if>
+            <if test="entity.location != null">
+                AND location = #{entity.location}
+            </if>
+            <if test="entity.company != null">
+                AND company = #{entity.company}
+            </if>
+            <if test="entity.profession != null">
+                AND profession = #{entity.profession}
+            </if>
+            <if test="entity.creator != null">
+                AND creator = #{entity.creator}
+            </if>
+            <if test="entity.modifier != null">
+                AND modifier = #{entity.modifier}
+            </if>
+            <if test="entity.created != null">
+                AND created = #{entity.created}
+            </if>
+            <if test="entity.modified != null">
+                AND modified = #{entity.modified}
+            </if>
+            <if test="entity.signCount != null">
+                AND sign_count = #{entity.signCount}
+            </if>
+            <if test="entity.signCountContinuos != null">
+                AND sign_count_continuos = #{entity.signCountContinuos}
+            </if>
+            <if test="entity.signTime != null">
+                AND sign_time = #{entity.signTime}
+            </if>
+        </trim>
+    </sql>
+
+    <sql id="sort">
+        <trim prefix="ORDER BY" suffixOverrides=",">
+            <foreach collection="orders" separator="," item="item" index="index">
+                ${item.property} ${item.direction}
+            </foreach>
+        </trim>
+    </sql>
+
+    <sql id="criterion">
+        <foreach collection="conditions.tokens" item="item">
+            <choose>
+                <when test="item.param">#{item.value}</when><otherwise>${item.value}</otherwise>
+            </choose>
+        </foreach>
+    </sql>
+
+    <sql id="limit">
+        LIMIT #{offset}, #{pageSize}
+    </sql>
+
+    <!-- insert -->
+    <insert id="save" parameterType="com.mifan.user.domain.UserProfiles" keyProperty="id" useGeneratedKeys="true">
+        INSERT INTO user_profiles(<include refid="insertColumns"/>) VALUES (<include refid="insertValues"/>)
+    </insert>
+
+    <!-- insert into on duplicate -->
+    <insert id="saveOrUpdate" parameterType="com.mifan.user.domain.UserProfiles" keyProperty="id" useGeneratedKeys="true">
+        INSERT INTO user_profiles(<include refid="insertColumns"/>) VALUES (<include refid="insertValues"/>) ON DUPLICATE KEY UPDATE <include refid="updateValues"/>
+    </insert>
+
+    <!-- delete -->
+    <delete id="delete" parameterType="long">
+        DELETE FROM user_profiles WHERE id = #{id}
+    </delete>
+
+    <!-- update -->
+    <update id="update" parameterType="com.mifan.user.domain.UserProfiles">
+        UPDATE user_profiles SET <include refid="updateValues"/> WHERE id = #{id}
+    </update>
+
+    <update id="updateByCriterion" parameterType="com.mifan.user.domain.UserProfiles">
+        UPDATE user_profiles SET <include refid="updateValuesByCriterion"/> WHERE id = #{entity.id} AND <include refid="criterion"></include>
+    </update>
+
+    <!-- select -->
+    <select id="findOne" parameterType="map" resultMap="userProfiles">
+        SELECT
+        <include refid="columns"></include>
+        FROM user_profiles WHERE id = #{id}
+    </select>
+
+    <select id="findOneByObject" parameterType="map" resultMap="userProfiles">
+        SELECT
+        <include refid="columns"></include>
+        FROM user_profiles <include refid="simpleConditions"></include>
+    </select>
+
+    <select id="findAll" parameterType="map" resultMap="userProfiles">
+        SELECT
+        <include refid="columns"></include>
+        FROM user_profiles WHERE ${field} IN
+        <foreach collection="ids" open="(" separator="," close=")" index="index" item="item" >
+            ${item}
+        </foreach>
+    </select>
+
+    <select id="findAllByObject" parameterType="map" resultMap="userProfiles">
+        SELECT
+        <include refid="columns"></include>
+        FROM user_profiles <include refid="simpleConditions"></include>
+    </select>
+
+    <select id="findAllByCriterion" parameterType="map" resultMap="userProfiles">
+        SELECT
+        <include refid="columns"></include>
+        FROM user_profiles WHERE <include refid="criterion"></include>
+    </select>
+
+    <select id="findPage" parameterType="map" resultMap="userProfiles">
+        SELECT
+        <include refid="columns"></include>
+        FROM user_profiles <include refid="simpleConditions"></include> <include refid="sort"></include> <include refid="limit"></include>
+    </select>
+
+    <select id="findPageByCriterion" parameterType="map" resultMap="userProfiles">
+        SELECT
+        <include refid="columns"></include>
+        FROM user_profiles WHERE <include refid="criterion"></include> <include refid="sort"></include> <include refid="limit"></include>
+    </select>
+
+    <select id="count" resultType="long">
+        SELECT COUNT(*) FROM user_profiles
+    </select>
+
+    <select id="countByCondition" parameterType="map" resultType="long">
+        SELECT COUNT(*) FROM user_profiles <include refid="simpleConditions"></include>
+    </select>
+
+    <select id="countByCriterion" parameterType="map" resultType="long">
+        SELECT COUNT(*) FROM user_profiles WHERE <include refid="criterion"></include>
+    </select>
+
+    <select id="exists" parameterType="long" resultType="long">
+        SELECT COUNT(*) FROM user_profiles WHERE id = #{id}
+    </select>
+
+    <update id="updateByMap" parameterType="map">
+        UPDATE user_profiles
+        <trim prefix="SET" suffixOverrides=",">
+            <foreach collection="increments" index="index" item="item">
+                ${item.key} = ${item.key} + #{item.value},
+            </foreach>
+            <foreach collection="fields" index="index" item="item">
+                ${item.key} = #{item.value},
+            </foreach>
+        </trim>
+        WHERE id = #{id}
+    </update>
+
+</mapper>

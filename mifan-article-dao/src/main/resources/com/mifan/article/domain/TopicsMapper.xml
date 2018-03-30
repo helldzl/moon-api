@@ -1,0 +1,798 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.mifan.article.domain.Topics">
+
+    <!-- result map -->
+    <resultMap id="topics" type="com.mifan.article.domain.Topics">
+        <id property="id" column="id" javaType="long"/>
+        <result property="forumId" column="forum_id" javaType="long"/>
+        <result property="categoryId" column="category_id" javaType="long"/>
+        <result property="title" column="title" javaType="string"/>
+        <result property="titleHash" column="title_hash" javaType="long"/>
+        <result property="topicType" column="topic_type" javaType="int"/>
+        <result property="reviews" column="reviews" javaType="int"/>
+        <result property="replies" column="replies" javaType="int"/>
+        <result property="thumbsUp" column="thumbs_up" javaType="int"/>
+        <result property="thumbsDown" column="thumbs_down" javaType="int"/>
+        <result property="boost" column="boost" javaType="double"/>
+        <result property="trainSample" column="train_sample" javaType="int"/>
+        <result property="locked" column="locked" javaType="int"/>
+        <result property="moderated" column="moderated" javaType="int"/>
+        <result property="enabled" column="enabled" javaType="int"/>
+        <result property="creator" column="creator" javaType="long"/>
+        <result property="modifier" column="modifier" javaType="long"/>
+        <result property="created" column="created" javaType="date"/>
+        <result property="modified" column="modified" javaType="date"/>
+    </resultMap>
+
+    <!-- sql -->
+    <sql id="columns">
+        <choose>
+            <when test="fields != null and fields.size != 0">
+                <foreach collection="fields" separator="," item="item" index="index">
+                    ${item.fullname}
+                </foreach>
+            </when>
+            <otherwise>
+                id, forum_id, category_id, title, title_hash, topic_type, reviews, replies, thumbs_up, thumbs_down,
+                boost, train_sample, locked, moderated, enabled, creator, modifier, created, modified
+            </otherwise>
+        </choose>
+    </sql>
+
+    <sql id="insertColumns">
+        <trim suffixOverrides=",">
+            <if test="id != null">
+                id,
+            </if>
+            <if test="forumId != null">
+                forum_id,
+            </if>
+            <if test="categoryId != null">
+                category_id,
+            </if>
+            <if test="title != null">
+                title,
+            </if>
+            <if test="titleHash != null">
+                title_hash,
+            </if>
+            <if test="topicType != null">
+                topic_type,
+            </if>
+            <if test="reviews != null">
+                reviews,
+            </if>
+            <if test="replies != null">
+                replies,
+            </if>
+            <if test="thumbsUp != null">
+                thumbs_up,
+            </if>
+            <if test="thumbsDown != null">
+                thumbs_down,
+            </if>
+            <if test="boost != null">
+                boost,
+            </if>
+            <if test="trainSample != null">
+                train_sample,
+            </if>
+            <if test="locked != null">
+                locked,
+            </if>
+            <if test="moderated != null">
+                moderated,
+            </if>
+            <if test="enabled != null">
+                enabled,
+            </if>
+            <if test="creator != null">
+                creator,
+            </if>
+            <if test="modifier != null">
+                modifier,
+            </if>
+            <if test="created != null">
+                created,
+            </if>
+            <if test="modified != null">
+                modified,
+            </if>
+        </trim>
+    </sql>
+
+    <sql id="insertEntityColumns">
+        <trim suffixOverrides=",">
+            <if test="insert.id != null">
+                id,
+            </if>
+            <if test="insert.forumId != null">
+                forum_id,
+            </if>
+            <if test="insert.categoryId != null">
+                category_id,
+            </if>
+            <if test="insert.title != null">
+                title,
+            </if>
+            <if test="insert.titleHash != null">
+                title_hash,
+            </if>
+            <if test="insert.topicType != null">
+                topic_type,
+            </if>
+            <if test="insert.reviews != null">
+                reviews,
+            </if>
+            <if test="insert.replies != null">
+                replies,
+            </if>
+            <if test="insert.thumbsUp != null">
+                thumbs_up,
+            </if>
+            <if test="insert.thumbsDown != null">
+                thumbs_down,
+            </if>
+            <if test="insert.boost != null">
+                boost,
+            </if>
+            <if test="insert.trainSample != null">
+                train_sample,
+            </if>
+            <if test="insert.locked != null">
+                locked,
+            </if>
+            <if test="insert.moderated != null">
+                moderated,
+            </if>
+            <if test="insert.enabled != null">
+                enabled,
+            </if>
+            <if test="insert.creator != null">
+                creator,
+            </if>
+            <if test="insert.modifier != null">
+                modifier,
+            </if>
+            <if test="insert.created != null">
+                created,
+            </if>
+            <if test="insert.modified != null">
+                modified,
+            </if>
+        </trim>
+    </sql>
+
+    <sql id="insertValues">
+        <trim suffixOverrides=",">
+            <if test="id != null">
+                #{id},
+            </if>
+            <if test="forumId != null">
+                #{forumId},
+            </if>
+            <if test="categoryId != null">
+                #{categoryId},
+            </if>
+            <if test="title != null">
+                #{title},
+            </if>
+            <if test="titleHash != null">
+                #{titleHash},
+            </if>
+            <if test="topicType != null">
+                #{topicType},
+            </if>
+            <if test="reviews != null">
+                #{reviews},
+            </if>
+            <if test="replies != null">
+                #{replies},
+            </if>
+            <if test="thumbsUp != null">
+                #{thumbsUp},
+            </if>
+            <if test="thumbsDown != null">
+                #{thumbsDown},
+            </if>
+            <if test="boost != null">
+                #{boost},
+            </if>
+            <if test="trainSample != null">
+                #{trainSample},
+            </if>
+            <if test="locked != null">
+                #{locked},
+            </if>
+            <if test="moderated != null">
+                #{moderated},
+            </if>
+            <if test="enabled != null">
+                #{enabled},
+            </if>
+            <if test="creator != null">
+                #{creator},
+            </if>
+            <if test="modifier != null">
+                #{modifier},
+            </if>
+            <if test="created != null">
+                #{created},
+            </if>
+            <if test="modified != null">
+                #{modified},
+            </if>
+        </trim>
+    </sql>
+
+    <sql id="insertEntityValues">
+        <trim suffixOverrides=",">
+            <if test="insert.id != null">
+                #{insert.id},
+            </if>
+            <if test="insert.forumId != null">
+                #{insert.forumId},
+            </if>
+            <if test="insert.categoryId != null">
+                #{insert.categoryId},
+            </if>
+            <if test="insert.title != null">
+                #{insert.title},
+            </if>
+            <if test="insert.titleHash != null">
+                #{insert.titleHash},
+            </if>
+            <if test="insert.topicType != null">
+                #{insert.topicType},
+            </if>
+            <if test="insert.reviews != null">
+                #{insert.reviews},
+            </if>
+            <if test="insert.replies != null">
+                #{insert.replies},
+            </if>
+            <if test="insert.thumbsUp != null">
+                #{insert.thumbsUp},
+            </if>
+            <if test="insert.thumbsDown != null">
+                #{insert.thumbsDown},
+            </if>
+            <if test="insert.boost != null">
+                #{insert.boost},
+            </if>
+            <if test="insert.trainSample != null">
+                #{insert.trainSample},
+            </if>
+            <if test="insert.locked != null">
+                #{insert.locked},
+            </if>
+            <if test="insert.moderated != null">
+                #{insert.moderated},
+            </if>
+            <if test="insert.enabled != null">
+                #{insert.enabled},
+            </if>
+            <if test="insert.creator != null">
+                #{insert.creator},
+            </if>
+            <if test="insert.modifier != null">
+                #{insert.modifier},
+            </if>
+            <if test="insert.created != null">
+                #{insert.created},
+            </if>
+            <if test="insert.modified != null">
+                #{insert.modified},
+            </if>
+        </trim>
+    </sql>
+
+    <sql id="updateValues">
+        <trim suffixOverrides=",">
+            <if test="forumId != null">
+                forum_id = #{forumId},
+            </if>
+            <if test="categoryId != null">
+                category_id = #{categoryId},
+            </if>
+            <if test="title != null">
+                title = #{title},
+            </if>
+            <if test="titleHash != null">
+                title_hash = #{titleHash},
+            </if>
+            <if test="topicType != null">
+                topic_type = #{topicType},
+            </if>
+            <if test="reviews != null">
+                reviews = #{reviews},
+            </if>
+            <if test="replies != null">
+                replies = #{replies},
+            </if>
+            <if test="thumbsUp != null">
+                thumbs_up = #{thumbsUp},
+            </if>
+            <if test="thumbsDown != null">
+                thumbs_down = #{thumbsDown},
+            </if>
+            <if test="boost != null">
+                boost = #{boost},
+            </if>
+            <if test="trainSample != null">
+                train_sample = #{trainSample},
+            </if>
+            <if test="locked != null">
+                locked = #{locked},
+            </if>
+            <if test="moderated != null">
+                moderated = #{moderated},
+            </if>
+            <if test="enabled != null">
+                enabled = #{enabled},
+            </if>
+            <if test="creator != null">
+                creator = #{creator},
+            </if>
+            <if test="modifier != null">
+                modifier = #{modifier},
+            </if>
+            <if test="created != null">
+                created = #{created},
+            </if>
+            <if test="modified != null">
+                modified = #{modified},
+            </if>
+        </trim>
+    </sql>
+
+    <sql id="updateValuesByCriterion">
+        <trim suffixOverrides=",">
+            <if test="entity.forumId != null">
+                forum_id = #{entity.forumId},
+            </if>
+            <if test="entity.categoryId != null">
+                category_id = #{entity.categoryId},
+            </if>
+            <if test="entity.title != null">
+                title = #{entity.title},
+            </if>
+            <if test="entity.titleHash != null">
+                title_hash = #{entity.titleHash},
+            </if>
+            <if test="entity.topicType != null">
+                topic_type = #{entity.topicType},
+            </if>
+            <if test="entity.reviews != null">
+                reviews = #{entity.reviews},
+            </if>
+            <if test="entity.replies != null">
+                replies = #{entity.replies},
+            </if>
+            <if test="entity.thumbsUp != null">
+                thumbs_up = #{entity.thumbsUp},
+            </if>
+            <if test="entity.thumbsDown != null">
+                thumbs_down = #{entity.thumbsDown},
+            </if>
+            <if test="entity.boost != null">
+                boost = #{entity.boost},
+            </if>
+            <if test="entity.trainSample != null">
+                train_sample = #{entity.trainSample},
+            </if>
+            <if test="entity.locked != null">
+                locked = #{entity.locked},
+            </if>
+            <if test="entity.moderated != null">
+                moderated = #{entity.moderated},
+            </if>
+            <if test="entity.enabled != null">
+                enabled = #{entity.enabled},
+            </if>
+            <if test="entity.creator != null">
+                creator = #{entity.creator},
+            </if>
+            <if test="entity.modifier != null">
+                modifier = #{entity.modifier},
+            </if>
+            <if test="entity.created != null">
+                created = #{entity.created},
+            </if>
+            <if test="entity.modified != null">
+                modified = #{entity.modified},
+            </if>
+        </trim>
+    </sql>
+
+    <sql id="simpleConditions">
+        <trim prefix="WHERE" prefixOverrides="AND">
+            <if test="entity.id != null">
+                AND id = #{entity.id}
+            </if>
+            <if test="entity.forumId != null">
+                AND forum_id = #{entity.forumId}
+            </if>
+            <if test="entity.categoryId != null">
+                AND category_id = #{entity.categoryId}
+            </if>
+            <if test="entity.title != null">
+                AND title = #{entity.title}
+            </if>
+            <if test="entity.titleHash != null">
+                AND title_hash = #{entity.titleHash}
+            </if>
+            <if test="entity.topicType != null">
+                AND topic_type = #{entity.topicType}
+            </if>
+            <if test="entity.reviews != null">
+                AND reviews = #{entity.reviews}
+            </if>
+            <if test="entity.replies != null">
+                AND replies = #{entity.replies}
+            </if>
+            <if test="entity.thumbsUp != null">
+                AND thumbs_up = #{entity.thumbsUp}
+            </if>
+            <if test="entity.thumbsDown != null">
+                AND thumbs_down = #{entity.thumbsDown}
+            </if>
+            <if test="entity.boost != null">
+                AND boost = #{entity.boost}
+            </if>
+            <if test="entity.trainSample != null">
+                AND train_sample = #{entity.trainSample}
+            </if>
+            <if test="entity.locked != null">
+                AND locked = #{entity.locked}
+            </if>
+            <if test="entity.moderated != null">
+                AND moderated = #{entity.moderated}
+            </if>
+            <if test="entity.enabled != null">
+                AND enabled = #{entity.enabled}
+            </if>
+            <if test="entity.creator != null">
+                AND creator = #{entity.creator}
+            </if>
+            <if test="entity.modifier != null">
+                AND modifier = #{entity.modifier}
+            </if>
+            <if test="entity.created != null">
+                AND created = #{entity.created}
+            </if>
+            <if test="entity.modified != null">
+                AND modified = #{entity.modified}
+            </if>
+        </trim>
+    </sql>
+
+    <sql id="sort">
+        <trim prefix="ORDER BY" suffixOverrides=",">
+            <foreach collection="orders" separator="," item="item" index="index">
+                ${item.property} ${item.direction}
+            </foreach>
+        </trim>
+    </sql>
+
+    <sql id="criterion">
+        <foreach collection="conditions.tokens" item="item">
+            <choose>
+                <when test="item.param">#{item.value}</when>
+                <otherwise>${item.value}</otherwise>
+            </choose>
+        </foreach>
+    </sql>
+
+    <sql id="limit">
+        LIMIT #{offset}, #{pageSize}
+    </sql>
+
+    <sql id="relationships">
+        <if test="relationships != null">
+            <foreach collection="relationships" item="join" index="index">
+                ${join.type()} ${join.table()} ON ${join.condition()}
+            </foreach>
+        </if>
+    </sql>
+
+    <!-- insert -->
+    <insert id="save" parameterType="com.mifan.article.domain.Topics" keyProperty="id" useGeneratedKeys="true">
+        INSERT INTO topics(<include refid="insertColumns"/>) VALUES (<include refid="insertValues"/>)
+    </insert>
+
+    <!-- insert into on duplicate -->
+    <insert id="insertOnDuplicate" parameterType="com.mifan.article.domain.Topics" keyProperty="id"
+            useGeneratedKeys="true">
+        INSERT INTO topics(<include refid="insertEntityColumns"/>) VALUES (<include refid="insertEntityValues"/>) ON
+        DUPLICATE KEY UPDATE
+        <include refid="updateValuesByCriterion"/>
+    </insert>
+
+    <!-- insert into on duplicate -->
+    <insert id="saveOrUpdate" parameterType="com.mifan.article.domain.Topics" keyProperty="id" useGeneratedKeys="true">
+        INSERT INTO topics(<include refid="insertColumns"/>) VALUES (<include refid="insertValues"/>) ON DUPLICATE KEY
+        UPDATE
+        <include refid="updateValues"/>
+    </insert>
+
+    <!-- delete -->
+    <delete id="delete" parameterType="long">
+        DELETE FROM topics WHERE id = #{id}
+    </delete>
+
+    <!-- update -->
+    <update id="update" parameterType="com.mifan.article.domain.Topics">
+        UPDATE topics SET
+        <include refid="updateValues"/>
+        WHERE id = #{id}
+    </update>
+
+    <update id="updateByCriterion" parameterType="com.mifan.article.domain.Topics">
+        UPDATE topics SET
+        <include refid="updateValuesByCriterion"/>
+        WHERE id = #{entity.id} AND
+        <include refid="criterion"></include>
+    </update>
+
+    <update id="updateByMap" parameterType="map">
+        UPDATE topics
+        <trim prefix="SET" suffixOverrides=",">
+            <foreach collection="increments" index="index" item="item">
+                ${item.key} = ${item.key} + #{item.value},
+            </foreach>
+            <foreach collection="fields" index="index" item="item">
+                ${item.key} = #{item.value},
+            </foreach>
+        </trim>
+        WHERE id = #{id}
+    </update>
+
+    <!-- 查询某个#{categoryId}=1997中，两周内并且图片个数大于4的，根据浏览量排序取前#{size}个。用于实现搜索框热词（麦克风）-->
+    <select id="findHotKeywordForMicrophonesByReviews" parameterType="map" resultMap="topics">
+        SELECT 
+            t.id,t.title,t.forum_id,tf.reviews
+        FROM topics t 
+            JOIN topics_fetch tf
+            ON t.id = tf.topic_id 
+        <if test="product != 0">  
+            JOIN topics_product tp
+            ON t.id = tp.topic_id
+        </if> 
+        WHERE 
+            t.category_id IN 
+                (SELECT fc.id FROM forum_categories fc WHERE fc.root_id = 1997 AND fc.enabled=1) 
+        AND t.id IN (
+            SELECT taa.topic_id FROM (
+                SELECT ta.topic_id,count(ta.topic_id) num FROM topics_attachments ta WHERE ta.enabled = 1 GROUP BY ta.topic_id HAVING num > 4) taa)
+        AND t.created > #{mydate}
+        AND t.enabled = 1 
+        <if test="product!= 0">
+            AND t.forum_id = 1 
+            AND tp.brand IN
+			<foreach collection="brands" open="(" separator="," close=")" index="index" item="item" >
+                ${item}
+            </foreach>    
+        </if>
+        ORDER BY tf.reviews DESC
+        LIMIT 0,#{size}
+    </select>
+    <!-- 查询某个#{categoryId}=1997中图片个数大于4的文章并且时间最新优先。用于实现搜索框热词（麦克风）-->
+    <select id="findHotKeywordForMicrophonesByQuality" parameterType="map" resultMap="topics">
+        SELECT t.id,t.title,t.forum_id 
+		FROM topics t 
+		<if test="product != 0">  
+            JOIN topics_product tp
+            ON t.id = tp.topic_id
+        </if> 
+		WHERE t.enabled = 1 
+		AND t.id IN (
+		    SELECT taa.topic_id FROM (
+		        SELECT ta.topic_id,count(ta.topic_id) num FROM topics_attachments ta WHERE ta.enabled = 1 GROUP BY ta.topic_id HAVING num > 4) taa)
+		AND t.category_id IN (
+		    SELECT fc.id FROM forum_categories fc WHERE fc.root_id = 1997 AND fc.enabled=1)
+		<if test="product != 0">  
+            AND t.forum_id = 1 
+            AND tp.brand IN
+            <foreach collection="brands" open="(" separator="," close=")" index="index" item="item" >
+                ${item}
+            </foreach> 
+        </if> 
+		ORDER BY t.created DESC LIMIT 0,#{size}
+    </select>
+    <!-- 查询除了某几个#{categoryId}=1997,214,506,1中，两周内并且图片个数大于4的，根据浏览量排序取前#{size}个。用于实现搜索框热词（非麦克风）-->
+    <select id="findHotKeywordForOthersByReviews" parameterType="map" resultMap="topics">
+        SELECT 
+            t.id,t.title,t.forum_id,tf.reviews
+        FROM topics t 
+            JOIN topics_fetch tf
+            ON t.id = tf.topic_id 
+        WHERE 
+            t.enabled = 1
+        AND t.id IN (
+            SELECT taa.topic_id FROM (
+                SELECT ta.topic_id,count(ta.topic_id) num FROM topics_attachments ta WHERE ta.enabled = 1 GROUP BY ta.topic_id HAVING num > 4) taa)
+        AND t.created > #{mydate}
+        <if test="product != 0">  
+	        AND t.category_id NOT IN 
+	                (SELECT fc.id FROM forum_categories fc WHERE fc.root_id IN (1997,214,506,1) AND fc.enabled=1) 
+        </if> 
+        <choose>
+            <when test="product != 0">
+                AND t.forum_id = 1
+            </when>
+            <otherwise>
+                AND t.forum_id IN (3,4,5)
+            </otherwise>
+        </choose>
+        ORDER BY tf.reviews DESC
+        LIMIT 0,#{size}
+    </select>
+    <!-- 查询除了某几个#{categoryId}=1997,214,506,1中图片个数大于4的文章并且时间最新优先。用于实现搜索框热词（非麦克风）-->
+    <select id="findHotKeywordForOthersByQuality" parameterType="map" resultMap="topics">
+        SELECT t.id,t.title,t.forum_id 
+        FROM topics t 
+        WHERE t.enabled = 1 
+        AND t.id IN (
+            SELECT taa.topic_id FROM (
+                SELECT ta.topic_id,count(ta.topic_id) num FROM topics_attachments ta WHERE ta.enabled = 1 GROUP BY ta.topic_id HAVING num > 4) taa)
+        <if test="product != 0">  
+            AND t.category_id NOT IN 
+                    (SELECT fc.id FROM forum_categories fc WHERE fc.root_id IN (1997,214,506,1) AND fc.enabled=1) 
+        </if> 
+        <choose>
+            <when test="product != 0">
+                AND t.forum_id = 1
+            </when>
+            <otherwise>
+                AND t.forum_id IN (3,4,5)
+            </otherwise>
+        </choose>
+        ORDER BY t.created DESC LIMIT 0,#{size}
+    </select>
+    <!-- select -->
+    <select id="findOne" parameterType="map" resultMap="topics">
+        SELECT
+        <include refid="columns"></include>
+        FROM topics WHERE id = #{id}
+    </select>
+
+    <select id="findOneByObject" parameterType="map" resultMap="topics">
+        SELECT
+        <include refid="columns"></include>
+        FROM topics
+        <include refid="simpleConditions"></include>
+    </select>
+
+    <select id="findOneByCriterion" parameterType="map" resultMap="topics">
+        SELECT
+        <include refid="columns"></include>
+        FROM topics WHERE <include refid="criterion"></include> LIMIT 1
+    </select>
+
+    <select id="findAll" parameterType="map" resultMap="topics">
+        SELECT
+        <include refid="columns"></include>
+        FROM topics WHERE ${field} IN
+        <foreach collection="ids" open="(" separator="," close=")" index="index" item="item">
+            ${item}
+        </foreach>
+    </select>
+
+    <select id="findAllByObject" parameterType="map" resultMap="topics">
+        SELECT
+        <include refid="columns"></include>
+        FROM topics
+        <include refid="simpleConditions"></include>
+    </select>
+
+    <select id="findAllByCriterion" parameterType="map" resultMap="topics">
+        SELECT
+        <include refid="columns"></include>
+        FROM topics WHERE
+        <include refid="criterion"></include>
+    </select>
+
+    <select id="findPage" parameterType="map" resultMap="topics">
+        SELECT
+        <include refid="columns"></include>
+        FROM topics
+        <include refid="simpleConditions"></include>
+        <include refid="sort"></include>
+        <include refid="limit"></include>
+    </select>
+
+    <select id="findPageByCriterion" parameterType="map" resultMap="topics">
+        SELECT
+        <include refid="columns"></include>
+        FROM topics
+        <include refid="relationships"></include>
+        WHERE
+        <include refid="criterion"></include>
+        <include refid="sort"></include>
+        <include refid="limit"></include>
+    </select>
+
+    <select id="count" resultType="long">
+        SELECT COUNT(*) FROM topics
+    </select>
+
+    <select id="countByCondition" parameterType="map" resultType="long">
+        SELECT COUNT(*) FROM topics
+        <include refid="simpleConditions"></include>
+    </select>
+
+    <select id="countByCriterion" parameterType="map" resultType="long">
+        SELECT COUNT(*) FROM topics
+        <include refid="relationships"></include>
+        WHERE
+        <include refid="criterion"></include>
+    </select>
+
+    <select id="exists" parameterType="long" resultType="long">
+        SELECT COUNT(*) FROM topics WHERE id = #{id}
+    </select>
+
+    <!-- 查询几小时内各个网站新增数据统计 -->
+    <select id="findSpiderStatisticsByTime" parameterType="map" resultType="com.mifan.article.domain.SpiderStatistics">
+        SELECT tf.seed_id as seedId,s.name as name,s.description as description,COUNT(*) as counts
+        FROM topics t , topics_fetch tf ,posts p,seeds s
+        WHERE p.creator=0
+        AND p.parent_id=0
+        AND tf.topic_id=t.id
+        AND p.topic_id=tf.topic_id
+        AND s.id=tf.seed_id
+        <choose>
+            <when test="priortime!=null and priortime !=''">
+                AND p.created &gt;= #{priortime}
+            </when>
+            <otherwise>
+                AND p.created &gt;= DATE_SUB(NOW(),INTERVAL 1 DAY)
+            </otherwise>
+        </choose>
+        <choose>
+            <when test="latertime!=null and latertime!=''">
+                AND p.created &lt;=#{latertime}
+            </when>
+            <otherwise>
+                AND p.created &lt;=now()
+            </otherwise>
+        </choose>
+        GROUP BY tf.seed_id
+        <include refid="limit"></include>
+    </select>
+
+    <!-- 查询几小时内各个网站新增数据统计 -->
+    <select id="findSpiderStatisticsByTimeCount" parameterType="map" resultType="long">
+        SELECT COUNT(*)
+        FROM
+        (SELECT tf.seed_id
+        FROM topics t , topics_fetch tf ,posts p,seeds s
+        WHERE p.creator=0
+        AND p.parent_id=0
+        AND tf.topic_id=t.id
+        AND p.topic_id=tf.topic_id
+        AND s.id=tf.seed_id
+        <choose>
+            <when test="priortime!=null and priortime !=''">
+                AND p.created &gt;= #{priortime}
+            </when>
+            <otherwise>
+                AND p.created &gt;= DATE_SUB(NOW(),INTERVAL 1 DAY)
+            </otherwise>
+        </choose>
+        <choose>
+            <when test="latertime!=null and latertime!=''">
+                AND p.created &lt;=#{latertime}
+            </when>
+            <otherwise>
+                AND p.created &lt;=now()
+            </otherwise>
+        </choose>
+        GROUP BY tf.seed_id) a
+    </select>
+
+</mapper>

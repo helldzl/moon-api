@@ -1,0 +1,74 @@
+########################################################
+### EMBEDDED SERVER CONFIGURATION (ServerProperties) ###
+########################################################
+server:
+  port: 8761
+  session:
+    timeout: 28800
+
+##############
+### SPRING ###
+##############
+spring:
+  application:
+    name: micro-service-discovery-eureka
+  output:
+    ansi:
+      enabled: always
+
+###########################
+### SECURITY PROPERTIES ###
+###########################
+security:
+  basic:
+    enabled: true
+  user:
+    name: mifan
+    password: Mifan2017!
+
+###############
+### LOGGING ###
+###############
+logging:
+  level:
+    root: INFO
+
+##############
+### EUREKA ###
+##############
+eureka:
+  instance:
+    hostname: eureka
+    prefer-ip-address: true
+  client:
+    register-with-eureka: false
+    fetch-registry: false
+    service-url:
+      defaultZone: http://mifan:Mifan2017!@${eureka.instance.hostname}:${server.port}/eureka/
+
+######################
+### Peer Awareness ###
+######################
+---
+spring:
+  profiles: peer1
+server:
+  port: 8761
+eureka:
+  instance:
+    hostname: peer1
+  client:
+    serviceUrl:
+      defaultZone: http://mifan:Mifan2017!@peer2:8762/eureka/
+
+---
+spring:
+  profiles: peer2
+server:
+  port: 8762
+eureka:
+  instance:
+    hostname: peer2
+  client:
+    serviceUrl:
+      defaultZone: http://mifan:Mifan2017!@peer1:8761/eureka/

@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <parent>
+        <artifactId>mifan-reward-dependencies</artifactId>
+        <groupId>com.mifan.api</groupId>
+        <version>1.0.0</version>
+        <relativePath>../mifan-reward-dependencies/pom.xml</relativePath>
+    </parent>
+    <modelVersion>4.0.0</modelVersion>
+
+    <artifactId>mifan-reward-web</artifactId>
+
+    <properties>
+        <start-class>com.mifan.reward.Application</start-class>
+    </properties>
+
+    <dependencies>
+        <dependency>
+            <groupId>com.mifan.api</groupId>
+            <artifactId>mifan-reward-service</artifactId>
+            <version>1.0.0</version>
+        </dependency>
+    </dependencies>
+
+    <build>
+        <plugins>
+            <!-- Package as an executable jar -->
+            <!-- The spring-boot-starter-parent POM includes <executions> configuration to bind the repackage goal. -->
+            <!-- If you are not using the parent POM you will need to declare this configuration yourself. See the plugin documentation for details. -->
+            <plugin>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-maven-plugin</artifactId>
+                <version>${spring.boot.version}</version>
+                <configuration>
+                    <mainClass>${start-class}</mainClass>
+                </configuration>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>repackage</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <groupId>com.spotify</groupId>
+                <artifactId>docker-maven-plugin</artifactId>
+                <version>${spotify-docker.version}</version>
+                <configuration>
+                    <imageName>${project.run.profile}/${project.artifactId}</imageName>
+                    <forceTags>true</forceTags>
+                    <imageTags>
+                        <imageTag>${project.parent.version}</imageTag>
+                    </imageTags>
+                    <baseImage>mifan/java8</baseImage>
+                    <entryPoint>["java","-Xms400m","-Xmx400m","-jar","/${project.build.finalName}.jar"]</entryPoint>
+                    <resources>
+                        <resource>
+                            <targetPath>/</targetPath>
+                            <directory>${project.build.directory}</directory>
+                            <include>${project.build.finalName}.jar</include>
+                        </resource>
+                    </resources>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+
+</project>

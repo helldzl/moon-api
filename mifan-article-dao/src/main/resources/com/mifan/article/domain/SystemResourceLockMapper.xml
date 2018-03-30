@@ -1,0 +1,287 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.mifan.article.domain.SystemResourceLock">
+
+    <!-- result map -->
+    <resultMap id="systemResourceLock" type="com.mifan.article.domain.SystemResourceLock">
+        <id property="id" column="id" javaType="long"/>
+        <result property="resourceType" column="resource_type" javaType="int"/>
+        <result property="targetId" column="target_id" javaType="long"/>
+        <result property="version" column="version" javaType="int"/>
+    </resultMap>
+
+    <!-- sql -->
+    <sql id="columns">
+        <choose>
+            <when test="fields != null and fields.size != 0">
+                <foreach collection="fields" separator="," item="item" index="index">
+                    ${item.fullname}
+                </foreach>
+            </when>
+            <otherwise>
+                id, resource_type, target_id, version 
+            </otherwise>
+        </choose>
+    </sql>
+
+    <sql id="insertColumns">
+        <trim suffixOverrides=",">
+            <if test="id != null">
+                id,
+            </if>
+            <if test="resourceType != null">
+                resource_type,
+            </if>
+            <if test="targetId != null">
+                target_id,
+            </if>
+            <if test="version != null">
+                version,
+            </if>
+        </trim>
+    </sql>
+
+    <sql id="insertEntityColumns">
+        <trim suffixOverrides=",">
+            <if test="insert.id != null">
+                id,
+            </if>
+            <if test="insert.resourceType != null">
+                resource_type,
+            </if>
+            <if test="insert.targetId != null">
+                target_id,
+            </if>
+            <if test="insert.version != null">
+                version,
+            </if>
+        </trim>
+    </sql>
+
+    <sql id="insertValues">
+        <trim suffixOverrides=",">
+            <if test="id != null">
+                #{id},
+            </if>
+            <if test="resourceType != null">
+                #{resourceType},
+            </if>
+            <if test="targetId != null">
+                #{targetId},
+            </if>
+            <if test="version != null">
+                #{version},
+            </if>
+        </trim>
+    </sql>
+
+    <sql id="insertEntityValues">
+        <trim suffixOverrides=",">
+            <if test="insert.id != null">
+                #{insert.id},
+            </if>
+            <if test="insert.resourceType != null">
+                #{insert.resourceType},
+            </if>
+            <if test="insert.targetId != null">
+                #{insert.targetId},
+            </if>
+            <if test="insert.version != null">
+                #{insert.version},
+            </if>
+        </trim>
+    </sql>
+
+    <sql id="updateValues">
+        <trim suffixOverrides=",">
+            <if test="resourceType != null">
+                resource_type = #{resourceType},
+            </if>
+            <if test="targetId != null">
+                target_id = #{targetId},
+            </if>
+            <if test="version != null">
+                version = #{version},
+            </if>
+        </trim>
+    </sql>
+
+    <sql id="updateValuesByCriterion">
+        <trim suffixOverrides=",">
+            <if test="entity.resourceType != null">
+                resource_type = #{entity.resourceType},
+            </if>
+            <if test="entity.targetId != null">
+                target_id = #{entity.targetId},
+            </if>
+            <if test="entity.version != null">
+                version = #{entity.version},
+            </if>
+        </trim>
+    </sql>
+
+    <sql id="simpleConditions">
+        <trim prefix="WHERE" prefixOverrides="AND">
+            <if test="entity.id != null">
+                AND id = #{entity.id}
+            </if>
+            <if test="entity.resourceType != null">
+                AND resource_type = #{entity.resourceType}
+            </if>
+            <if test="entity.targetId != null">
+                AND target_id = #{entity.targetId}
+            </if>
+            <if test="entity.version != null">
+                AND version = #{entity.version}
+            </if>
+        </trim>
+    </sql>
+
+    <sql id="sort">
+        <trim prefix="ORDER BY" suffixOverrides=",">
+            <foreach collection="orders" separator="," item="item" index="index">
+                ${item.property} ${item.direction}
+            </foreach>
+        </trim>
+    </sql>
+
+    <sql id="criterion">
+        <foreach collection="conditions.tokens" item="item">
+            <choose>
+                <when test="item.param">#{item.value}</when><otherwise>${item.value}</otherwise>
+            </choose>
+        </foreach>
+    </sql>
+
+    <sql id="limit">
+        LIMIT #{offset}, #{pageSize}
+    </sql>
+
+    <sql id="relationships">
+        <if test="relationships != null">
+            <foreach collection="relationships" item="join" index="index">
+                ${join.type()} ${join.table()} ON ${join.condition()}
+            </foreach>
+        </if>
+    </sql>
+
+    <!-- insert -->
+    <insert id="save" parameterType="com.mifan.article.domain.SystemResourceLock" keyProperty="id" useGeneratedKeys="true">
+        INSERT INTO system_resource_lock(<include refid="insertColumns"/>) VALUES (<include refid="insertValues"/>)
+    </insert>
+
+    <!-- insert into on duplicate -->
+    <insert id="insertOnDuplicate" parameterType="com.mifan.article.domain.SystemResourceLock" keyProperty="id" useGeneratedKeys="true">
+        INSERT INTO system_resource_lock(<include refid="insertEntityColumns"/>) VALUES (<include refid="insertEntityValues"/>) ON DUPLICATE KEY UPDATE <include refid="updateValuesByCriterion"/>
+    </insert>
+
+    <!-- insert into on duplicate -->
+    <insert id="saveOrUpdate" parameterType="com.mifan.article.domain.SystemResourceLock" keyProperty="id" useGeneratedKeys="true">
+        INSERT INTO system_resource_lock(<include refid="insertColumns"/>) VALUES (<include refid="insertValues"/>) ON DUPLICATE KEY UPDATE <include refid="updateValues"/>
+    </insert>
+
+    <!-- delete -->
+    <delete id="delete" parameterType="long">
+        DELETE FROM system_resource_lock WHERE id = #{id}
+    </delete>
+
+    <!-- update -->
+    <update id="update" parameterType="com.mifan.article.domain.SystemResourceLock">
+        UPDATE system_resource_lock SET <include refid="updateValues"/> WHERE id = #{id}
+    </update>
+
+    <update id="updateByCriterion" parameterType="com.mifan.article.domain.SystemResourceLock">
+        UPDATE system_resource_lock SET <include refid="updateValuesByCriterion"/> WHERE id = #{entity.id} AND <include refid="criterion"></include>
+    </update>
+
+    <update id="updateByMap" parameterType="map">
+        UPDATE system_resource_lock
+        <trim prefix="SET" suffixOverrides=",">
+            <foreach collection="increments" index="index" item="item">
+                ${item.key} = ${item.key} + #{item.value},
+            </foreach>
+            <foreach collection="fields" index="index" item="item">
+                ${item.key} = #{item.value},
+            </foreach>
+        </trim>
+        WHERE id = #{id}
+        <if test="conditions != null">
+            AND <include refid="criterion"></include>
+        </if>
+    </update>
+
+    <!-- select -->
+    <select id="findOne" parameterType="map" resultMap="systemResourceLock">
+        SELECT
+        <include refid="columns"></include>
+        FROM system_resource_lock WHERE id = #{id}
+    </select>
+
+    <select id="findOneByObject" parameterType="map" resultMap="systemResourceLock">
+        SELECT
+        <include refid="columns"></include>
+        FROM system_resource_lock <include refid="simpleConditions"></include>
+    </select>
+
+    <select id="findOneByCriterion" parameterType="map" resultMap="systemResourceLock">
+        SELECT
+        <include refid="columns"></include>
+        FROM system_resource_lock WHERE <include refid="criterion"></include> LIMIT 1
+    </select>
+
+    <select id="findAll" parameterType="map" resultMap="systemResourceLock">
+        SELECT
+        <include refid="columns"></include>
+        FROM system_resource_lock WHERE ${field} IN
+        <foreach collection="ids" open="(" separator="," close=")" index="index" item="item" >
+            ${item}
+        </foreach>
+    </select>
+
+    <select id="findAllByObject" parameterType="map" resultMap="systemResourceLock">
+        SELECT
+        <include refid="columns"></include>
+        FROM system_resource_lock <include refid="simpleConditions"></include>
+    </select>
+
+    <select id="findAllByCriterion" parameterType="map" resultMap="systemResourceLock">
+        SELECT
+        <include refid="columns"></include>
+        FROM system_resource_lock WHERE <include refid="criterion"></include>
+    </select>
+
+    <select id="findPage" parameterType="map" resultMap="systemResourceLock">
+        SELECT
+        <include refid="columns"></include>
+        FROM system_resource_lock <include refid="simpleConditions"></include> <include refid="sort"></include> <include refid="limit"></include>
+    </select>
+
+    <select id="findPageByCriterion" parameterType="map" resultMap="systemResourceLock">
+        SELECT
+        <include refid="columns"></include>
+        FROM system_resource_lock
+        <include refid="relationships"></include>
+        WHERE <include refid="criterion"></include> <include refid="sort"></include> <include refid="limit"></include>
+    </select>
+
+    <select id="count" resultType="long">
+        SELECT COUNT(*) FROM system_resource_lock
+    </select>
+
+    <select id="countByCondition" parameterType="map" resultType="long">
+        SELECT COUNT(*) FROM system_resource_lock <include refid="simpleConditions"></include>
+    </select>
+
+    <select id="countByCriterion" parameterType="map" resultType="long">
+        SELECT COUNT(*) FROM system_resource_lock
+        <include refid="relationships"></include>
+        WHERE <include refid="criterion"></include>
+    </select>
+
+    <select id="exists" parameterType="long" resultType="long">
+        SELECT COUNT(*) FROM system_resource_lock WHERE id = #{id}
+    </select>
+
+</mapper>

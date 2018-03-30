@@ -1,0 +1,294 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.mifan.support.domain.CommentSummary">
+
+    <!-- result map -->
+    <resultMap id="commentSummary" type="com.mifan.support.domain.CommentSummary">
+        <id property="id" column="id" javaType="long"/>
+        <result property="confId" column="conf_id" javaType="long"/>
+        <result property="themeId" column="theme_id" javaType="long"/>
+        <result property="commentId" column="comment_id" javaType="long"/>
+        <result property="type" column="type" javaType="int"/>
+        <result property="tagId" column="tag_id" javaType="long"/>
+        <result property="sum" column="sum" javaType="int"/>
+        <result property="modified" column="modified" javaType="date"/>
+        <result property="created" column="created" javaType="date"/>
+    </resultMap>
+
+    <!-- sql -->
+    <sql id="columns">
+        <choose>
+            <when test="fields != null and fields.size != 0">
+                <foreach collection="fields" separator="," item="item" index="index">
+                    ${item.fullname}
+                </foreach>
+            </when>
+            <otherwise>
+                id, conf_id, theme_id, comment_id, type, tag_id, sum, modified, created 
+            </otherwise>
+        </choose>
+    </sql>
+
+    <sql id="insertColumns">
+        <trim suffixOverrides=",">
+            <if test="id != null">
+                id,
+            </if>
+            <if test="confId != null">
+                conf_id,
+            </if>
+            <if test="themeId != null">
+                theme_id,
+            </if>
+            <if test="commentId != null">
+                comment_id,
+            </if>
+            <if test="type != null">
+                type,
+            </if>
+            <if test="tagId != null">
+                tag_id,
+            </if>
+            <if test="sum != null">
+                sum,
+            </if>
+            <if test="modified != null">
+                modified,
+            </if>
+            <if test="created != null">
+                created,
+            </if>
+        </trim>
+    </sql>
+
+    <sql id="insertValues">
+        <trim suffixOverrides=",">
+            <if test="id != null">
+                #{id},
+            </if>
+            <if test="confId != null">
+                #{confId},
+            </if>
+            <if test="themeId != null">
+                #{themeId},
+            </if>
+            <if test="commentId != null">
+                #{commentId},
+            </if>
+            <if test="type != null">
+                #{type},
+            </if>
+            <if test="tagId != null">
+                #{tagId},
+            </if>
+            <if test="sum != null">
+                #{sum},
+            </if>
+            <if test="modified != null">
+                #{modified},
+            </if>
+            <if test="created != null">
+                #{created},
+            </if>
+        </trim>
+    </sql>
+
+    <sql id="updateValues">
+        <trim suffixOverrides=",">
+            <if test="confId != null">
+                conf_id = #{confId},
+            </if>
+            <if test="themeId != null">
+                theme_id = #{themeId},
+            </if>
+            <if test="commentId != null">
+                comment_id = #{commentId},
+            </if>
+            <if test="type != null">
+                type = #{type},
+            </if>
+            <if test="tagId != null">
+                tag_id = #{tagId},
+            </if>
+            <if test="sum != null">
+                sum = #{sum},
+            </if>
+            <if test="modified != null">
+                modified = #{modified},
+            </if>
+            <if test="created != null">
+                created = #{created},
+            </if>
+        </trim>
+    </sql>
+
+    <sql id="updateValuesByCriterion">
+        <trim suffixOverrides=",">
+            <if test="entity.confId != null">
+                conf_id = #{entity.confId},
+            </if>
+            <if test="entity.themeId != null">
+                theme_id = #{entity.themeId},
+            </if>
+            <if test="entity.commentId != null">
+                comment_id = #{entity.commentId},
+            </if>
+            <if test="entity.type != null">
+                type = #{entity.type},
+            </if>
+            <if test="entity.tagId != null">
+                tag_id = #{entity.tagId},
+            </if>
+            <if test="entity.sum != null">
+                sum = #{entity.sum},
+            </if>
+            <if test="entity.modified != null">
+                modified = #{entity.modified},
+            </if>
+            <if test="entity.created != null">
+                created = #{entity.created},
+            </if>
+        </trim>
+    </sql>
+
+    <sql id="simpleConditions">
+        <trim prefix="WHERE" prefixOverrides="AND">
+            <if test="entity.id != null">
+                AND id = #{entity.id}
+            </if>
+            <if test="entity.confId != null">
+                AND conf_id = #{entity.confId}
+            </if>
+            <if test="entity.themeId != null">
+                AND theme_id = #{entity.themeId}
+            </if>
+            <if test="entity.commentId != null">
+                AND comment_id = #{entity.commentId}
+            </if>
+            <if test="entity.type != null">
+                AND type = #{entity.type}
+            </if>
+            <if test="entity.tagId != null">
+                AND tag_id = #{entity.tagId}
+            </if>
+            <if test="entity.sum != null">
+                AND sum = #{entity.sum}
+            </if>
+            <if test="entity.modified != null">
+                AND modified = #{entity.modified}
+            </if>
+            <if test="entity.created != null">
+                AND created = #{entity.created}
+            </if>
+        </trim>
+    </sql>
+
+    <sql id="sort">
+        <trim prefix="ORDER BY" suffixOverrides=",">
+            <foreach collection="orders" separator="," item="item" index="index">
+                ${item.property} ${item.direction}
+            </foreach>
+        </trim>
+    </sql>
+
+    <sql id="criterion">
+        <foreach collection="conditions.tokens" item="item">
+            <choose>
+                <when test="item.param">#{item.value}</when><otherwise>${item.value}</otherwise>
+            </choose>
+        </foreach>
+    </sql>
+
+    <sql id="limit">
+        LIMIT #{offset}, #{pageSize}
+    </sql>
+
+    <!-- insert -->
+    <insert id="save" parameterType="com.mifan.support.domain.CommentSummary" keyProperty="id" useGeneratedKeys="true">
+        INSERT INTO comment_summary(<include refid="insertColumns"/>) VALUES (<include refid="insertValues"/>)
+    </insert>
+
+    <!-- insert into on duplicate -->
+    <insert id="saveOrUpdate" parameterType="com.mifan.support.domain.CommentSummary" keyProperty="id" useGeneratedKeys="true">
+        INSERT INTO comment_summary(<include refid="insertColumns"/>) VALUES (<include refid="insertValues"/>) ON DUPLICATE KEY UPDATE sum = sum + #{sum}
+    </insert>
+
+    <!-- delete -->
+    <delete id="delete" parameterType="long">
+        DELETE FROM comment_summary WHERE id = #{id}
+    </delete>
+
+    <!-- update -->
+    <update id="update" parameterType="com.mifan.support.domain.CommentSummary">
+        UPDATE comment_summary SET <include refid="updateValues"/> WHERE id = #{id}
+    </update>
+
+    <update id="updateByCriterion" parameterType="com.mifan.support.domain.CommentSummary">
+        UPDATE comment_summary SET <include refid="updateValuesByCriterion"/> WHERE id = #{entity.id} AND <include refid="criterion"></include>
+    </update>
+
+    <!-- select -->
+    <select id="findOne" parameterType="map" resultMap="commentSummary">
+        SELECT
+        <include refid="columns"></include>
+        FROM comment_summary WHERE id = #{id}
+    </select>
+
+    <select id="findOneByObject" parameterType="map" resultMap="commentSummary">
+        SELECT
+        <include refid="columns"></include>
+        FROM comment_summary <include refid="simpleConditions"></include>
+    </select>
+
+    <select id="findAll" parameterType="map" resultMap="commentSummary">
+        SELECT
+        <include refid="columns"></include>
+        FROM comment_summary WHERE ${field} IN
+        <foreach collection="ids" open="(" separator="," close=")" index="index" item="item" >
+            ${item}
+        </foreach>
+    </select>
+
+    <select id="findAllByObject" parameterType="map" resultMap="commentSummary">
+        SELECT
+        <include refid="columns"></include>
+        FROM comment_summary <include refid="simpleConditions"></include>
+    </select>
+
+    <select id="findAllByCriterion" parameterType="map" resultMap="commentSummary">
+        SELECT
+        <include refid="columns"></include>
+        FROM comment_summary WHERE <include refid="criterion"></include>
+    </select>
+
+    <select id="findPage" parameterType="map" resultMap="commentSummary">
+        SELECT
+        <include refid="columns"></include>
+        FROM comment_summary <include refid="simpleConditions"></include> <include refid="sort"></include> <include refid="limit"></include>
+    </select>
+
+    <select id="findPageByCriterion" parameterType="map" resultMap="commentSummary">
+        SELECT
+        <include refid="columns"></include>
+        FROM comment_summary WHERE <include refid="criterion"></include> <include refid="sort"></include> <include refid="limit"></include>
+    </select>
+
+    <select id="count" resultType="long">
+        SELECT COUNT(*) FROM comment_summary
+    </select>
+
+    <select id="countByCondition" parameterType="map" resultType="long">
+        SELECT COUNT(*) FROM comment_summary <include refid="simpleConditions"></include>
+    </select>
+
+    <select id="countByCriterion" parameterType="map" resultType="long">
+        SELECT COUNT(*) FROM comment_summary WHERE <include refid="criterion"></include>
+    </select>
+
+    <select id="exists" parameterType="long" resultType="long">
+        SELECT COUNT(*) FROM comment_summary WHERE id = #{id}
+    </select>
+
+</mapper>

@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE configuration PUBLIC "-//mybatis.org//DTD Config 3.0//EN" "http://mybatis.org/dtd/mybatis-3-config.dtd">
+<configuration>
+
+    <settings>
+        <setting name="cacheEnabled" value="true"/>
+        <setting name="lazyLoadingEnabled" value="true"/>
+        <setting name="multipleResultSetsEnabled" value="true"/>
+        <setting name="useColumnLabel" value="true"/>
+        <setting name="useGeneratedKeys" value="false"/>
+        <setting name="autoMappingBehavior" value="PARTIAL"/>
+        <setting name="defaultExecutorType" value="SIMPLE"/>
+        <setting name="defaultStatementTimeout" value="25"/>
+        <setting name="defaultFetchSize" value="100"/>
+        <setting name="safeRowBoundsEnabled" value="false"/>
+        <setting name="mapUnderscoreToCamelCase" value="false"/>
+        <setting name="localCacheScope" value="SESSION"/>
+        <setting name="jdbcTypeForNull" value="OTHER"/>
+        <setting name="lazyLoadTriggerMethods" value="equals,clone,hashCode,toString"/>
+    </settings>
+
+    <!-- user @Alias to rename -->
+    <typeAliases>
+        <package name="com.mifan.reward.domain"/>
+    </typeAliases>
+
+    <mappers>
+        <mapper resource="com/mifan/reward/domain/SharesMapper.xml"></mapper>
+        <mapper resource="com/mifan/reward/domain/NoticesMapper.xml"></mapper>
+        <mapper resource="com/mifan/reward/domain/CodesMapper.xml"></mapper>
+        <mapper resource="com/mifan/reward/domain/ImagesMapper.xml"></mapper>
+        <mapper resource="com/mifan/reward/domain/RecordsMapper.xml"></mapper>
+        <mapper resource="com/mifan/reward/domain/PrizesMapper.xml"></mapper>
+        <mapper resource="com/mifan/reward/domain/PrizeInfoMapper.xml"></mapper>
+        <mapper resource="com/mifan/reward/domain/GoodsMapper.xml"></mapper>
+        <mapper resource="com/mifan/reward/domain/GoodContentImagesMapper.xml"></mapper>
+        <mapper resource="com/mifan/reward/domain/CategoriesMapper.xml"></mapper>
+        <mapper resource="com/mifan/reward/domain/ShareImagesMapper.xml"></mapper>
+        <mapper resource="com/mifan/reward/domain/GoodHeadImagesMapper.xml"></mapper>
+    </mappers>
+
+</configuration>

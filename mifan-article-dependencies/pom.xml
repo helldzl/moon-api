@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <parent>
+        <artifactId>mifan-api</artifactId>
+        <groupId>com.mifan.api</groupId>
+        <version>1.0.0</version>
+    </parent>
+    <modelVersion>4.0.0</modelVersion>
+
+    <artifactId>mifan-article-dependencies</artifactId>
+    <packaging>pom</packaging>
+    <modules>
+        <module>../mifan-article-dao</module>
+        <module>../mifan-article-domain</module>
+        <module>../mifan-article-service</module>
+        <module>../mifan-article-web</module>
+    </modules>
+
+    <properties>
+        <pinyin4j.version>2.5.0</pinyin4j.version>
+    </properties>
+
+    <dependencies>
+        <!-- Spring Boot -->
+
+        <!-- Starter for using Spring AMQP and Rabbit MQ -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-amqp</artifactId>
+        </dependency>
+
+        <!-- Starter for using Redis key-value data store with Spring Data Redis and the Jedis client -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-data-redis</artifactId>
+        </dependency>
+
+        <!-- Starter for testing Spring Boot applications with libraries including JUnit, Hamcrest and Mockito -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-test</artifactId>
+            <scope>test</scope>
+        </dependency>
+
+        <!-- moon framework dependencies -->
+
+        <dependency>
+            <groupId>org.moonframework</groupId>
+            <artifactId>moon-web-micro-service</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.moonframework</groupId>
+            <artifactId>moon-fragment-security</artifactId>
+            <exclusions>
+                <exclusion>
+                    <groupId>org.moonframework</groupId>
+                    <artifactId>moon-web</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+
+        <dependency>
+            <groupId>org.moonframework</groupId>
+            <artifactId>moon-amqp-starter</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.moonframework</groupId>
+            <artifactId>moon-elasticsearch-starter</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.moonframework</groupId>
+            <artifactId>moon-jcraft-starter</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.moonframework</groupId>
+            <artifactId>moon-crawler</artifactId>
+        </dependency>
+
+        <!-- other -->
+
+        <!-- Pinyin4j -->
+        <dependency>
+            <groupId>com.belerweb</groupId>
+            <artifactId>pinyin4j</artifactId>
+            <version>${pinyin4j.version}</version>
+        </dependency>
+    </dependencies>
+
+</project>

@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <parent>
+        <artifactId>mifan-api</artifactId>
+        <groupId>com.mifan.api</groupId>
+        <version>1.0.0</version>
+    </parent>
+    <modelVersion>4.0.0</modelVersion>
+
+    <artifactId>mifan-zipkin-server</artifactId>
+
+    <properties>
+        <start-class>com.mifan.zipkin.Application</start-class>
+    </properties>
+
+    <dependencies>
+
+        <!-- Spring Cloud -->
+
+        <!-- To use these features in an application, just build it as a Spring Boot application that depends on spring-cloud-config-client. -->
+        <dependency>
+            <groupId>org.springframework.cloud</groupId>
+            <artifactId>spring-cloud-starter-config</artifactId>
+        </dependency>
+
+        <!-- Spring Cloud Bus works by adding Spring Boot autconfiguration if it detects itself on the classpath. -->
+        <dependency>
+            <groupId>org.springframework.cloud</groupId>
+            <artifactId>spring-cloud-starter-bus-amqp</artifactId>
+        </dependency>
+
+        <!-- To include Eureka Client in your project use the starter with group org.springframework.cloud and artifact id spring-cloud-starter-netflix-eureka-client. -->
+        <dependency>
+            <groupId>org.springframework.cloud</groupId>
+            <artifactId>spring-cloud-starter-netflix-eureka-client</artifactId>
+        </dependency>
+
+        <!-- Sleuth Zipkin -->
+        <dependency>
+            <groupId>org.springframework.cloud</groupId>
+            <artifactId>spring-cloud-sleuth-zipkin-stream</artifactId>
+        </dependency>
+
+        <!-- For using the RabbitMQ binder, you just need to add it to your Spring Cloud Stream application, using the following Maven coordinates: -->
+        <dependency>
+            <groupId>org.springframework.cloud</groupId>
+            <artifactId>spring-cloud-stream-binder-rabbit</artifactId>
+        </dependency>
+
+        <!-- UI dependency, Then you’ll have your app a Zipkin server, which hosts the UI and api on port 9411. -->
+        <dependency>
+            <groupId>io.zipkin.java</groupId>
+            <artifactId>zipkin-autoconfigure-ui</artifactId>
+        </dependency>
+
+        <!-- Spring Boot -->
+
+        <!-- Starter for using Spring Boot’s Actuator which provides production ready features to help you monitor and manage your application -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-actuator</artifactId>
+        </dependency>
+
+        <!-- Starter for using Spring Security -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-security</artifactId>
+        </dependency>
+
+        <!-- Storage, The default SpanStore is in-memory (good for demos and getting started quickly). For a more robust solution you can add MySQL and spring-boot-starter-jdbc to your classpath and enable the JDBC SpanStore via configuration -->
+
+        <dependency>
+            <groupId>io.zipkin.java</groupId>
+            <artifactId>zipkin-storage-mysql</artifactId>
+            <version>2.3.1</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-jdbc</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.mariadb.jdbc</groupId>
+            <artifactId>mariadb-java-client</artifactId>
+        </dependency>
+
+    </dependencies>
+
+    <build>
+        <plugins>
+            <!-- Package as an executable jar -->
+            <!-- The spring-boot-starter-parent POM includes <executions> configuration to bind the repackage goal. -->
+            <!-- If you are not using the parent POM you will need to declare this configuration yourself. See the plugin documentation for details. -->
+            <plugin>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-maven-plugin</artifactId>
+                <version>${spring.boot.version}</version>
+                <configuration>
+                    <mainClass>${start-class}</mainClass>
+                </configuration>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>repackage</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <groupId>com.spotify</groupId>
+                <artifactId>docker-maven-plugin</artifactId>
+                <version>${spotify-docker.version}</version>
+                <configuration>
+                    <imageName>${project.run.profile}/${project.artifactId}</imageName>
+                    <forceTags>true</forceTags>
+                    <imageTags>
+                        <imageTag>${project.parent.version}</imageTag>
+                    </imageTags>
+                    <baseImage>mifan/java8</baseImage>
+                    <entryPoint>["java","-Xms300m","-Xmx300m","-jar","/${project.build.finalName}.jar"]</entryPoint>
+                    <resources>
+                        <resource>
+                            <targetPath>/</targetPath>
+                            <directory>${project.build.directory}</directory>
+                            <include>${project.build.finalName}.jar</include>
+                        </resource>
+                    </resources>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+
+</project>

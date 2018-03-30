@@ -1,0 +1,67 @@
+version: "2"
+services:
+  mifan-eureka-server:
+    hostname: eureka
+    image: development/mifan-eureka-server:1.0.0
+    ports:
+      - "8761:8761"
+    mem_limit: 512m
+    memswap_limit: 512m
+  mifan-config-server:
+    image: development/mifan-config-server:1.0.0
+    ports:
+      - "8887:8887"
+    mem_limit: 512m
+    memswap_limit: 512m
+    links:
+      - mifan-eureka-server:eureka
+  mifan-zuul-gateway:
+    image: development/mifan-zuul-gateway:1.0.0
+    ports:
+      - "80:8101"
+    mem_limit: 768m
+    memswap_limit: 768m
+    links:
+      - mifan-eureka-server:eureka
+  mifan-zipkin-server:
+    image: development/mifan-zipkin-server:1.0.0
+    mem_limit: 512m
+    memswap_limit: 512m
+    links:
+      - mifan-eureka-server:eureka
+  mifan-article-web:
+    image: development/mifan-article-web:1.0.0
+    mem_limit: 1024m
+    memswap_limit: 1024m
+    links:
+      - mifan-eureka-server:eureka
+  mifan-award-web:
+    image: development/mifan-award-web:1.0.0
+    mem_limit: 768m
+    memswap_limit: 768m
+    links:
+      - mifan-eureka-server:eureka
+  mifan-quiz-web:
+    image: development/mifan-quiz-web:1.0.0
+    mem_limit: 768m
+    memswap_limit: 768m
+    links:
+      - mifan-eureka-server:eureka
+  mifan-reward-web:
+    image: development/mifan-reward-web:1.0.0
+    mem_limit: 512m
+    memswap_limit: 512m
+    links:
+      - mifan-eureka-server:eureka
+  mifan-user-web:
+    image: development/mifan-user-web:1.0.0
+    mem_limit: 768m
+    memswap_limit: 768m
+    links:
+      - mifan-eureka-server:eureka
+  mifan-support-web:
+    image: development/mifan-support-web:1.0.0
+    mem_limit: 512m
+    memswap_limit: 512m
+    links:
+      - mifan-eureka-server:eureka

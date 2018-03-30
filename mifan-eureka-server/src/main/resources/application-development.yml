@@ -1,0 +1,7 @@
+##############
+### EUREKA ###
+##############
+eureka:
+  server:
+    enable-self-preservation: false       # 开发环境最好设置为false, 关闭自我保护, 保证快速清理无效节点
+    eviction-interval-timer-in-ms: 4000   # 清理间隔

@@ -1,0 +1,326 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.mifan.user.domain.UserAccounts">
+
+    <!-- result map -->
+    <resultMap id="userAccounts" type="com.mifan.user.domain.UserAccounts">
+        <id property="id" column="id" javaType="long"/>
+        <result property="userId" column="user_id" javaType="long"/>
+        <result property="accountType" column="account_type" javaType="int"/>
+        <result property="account" column="account" javaType="string"/>
+        <result property="isbind" column="isbind" javaType="int"/>
+        <result property="accountCrc" column="account_crc" javaType="long"/>
+        <result property="created" column="created" javaType="date"/>
+        <result property="modified" column="modified" javaType="date"/>
+        <result property="accessToken" column="access_token" javaType="string"/>
+        <result property="refreshToken" column="refresh_token" javaType="string"/>
+        <result property="openid" column="openid" javaType="string"/>
+    </resultMap>
+
+    <!-- sql -->
+    <sql id="columns">
+        <choose>
+            <when test="fields != null and fields.size != 0">
+                <foreach collection="fields" separator="," item="item" index="index">
+                    ${item.fullname}
+                </foreach>
+            </when>
+            <otherwise>
+                id, user_id, account_type, account, isbind, account_crc, created, modified, access_token, refresh_token, openid 
+            </otherwise>
+        </choose>
+    </sql>
+
+    <sql id="insertColumns">
+        <trim suffixOverrides=",">
+            <if test="id != null">
+                id,
+            </if>
+            <if test="userId != null">
+                user_id,
+            </if>
+            <if test="accountType != null">
+                account_type,
+            </if>
+            <if test="account != null">
+                account,
+            </if>
+            <if test="isbind != null">
+                isbind,
+            </if>
+            <if test="accountCrc != null">
+                account_crc,
+            </if>
+            <if test="created != null">
+                created,
+            </if>
+            <if test="modified != null">
+                modified,
+            </if>
+            <if test="accessToken != null">
+                access_token,
+            </if>
+            <if test="refreshToken != null">
+                refresh_token,
+            </if>
+            <if test="openid != null">
+                openid,
+            </if>
+        </trim>
+    </sql>
+
+    <sql id="insertValues">
+        <trim suffixOverrides=",">
+            <if test="id != null">
+                #{id},
+            </if>
+            <if test="userId != null">
+                #{userId},
+            </if>
+            <if test="accountType != null">
+                #{accountType},
+            </if>
+            <if test="account != null">
+                #{account},
+            </if>
+            <if test="isbind != null">
+                #{isbind},
+            </if>
+            <if test="accountCrc != null">
+                #{accountCrc},
+            </if>
+            <if test="created != null">
+                #{created},
+            </if>
+            <if test="modified != null">
+                #{modified},
+            </if>
+            <if test="accessToken != null">
+                #{accessToken},
+            </if>
+            <if test="refreshToken != null">
+                #{refreshToken},
+            </if>
+            <if test="openid != null">
+                #{openid},
+            </if>
+        </trim>
+    </sql>
+
+    <sql id="updateValues">
+        <trim suffixOverrides=",">
+            <if test="userId != null">
+                user_id = #{userId},
+            </if>
+            <if test="accountType != null">
+                account_type = #{accountType},
+            </if>
+            <if test="account != null">
+                account = #{account},
+            </if>
+            <if test="isbind != null">
+                isbind = #{isbind},
+            </if>
+            <if test="accountCrc != null">
+                account_crc = #{accountCrc},
+            </if>
+            <if test="created != null">
+                created = #{created},
+            </if>
+            <if test="modified != null">
+                modified = #{modified},
+            </if>
+            <if test="accessToken != null">
+                access_token = #{accessToken},
+            </if>
+            <if test="refreshToken != null">
+                refresh_token = #{refreshToken},
+            </if>
+            <if test="openid != null">
+                openid = #{openid},
+            </if>
+        </trim>
+    </sql>
+
+    <sql id="updateValuesByCriterion">
+        <trim suffixOverrides=",">
+            <if test="entity.userId != null">
+                user_id = #{entity.userId},
+            </if>
+            <if test="entity.accountType != null">
+                account_type = #{entity.accountType},
+            </if>
+            <if test="entity.account != null">
+                account = #{entity.account},
+            </if>
+            <if test="entity.isbind != null">
+                isbind = #{entity.isbind},
+            </if>
+            <if test="entity.accountCrc != null">
+                account_crc = #{entity.accountCrc},
+            </if>
+            <if test="entity.created != null">
+                created = #{entity.created},
+            </if>
+            <if test="entity.modified != null">
+                modified = #{entity.modified},
+            </if>
+            <if test="entity.accessToken != null">
+                access_token = #{entity.accessToken},
+            </if>
+            <if test="entity.refreshToken != null">
+                refresh_token = #{entity.refreshToken},
+            </if>
+            <if test="openid != null">
+                openid = #{entity.openid},
+            </if>
+        </trim>
+    </sql>
+
+    <sql id="simpleConditions">
+        <trim prefix="WHERE" prefixOverrides="AND">
+            <if test="entity.id != null">
+                AND id = #{entity.id}
+            </if>
+            <if test="entity.userId != null">
+                AND user_id = #{entity.userId}
+            </if>
+            <if test="entity.accountType != null">
+                AND account_type = #{entity.accountType}
+            </if>
+            <if test="entity.account != null">
+                AND account = #{entity.account}
+            </if>
+            <if test="entity.isbind != null">
+                AND isbind = #{entity.isbind}
+            </if>
+            <if test="entity.accountCrc != null">
+                AND account_crc = #{entity.accountCrc}
+            </if>
+            <if test="entity.created != null">
+                AND created = #{entity.created}
+            </if>
+            <if test="entity.modified != null">
+                AND modified = #{entity.modified}
+            </if>
+            <if test="entity.accessToken != null">
+                AND access_token = #{entity.accessToken}
+            </if>
+            <if test="entity.refreshToken != null">
+                AND refresh_token = #{entity.refreshToken}
+            </if>
+            <if test="entity.openid != null">
+                AND openid = #{entity.openid}
+            </if>
+        </trim>
+    </sql>
+
+    <sql id="sort">
+        <trim prefix="ORDER BY" suffixOverrides=",">
+            <foreach collection="orders" separator="," item="item" index="index">
+                ${item.property} ${item.direction}
+            </foreach>
+        </trim>
+    </sql>
+
+    <sql id="criterion">
+        <foreach collection="conditions.tokens" item="item">
+            <choose>
+                <when test="item.param">#{item.value}</when><otherwise>${item.value}</otherwise>
+            </choose>
+        </foreach>
+    </sql>
+
+    <sql id="limit">
+        LIMIT #{offset}, #{pageSize}
+    </sql>
+
+    <!-- insert -->
+    <insert id="save" parameterType="com.mifan.user.domain.UserAccounts" keyProperty="id" useGeneratedKeys="true">
+        INSERT INTO user_accounts(<include refid="insertColumns"/>) VALUES (<include refid="insertValues"/>)
+    </insert>
+
+    <!-- insert into on duplicate -->
+    <insert id="saveOrUpdate" parameterType="com.mifan.user.domain.UserAccounts" keyProperty="id" useGeneratedKeys="true">
+        INSERT INTO user_accounts(<include refid="insertColumns"/>) VALUES (<include refid="insertValues"/>) ON DUPLICATE KEY UPDATE <include refid="updateValues"/>
+    </insert>
+
+    <!-- delete -->
+    <delete id="delete" parameterType="long">
+        DELETE FROM user_accounts WHERE id = #{id}
+    </delete>
+
+    <!-- update -->
+    <update id="update" parameterType="com.mifan.user.domain.UserAccounts">
+        UPDATE user_accounts SET <include refid="updateValues"/> WHERE id = #{id}
+    </update>
+
+    <update id="updateByCriterion" parameterType="com.mifan.user.domain.UserAccounts">
+        UPDATE user_accounts SET <include refid="updateValuesByCriterion"/> WHERE id = #{entity.id} AND <include refid="criterion"></include>
+    </update>
+
+    <!-- select -->
+    <select id="findOne" parameterType="map" resultMap="userAccounts">
+        SELECT
+        <include refid="columns"></include>
+        FROM user_accounts WHERE id = #{id}
+    </select>
+
+    <select id="findOneByObject" parameterType="map" resultMap="userAccounts">
+        SELECT
+        <include refid="columns"></include>
+        FROM user_accounts <include refid="simpleConditions"></include>
+    </select>
+
+    <select id="findAll" parameterType="map" resultMap="userAccounts">
+        SELECT
+        <include refid="columns"></include>
+        FROM user_accounts WHERE ${field} IN
+        <foreach collection="ids" open="(" separator="," close=")" index="index" item="item" >
+            ${item}
+        </foreach>
+    </select>
+
+    <select id="findAllByObject" parameterType="map" resultMap="userAccounts">
+        SELECT
+        <include refid="columns"></include>
+        FROM user_accounts <include refid="simpleConditions"></include>
+    </select>
+
+    <select id="findAllByCriterion" parameterType="map" resultMap="userAccounts">
+        SELECT
+        <include refid="columns"></include>
+        FROM user_accounts WHERE <include refid="criterion"></include>
+    </select>
+
+    <select id="findPage" parameterType="map" resultMap="userAccounts">
+        SELECT
+        <include refid="columns"></include>
+        FROM user_accounts <include refid="simpleConditions"></include> <include refid="sort"></include> <include refid="limit"></include>
+    </select>
+
+    <select id="findPageByCriterion" parameterType="map" resultMap="userAccounts">
+        SELECT
+        <include refid="columns"></include>
+        FROM user_accounts WHERE <include refid="criterion"></include> <include refid="sort"></include> <include refid="limit"></include>
+    </select>
+
+    <select id="count" resultType="long">
+        SELECT COUNT(*) FROM user_accounts
+    </select>
+
+    <select id="countByCondition" parameterType="map" resultType="long">
+        SELECT COUNT(*) FROM user_accounts <include refid="simpleConditions"></include>
+    </select>
+
+    <select id="countByCriterion" parameterType="map" resultType="long">
+        SELECT COUNT(*) FROM user_accounts WHERE <include refid="criterion"></include>
+    </select>
+
+    <select id="exists" parameterType="long" resultType="long">
+        SELECT COUNT(*) FROM user_accounts WHERE id = #{id}
+    </select>
+
+</mapper>

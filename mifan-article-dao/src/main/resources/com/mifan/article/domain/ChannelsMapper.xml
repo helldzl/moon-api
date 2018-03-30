@@ -1,0 +1,583 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.mifan.article.domain.Channels">
+
+    <!-- result map -->
+    <resultMap id="channels" type="com.mifan.article.domain.Channels">
+        <id property="id" column="id" javaType="long"/>
+        <result property="targetId" column="target_id" javaType="long"/>
+        <result property="channelSource" column="channel_source" javaType="int"/>
+        <result property="channelType" column="channel_type" javaType="int"/>
+        <result property="channelName" column="channel_name" javaType="string"/>
+        <result property="channelImage" column="channel_image" javaType="string"/>
+        <result property="filter" column="filter" javaType="string"/>
+        <result property="description" column="description" javaType="string"/>
+        <result property="watched" column="watched" javaType="int"/>
+        <result property="displayOrder" column="display_order" javaType="int"/>
+        <result property="cancellable" column="cancellable" javaType="int"/>
+        <result property="reverse" column="reverse" javaType="int"/>
+        <result property="enabled" column="enabled" javaType="int"/>
+        <result property="creator" column="creator" javaType="long"/>
+        <result property="modifier" column="modifier" javaType="long"/>
+        <result property="created" column="created" javaType="date"/>
+        <result property="modified" column="modified" javaType="date"/>
+    </resultMap>
+
+    <!-- sql -->
+    <sql id="columns">
+        <choose>
+            <when test="fields != null and fields.size != 0">
+                <foreach collection="fields" separator="," item="item" index="index">
+                    ${item.fullname}
+                </foreach>
+            </when>
+            <otherwise>
+                id, target_id, channel_source, channel_type, channel_name, channel_image, filter, description, watched, display_order, cancellable, reverse, enabled, creator, modifier, created, modified 
+            </otherwise>
+        </choose>
+    </sql>
+
+    <sql id="insertColumns">
+        <trim suffixOverrides=",">
+            <if test="id != null">
+                id,
+            </if>
+            <if test="targetId != null">
+                target_id,
+            </if>
+            <if test="channelSource != null">
+                channel_source,
+            </if>
+            <if test="channelType != null">
+                channel_type,
+            </if>
+            <if test="channelName != null">
+                channel_name,
+            </if>
+            <if test="channelImage != null">
+                channel_image,
+            </if>
+            <if test="filter != null">
+                filter,
+            </if>
+            <if test="description != null">
+                description,
+            </if>
+            <if test="watched != null">
+                watched,
+            </if>
+            <if test="displayOrder != null">
+                display_order,
+            </if>
+            <if test="cancellable != null">
+                cancellable,
+            </if>
+            <if test="reverse != null">
+                reverse,
+            </if>
+            <if test="enabled != null">
+                enabled,
+            </if>
+            <if test="creator != null">
+                creator,
+            </if>
+            <if test="modifier != null">
+                modifier,
+            </if>
+            <if test="created != null">
+                created,
+            </if>
+            <if test="modified != null">
+                modified,
+            </if>
+        </trim>
+    </sql>
+
+    <sql id="insertEntityColumns">
+        <trim suffixOverrides=",">
+            <if test="insert.id != null">
+                id,
+            </if>
+            <if test="insert.targetId != null">
+                target_id,
+            </if>
+            <if test="insert.channelSource != null">
+                channel_source,
+            </if>
+            <if test="insert.channelType != null">
+                channel_type,
+            </if>
+            <if test="insert.channelName != null">
+                channel_name,
+            </if>
+            <if test="insert.channelImage != null">
+                channel_image,
+            </if>
+            <if test="insert.filter != null">
+                filter,
+            </if>
+            <if test="insert.description != null">
+                description,
+            </if>
+            <if test="insert.watched != null">
+                watched,
+            </if>
+            <if test="insert.displayOrder != null">
+                display_order,
+            </if>
+            <if test="insert.cancellable != null">
+                cancellable,
+            </if>
+            <if test="insert.reverse != null">
+                reverse,
+            </if>
+            <if test="insert.enabled != null">
+                enabled,
+            </if>
+            <if test="insert.creator != null">
+                creator,
+            </if>
+            <if test="insert.modifier != null">
+                modifier,
+            </if>
+            <if test="insert.created != null">
+                created,
+            </if>
+            <if test="insert.modified != null">
+                modified,
+            </if>
+        </trim>
+    </sql>
+
+    <sql id="insertValues">
+        <trim suffixOverrides=",">
+            <if test="id != null">
+                #{id},
+            </if>
+            <if test="targetId != null">
+                #{targetId},
+            </if>
+            <if test="channelSource != null">
+                #{channelSource},
+            </if>
+            <if test="channelType != null">
+                #{channelType},
+            </if>
+            <if test="channelName != null">
+                #{channelName},
+            </if>
+            <if test="channelImage != null">
+                #{channelImage},
+            </if>
+            <if test="filter != null">
+                #{filter},
+            </if>
+            <if test="description != null">
+                #{description},
+            </if>
+            <if test="watched != null">
+                #{watched},
+            </if>
+            <if test="displayOrder != null">
+                #{displayOrder},
+            </if>
+            <if test="cancellable != null">
+                #{cancellable},
+            </if>
+            <if test="reverse != null">
+                #{reverse},
+            </if>
+            <if test="enabled != null">
+                #{enabled},
+            </if>
+            <if test="creator != null">
+                #{creator},
+            </if>
+            <if test="modifier != null">
+                #{modifier},
+            </if>
+            <if test="created != null">
+                #{created},
+            </if>
+            <if test="modified != null">
+                #{modified},
+            </if>
+        </trim>
+    </sql>
+
+    <sql id="insertEntityValues">
+        <trim suffixOverrides=",">
+            <if test="insert.id != null">
+                #{insert.id},
+            </if>
+            <if test="insert.targetId != null">
+                #{insert.targetId},
+            </if>
+            <if test="insert.channelSource != null">
+                #{insert.channelSource},
+            </if>
+            <if test="insert.channelType != null">
+                #{insert.channelType},
+            </if>
+            <if test="insert.channelName != null">
+                #{insert.channelName},
+            </if>
+            <if test="insert.channelImage != null">
+                #{insert.channelImage},
+            </if>
+            <if test="insert.filter != null">
+                #{insert.filter},
+            </if>
+            <if test="insert.description != null">
+                #{insert.description},
+            </if>
+            <if test="insert.watched != null">
+                #{insert.watched},
+            </if>
+            <if test="insert.displayOrder != null">
+                #{insert.displayOrder},
+            </if>
+            <if test="insert.cancellable != null">
+                #{insert.cancellable},
+            </if>
+            <if test="insert.reverse != null">
+                #{insert.reverse},
+            </if>
+            <if test="insert.enabled != null">
+                #{insert.enabled},
+            </if>
+            <if test="insert.creator != null">
+                #{insert.creator},
+            </if>
+            <if test="insert.modifier != null">
+                #{insert.modifier},
+            </if>
+            <if test="insert.created != null">
+                #{insert.created},
+            </if>
+            <if test="insert.modified != null">
+                #{insert.modified},
+            </if>
+        </trim>
+    </sql>
+
+    <sql id="updateValues">
+        <trim suffixOverrides=",">
+            <if test="targetId != null">
+                target_id = #{targetId},
+            </if>
+            <if test="channelSource != null">
+                channel_source = #{channelSource},
+            </if>
+            <if test="channelType != null">
+                channel_type = #{channelType},
+            </if>
+            <if test="channelName != null">
+                channel_name = #{channelName},
+            </if>
+            <if test="channelImage != null">
+                channel_image = #{channelImage},
+            </if>
+            <if test="filter != null">
+                filter = #{filter},
+            </if>
+            <if test="description != null">
+                description = #{description},
+            </if>
+            <if test="watched != null">
+                watched = #{watched},
+            </if>
+            <if test="displayOrder != null">
+                display_order = #{displayOrder},
+            </if>
+            <if test="cancellable != null">
+                cancellable = #{cancellable},
+            </if>
+            <if test="reverse != null">
+                reverse = #{reverse},
+            </if>
+            <if test="enabled != null">
+                enabled = #{enabled},
+            </if>
+            <if test="creator != null">
+                creator = #{creator},
+            </if>
+            <if test="modifier != null">
+                modifier = #{modifier},
+            </if>
+            <if test="created != null">
+                created = #{created},
+            </if>
+            <if test="modified != null">
+                modified = #{modified},
+            </if>
+        </trim>
+    </sql>
+
+    <sql id="updateValuesByCriterion">
+        <trim suffixOverrides=",">
+            <if test="entity.targetId != null">
+                target_id = #{entity.targetId},
+            </if>
+            <if test="entity.channelSource != null">
+                channel_source = #{entity.channelSource},
+            </if>
+            <if test="entity.channelType != null">
+                channel_type = #{entity.channelType},
+            </if>
+            <if test="entity.channelName != null">
+                channel_name = #{entity.channelName},
+            </if>
+            <if test="entity.channelImage != null">
+                channel_image = #{entity.channelImage},
+            </if>
+            <if test="entity.filter != null">
+                filter = #{entity.filter},
+            </if>
+            <if test="entity.description != null">
+                description = #{entity.description},
+            </if>
+            <if test="entity.watched != null">
+                watched = #{entity.watched},
+            </if>
+            <if test="entity.displayOrder != null">
+                display_order = #{entity.displayOrder},
+            </if>
+            <if test="entity.cancellable != null">
+                cancellable = #{entity.cancellable},
+            </if>
+            <if test="entity.reverse != null">
+                reverse = #{entity.reverse},
+            </if>
+            <if test="entity.enabled != null">
+                enabled = #{entity.enabled},
+            </if>
+            <if test="entity.creator != null">
+                creator = #{entity.creator},
+            </if>
+            <if test="entity.modifier != null">
+                modifier = #{entity.modifier},
+            </if>
+            <if test="entity.created != null">
+                created = #{entity.created},
+            </if>
+            <if test="entity.modified != null">
+                modified = #{entity.modified},
+            </if>
+        </trim>
+    </sql>
+
+    <sql id="simpleConditions">
+        <trim prefix="WHERE" prefixOverrides="AND">
+            <if test="entity.id != null">
+                AND id = #{entity.id}
+            </if>
+            <if test="entity.targetId != null">
+                AND target_id = #{entity.targetId}
+            </if>
+            <if test="entity.channelSource != null">
+                AND channel_source = #{entity.channelSource}
+            </if>
+            <if test="entity.channelType != null">
+                AND channel_type = #{entity.channelType}
+            </if>
+            <if test="entity.channelName != null">
+                AND channel_name = #{entity.channelName}
+            </if>
+            <if test="entity.channelImage != null">
+                AND channel_image = #{entity.channelImage}
+            </if>
+            <if test="entity.filter != null">
+                AND filter = #{entity.filter}
+            </if>
+            <if test="entity.description != null">
+                AND description = #{entity.description}
+            </if>
+            <if test="entity.watched != null">
+                AND watched = #{entity.watched}
+            </if>
+            <if test="entity.displayOrder != null">
+                AND display_order = #{entity.displayOrder}
+            </if>
+            <if test="entity.cancellable != null">
+                AND cancellable = #{entity.cancellable}
+            </if>
+            <if test="entity.reverse != null">
+                AND reverse = #{entity.reverse}
+            </if>
+            <if test="entity.enabled != null">
+                AND enabled = #{entity.enabled}
+            </if>
+            <if test="entity.creator != null">
+                AND creator = #{entity.creator}
+            </if>
+            <if test="entity.modifier != null">
+                AND modifier = #{entity.modifier}
+            </if>
+            <if test="entity.created != null">
+                AND created = #{entity.created}
+            </if>
+            <if test="entity.modified != null">
+                AND modified = #{entity.modified}
+            </if>
+        </trim>
+    </sql>
+
+    <sql id="sort">
+        <trim prefix="ORDER BY" suffixOverrides=",">
+            <foreach collection="orders" separator="," item="item" index="index">
+                ${item.property} ${item.direction}
+            </foreach>
+        </trim>
+    </sql>
+
+    <sql id="criterion">
+        <foreach collection="conditions.tokens" item="item">
+            <choose>
+                <when test="item.param">#{item.value}</when><otherwise>${item.value}</otherwise>
+            </choose>
+        </foreach>
+    </sql>
+
+    <sql id="limit">
+        LIMIT #{offset}, #{pageSize}
+    </sql>
+
+    <sql id="relationships">
+        <if test="relationships != null">
+            <foreach collection="relationships" item="join" index="index">
+                ${join.type()} ${join.table()} ON ${join.condition()}
+            </foreach>
+        </if>
+    </sql>
+
+    <!-- insert -->
+    <insert id="save" parameterType="com.mifan.article.domain.Channels" keyProperty="id" useGeneratedKeys="true">
+        INSERT INTO channels(<include refid="insertColumns"/>) VALUES (<include refid="insertValues"/>)
+    </insert>
+
+    <!-- insert into on duplicate -->
+    <insert id="insertOnDuplicate" parameterType="com.mifan.article.domain.Channels" keyProperty="id" useGeneratedKeys="true">
+        INSERT INTO channels(<include refid="insertEntityColumns"/>) VALUES (<include refid="insertEntityValues"/>) ON DUPLICATE KEY UPDATE <include refid="updateValuesByCriterion"/>
+    </insert>
+
+    <!-- insert into on duplicate -->
+    <insert id="saveOrUpdate" parameterType="com.mifan.article.domain.Channels" keyProperty="id" useGeneratedKeys="true">
+        INSERT INTO channels(<include refid="insertColumns"/>) VALUES (<include refid="insertValues"/>) ON DUPLICATE KEY UPDATE <include refid="updateValues"/>
+    </insert>
+
+    <!-- delete -->
+    <delete id="delete" parameterType="long">
+        DELETE FROM channels WHERE id = #{id}
+    </delete>
+
+    <!-- update -->
+    <update id="update" parameterType="com.mifan.article.domain.Channels">
+        UPDATE channels SET <include refid="updateValues"/> WHERE id = #{id}
+    </update>
+
+    <update id="updateByCriterion" parameterType="com.mifan.article.domain.Channels">
+        UPDATE channels SET <include refid="updateValuesByCriterion"/> WHERE id = #{entity.id} AND <include refid="criterion"></include>
+    </update>
+
+    <update id="updateByMap" parameterType="map">
+        UPDATE channels
+        <trim prefix="SET" suffixOverrides=",">
+            <foreach collection="increments" index="index" item="item">
+                ${item.key} = ${item.key} + #{item.value},
+            </foreach>
+            <foreach collection="fields" index="index" item="item">
+                ${item.key} = #{item.value},
+            </foreach>
+        </trim>
+        WHERE id = #{id}
+    </update>
+
+    <!-- select -->
+    <select id="findOne" parameterType="map" resultMap="channels">
+        SELECT
+        <include refid="columns"></include>
+        FROM channels WHERE id = #{id}
+    </select>
+
+    <select id="findOneByObject" parameterType="map" resultMap="channels">
+        SELECT
+        <include refid="columns"></include>
+        FROM channels <include refid="simpleConditions"></include>
+    </select>
+
+    <select id="findOneByCriterion" parameterType="map" resultMap="channels">
+        SELECT
+        <include refid="columns"></include>
+        FROM channels WHERE <include refid="criterion"></include> LIMIT 1
+    </select>
+
+    <select id="findAll" parameterType="map" resultMap="channels">
+        SELECT
+        <include refid="columns"></include>
+        FROM channels WHERE ${field} IN
+        <foreach collection="ids" open="(" separator="," close=")" index="index" item="item" >
+            ${item}
+        </foreach>
+    </select>
+
+    <select id="findAllByObject" parameterType="map" resultMap="channels">
+        SELECT
+        <include refid="columns"></include>
+        FROM channels <include refid="simpleConditions"></include>
+    </select>
+
+    <select id="findAllByCriterion" parameterType="map" resultMap="channels">
+        SELECT
+        <include refid="columns"></include>
+        FROM channels WHERE <include refid="criterion"></include>
+    </select>
+
+    <select id="findPage" parameterType="map" resultMap="channels">
+        SELECT
+        <include refid="columns"></include>
+        FROM channels <include refid="simpleConditions"></include> <include refid="sort"></include> <include refid="limit"></include>
+    </select>
+
+    <select id="findPageByCriterion" parameterType="map" resultMap="channels">
+        <choose>
+            <when test="@org.moonframework.model.mybatis.support.Association@NORMAL == association">
+                SELECT
+                <include refid="columns"></include>
+                FROM channels
+                <include refid="relationships"></include>
+                WHERE <include refid="criterion"></include> <include refid="sort"></include> <include refid="limit"></include>
+            </when>
+            <!-- 驱动表(DERIVED)的排序决定被驱动表的排序. 有两种方式: 1. 使用force index 2. 使用延迟关联/索引覆盖扫描技术 来强制让特定条件的排序使用特定的索引进行分页 -->
+            <!-- 使用普通的方式分页会产生BUG, 原因是MySQL会根据数据分布情况选择不同的索引或全表扫描(数据量很少时, 全表扫描更快)来查询数据, 最终导致数据顺序不一致的问题 -->
+            <when test="@org.moonframework.model.mybatis.support.Association@DELAYED == association">
+                SELECT <include refid="columns"></include> FROM channels INNER JOIN (
+                SELECT id FROM channels
+                <include refid="relationships"></include>
+                WHERE <include refid="criterion"></include> <include refid="sort"></include> <include refid="limit"></include> )
+                AS temp USING (id)
+            </when>
+        </choose>
+    </select>
+
+    <select id="count" resultType="long">
+        SELECT COUNT(*) FROM channels
+    </select>
+
+    <select id="countByCondition" parameterType="map" resultType="long">
+        SELECT COUNT(*) FROM channels <include refid="simpleConditions"></include>
+    </select>
+
+    <select id="countByCriterion" parameterType="map" resultType="long">
+        SELECT COUNT(*) FROM channels
+        <include refid="relationships"></include>
+        WHERE <include refid="criterion"></include>
+    </select>
+
+    <select id="exists" parameterType="long" resultType="long">
+        SELECT COUNT(*) FROM channels WHERE id = #{id}
+    </select>
+
+</mapper>

@@ -1,0 +1,262 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.mifan.user.domain.AuthElements">
+
+    <!-- result map -->
+    <resultMap id="authElements" type="com.mifan.user.domain.AuthElements">
+        <id property="id" column="id" javaType="long"/>
+        <result property="authorityId" column="authority_id" javaType="long"/>
+        <result property="icon" column="icon" javaType="string"/>
+        <result property="elementName" column="element_name" javaType="string"/>
+        <result property="elementClass" column="element_class" javaType="string"/>
+        <result property="elementStyle" column="element_style" javaType="string"/>
+        <result property="script" column="script" javaType="string"/>
+    </resultMap>
+
+    <!-- sql -->
+    <sql id="columns">
+        <choose>
+            <when test="fields != null and fields.size != 0">
+                <foreach collection="fields" separator="," item="item" index="index">
+                    ${item.fullname}
+                </foreach>
+            </when>
+            <otherwise>
+                id, authority_id, icon, element_name, element_class, element_style, script
+            </otherwise>
+        </choose>
+    </sql>
+
+    <sql id="insertColumns">
+        <trim suffixOverrides=",">
+            <if test="id != null">
+                id,
+            </if>
+            <if test="authorityId != null">
+                authority_id,
+            </if>
+            <if test="icon != null">
+                icon,
+            </if>
+            <if test="elementName != null">
+                element_name,
+            </if>
+            <if test="elementClass != null">
+                element_class,
+            </if>
+            <if test="elementStyle != null">
+                element_style,
+            </if>
+            <if test="script != null">
+                script,
+            </if>
+        </trim>
+    </sql>
+
+    <sql id="insertValues">
+        <trim suffixOverrides=",">
+            <if test="id != null">
+                #{id},
+            </if>
+            <if test="authorityId != null">
+                #{authorityId},
+            </if>
+            <if test="icon != null">
+                #{icon},
+            </if>
+            <if test="elementName != null">
+                #{elementName},
+            </if>
+            <if test="elementClass != null">
+                #{elementClass},
+            </if>
+            <if test="elementStyle != null">
+                #{elementStyle},
+            </if>
+            <if test="script != null">
+                #{script},
+            </if>
+        </trim>
+    </sql>
+
+    <sql id="updateValues">
+        <trim suffixOverrides=",">
+            <if test="authorityId != null">
+                authority_id = #{authorityId},
+            </if>
+            <if test="icon != null">
+                icon = #{icon},
+            </if>
+            <if test="elementName != null">
+                element_name = #{elementName},
+            </if>
+            <if test="elementClass != null">
+                element_class = #{elementClass},
+            </if>
+            <if test="elementStyle != null">
+                element_style = #{elementStyle},
+            </if>
+            <if test="script != null">
+                script = #{script},
+            </if>
+        </trim>
+    </sql>
+
+    <sql id="updateValuesByCriterion">
+        <trim suffixOverrides=",">
+            <if test="entity.authorityId != null">
+                authority_id = #{entity.authorityId},
+            </if>
+            <if test="entity.icon != null">
+                icon = #{entity.icon},
+            </if>
+            <if test="entity.elementName != null">
+                element_name = #{entity.elementName},
+            </if>
+            <if test="entity.elementClass != null">
+                element_class = #{entity.elementClass},
+            </if>
+            <if test="entity.elementStyle != null">
+                element_style = #{entity.elementStyle},
+            </if>
+            <if test="entity.script != null">
+                script = #{entity.script},
+            </if>
+        </trim>
+    </sql>
+
+    <sql id="simpleConditions">
+        <trim prefix="WHERE" prefixOverrides="AND">
+            <if test="entity.id != null">
+                AND id = #{entity.id}
+            </if>
+            <if test="entity.authorityId != null">
+                AND authority_id = #{entity.authorityId}
+            </if>
+            <if test="entity.icon != null">
+                AND icon = #{entity.icon}
+            </if>
+            <if test="entity.elementName != null">
+                AND element_name = #{entity.elementName}
+            </if>
+            <if test="entity.elementClass != null">
+                AND element_class = #{entity.elementClass}
+            </if>
+            <if test="entity.elementStyle != null">
+                AND element_style = #{entity.elementStyle}
+            </if>
+            <if test="entity.script != null">
+                AND script = #{entity.script}
+            </if>
+        </trim>
+    </sql>
+
+    <sql id="sort">
+        <trim prefix="ORDER BY" suffixOverrides=",">
+            <foreach collection="orders" separator="," item="item" index="index">
+                ${item.property} ${item.direction}
+            </foreach>
+        </trim>
+    </sql>
+
+    <sql id="criterion">
+        <foreach collection="conditions.tokens" item="item">
+            <choose>
+                <when test="item.param">#{item.value}</when><otherwise>${item.value}</otherwise>
+            </choose>
+        </foreach>
+    </sql>
+
+    <sql id="limit">
+        LIMIT #{offset}, #{pageSize}
+    </sql>
+
+    <!-- insert -->
+    <insert id="save" parameterType="com.mifan.user.domain.AuthElements" keyProperty="id" useGeneratedKeys="true">
+        INSERT INTO auth_elements(<include refid="insertColumns"/>) VALUES (<include refid="insertValues"/>)
+    </insert>
+
+    <!-- insert into on duplicate -->
+    <insert id="saveOrUpdate" parameterType="com.mifan.user.domain.AuthElements" keyProperty="id" useGeneratedKeys="true">
+        INSERT INTO auth_elements(<include refid="insertColumns"/>) VALUES (<include refid="insertValues"/>) ON DUPLICATE KEY UPDATE <include refid="updateValues"/>
+    </insert>
+
+    <!-- delete -->
+    <delete id="delete" parameterType="long">
+        DELETE FROM auth_elements WHERE id = #{id}
+    </delete>
+
+    <!-- update -->
+    <update id="update" parameterType="com.mifan.user.domain.AuthElements">
+        UPDATE auth_elements SET <include refid="updateValues"/> WHERE id = #{id}
+    </update>
+
+    <update id="updateByCriterion" parameterType="com.mifan.user.domain.AuthElements">
+        UPDATE auth_elements SET <include refid="updateValuesByCriterion"/> WHERE id = #{entity.id} AND <include refid="criterion"></include>
+    </update>
+
+    <!-- select -->
+    <select id="findOne" parameterType="map" resultMap="authElements">
+        SELECT
+        <include refid="columns"></include>
+        FROM auth_elements WHERE id = #{id}
+    </select>
+
+    <select id="findOneByObject" parameterType="map" resultMap="authElements">
+        SELECT
+        <include refid="columns"></include>
+        FROM auth_elements <include refid="simpleConditions"></include>
+    </select>
+
+    <select id="findAll" parameterType="map" resultMap="authElements">
+        SELECT
+        <include refid="columns"></include>
+        FROM auth_elements WHERE ${field} IN
+        <foreach collection="ids" open="(" separator="," close=")" index="index" item="item" >
+            ${item}
+        </foreach>
+    </select>
+
+    <select id="findAllByObject" parameterType="map" resultMap="authElements">
+        SELECT
+        <include refid="columns"></include>
+        FROM auth_elements <include refid="simpleConditions"></include>
+    </select>
+
+    <select id="findAllByCriterion" parameterType="map" resultMap="authElements">
+        SELECT
+        <include refid="columns"></include>
+        FROM auth_elements WHERE <include refid="criterion"></include>
+    </select>
+
+    <select id="findPage" parameterType="map" resultMap="authElements">
+        SELECT
+        <include refid="columns"></include>
+        FROM auth_elements <include refid="simpleConditions"></include> <include refid="sort"></include> <include refid="limit"></include>
+    </select>
+
+    <select id="findPageByCriterion" parameterType="map" resultMap="authElements">
+        SELECT
+        <include refid="columns"></include>
+        FROM auth_elements WHERE <include refid="criterion"></include> <include refid="sort"></include> <include refid="limit"></include>
+    </select>
+
+    <select id="count" resultType="long">
+        SELECT COUNT(*) FROM auth_elements
+    </select>
+
+    <select id="countByCondition" parameterType="map" resultType="long">
+        SELECT COUNT(*) FROM auth_elements <include refid="simpleConditions"></include>
+    </select>
+
+    <select id="countByCriterion" parameterType="map" resultType="long">
+        SELECT COUNT(*) FROM auth_elements WHERE <include refid="criterion"></include>
+    </select>
+
+    <select id="exists" parameterType="long" resultType="long">
+        SELECT COUNT(*) FROM auth_elements WHERE id = #{id}
+    </select>
+
+</mapper>

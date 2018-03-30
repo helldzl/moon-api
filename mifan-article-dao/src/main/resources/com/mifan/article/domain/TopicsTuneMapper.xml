@@ -1,0 +1,350 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.mifan.article.domain.TopicsTune">
+
+    <!-- result map -->
+    <resultMap id="topicsTune" type="com.mifan.article.domain.TopicsTune">
+        <id property="id" column="id" javaType="long"/>
+        <result property="topicId" column="topic_id" javaType="long"/>
+        <result property="type" column="type" javaType="int"/>
+        <result property="name" column="name" javaType="string"/>
+        <result property="author" column="author" javaType="string"/>
+        <result property="brand" column="brand" javaType="string"/>
+        <result property="download" column="download" javaType="string"/>
+    </resultMap>
+
+    <!-- sql -->
+    <sql id="columns">
+        <choose>
+            <when test="fields != null and fields.size != 0">
+                <foreach collection="fields" separator="," item="item" index="index">
+                    ${item.fullname}
+                </foreach>
+            </when>
+            <otherwise>
+                id, topic_id, type, name, author, brand, download 
+            </otherwise>
+        </choose>
+    </sql>
+
+    <sql id="insertColumns">
+        <trim suffixOverrides=",">
+            <if test="id != null">
+                id,
+            </if>
+            <if test="topicId != null">
+                topic_id,
+            </if>
+            <if test="type != null">
+                type,
+            </if>
+            <if test="name != null">
+                name,
+            </if>
+            <if test="author != null">
+                author,
+            </if>
+            <if test="brand != null">
+                brand,
+            </if>
+            <if test="download != null">
+                download,
+            </if>
+        </trim>
+    </sql>
+
+    <sql id="insertEntityColumns">
+        <trim suffixOverrides=",">
+            <if test="insert.id != null">
+                id,
+            </if>
+            <if test="insert.topicId != null">
+                topic_id,
+            </if>
+            <if test="insert.type != null">
+                type,
+            </if>
+            <if test="insert.name != null">
+                name,
+            </if>
+            <if test="insert.author != null">
+                author,
+            </if>
+            <if test="insert.brand != null">
+                brand,
+            </if>
+            <if test="insert.download != null">
+                download,
+            </if>
+        </trim>
+    </sql>
+
+    <sql id="insertValues">
+        <trim suffixOverrides=",">
+            <if test="id != null">
+                #{id},
+            </if>
+            <if test="topicId != null">
+                #{topicId},
+            </if>
+            <if test="type != null">
+                #{type},
+            </if>
+            <if test="name != null">
+                #{name},
+            </if>
+            <if test="author != null">
+                #{author},
+            </if>
+            <if test="brand != null">
+                #{brand},
+            </if>
+            <if test="download != null">
+                #{download},
+            </if>
+        </trim>
+    </sql>
+
+    <sql id="insertEntityValues">
+        <trim suffixOverrides=",">
+            <if test="insert.id != null">
+                #{insert.id},
+            </if>
+            <if test="insert.topicId != null">
+                #{insert.topicId},
+            </if>
+            <if test="insert.type != null">
+                #{insert.type},
+            </if>
+            <if test="insert.name != null">
+                #{insert.name},
+            </if>
+            <if test="insert.author != null">
+                #{insert.author},
+            </if>
+            <if test="insert.brand != null">
+                #{insert.brand},
+            </if>
+            <if test="insert.download != null">
+                #{insert.download},
+            </if>
+        </trim>
+    </sql>
+
+    <sql id="updateValues">
+        <trim suffixOverrides=",">
+            <if test="topicId != null">
+                topic_id = #{topicId},
+            </if>
+            <if test="type != null">
+                type = #{type},
+            </if>
+            <if test="name != null">
+                name = #{name},
+            </if>
+            <if test="author != null">
+                author = #{author},
+            </if>
+            <if test="brand != null">
+                brand = #{brand},
+            </if>
+            <if test="download != null">
+                download = #{download},
+            </if>
+        </trim>
+    </sql>
+
+    <sql id="updateValuesByCriterion">
+        <trim suffixOverrides=",">
+            <if test="entity.topicId != null">
+                topic_id = #{entity.topicId},
+            </if>
+            <if test="entity.type != null">
+                type = #{entity.type},
+            </if>
+            <if test="entity.name != null">
+                name = #{entity.name},
+            </if>
+            <if test="entity.author != null">
+                author = #{entity.author},
+            </if>
+            <if test="entity.brand != null">
+                brand = #{entity.brand},
+            </if>
+            <if test="entity.download != null">
+                download = #{entity.download},
+            </if>
+        </trim>
+    </sql>
+
+    <sql id="simpleConditions">
+        <trim prefix="WHERE" prefixOverrides="AND">
+            <if test="entity.id != null">
+                AND id = #{entity.id}
+            </if>
+            <if test="entity.topicId != null">
+                AND topic_id = #{entity.topicId}
+            </if>
+            <if test="entity.type != null">
+                AND type = #{entity.type}
+            </if>
+            <if test="entity.name != null">
+                AND name = #{entity.name}
+            </if>
+            <if test="entity.author != null">
+                AND author = #{entity.author}
+            </if>
+            <if test="entity.brand != null">
+                AND brand = #{entity.brand}
+            </if>
+            <if test="entity.download != null">
+                AND download = #{entity.download}
+            </if>
+        </trim>
+    </sql>
+
+    <sql id="sort">
+        <trim prefix="ORDER BY" suffixOverrides=",">
+            <foreach collection="orders" separator="," item="item" index="index">
+                ${item.property} ${item.direction}
+            </foreach>
+        </trim>
+    </sql>
+
+    <sql id="criterion">
+        <foreach collection="conditions.tokens" item="item">
+            <choose>
+                <when test="item.param">#{item.value}</when><otherwise>${item.value}</otherwise>
+            </choose>
+        </foreach>
+    </sql>
+
+    <sql id="limit">
+        LIMIT #{offset}, #{pageSize}
+    </sql>
+
+    <sql id="relationships">
+        <if test="relationships != null">
+            <foreach collection="relationships" item="join" index="index">
+                ${join.type()} ${join.table()} ON ${join.condition()}
+            </foreach>
+        </if>
+    </sql>
+
+    <!-- insert -->
+    <insert id="save" parameterType="com.mifan.article.domain.TopicsTune" keyProperty="id" useGeneratedKeys="true">
+        INSERT INTO topics_tune(<include refid="insertColumns"/>) VALUES (<include refid="insertValues"/>)
+    </insert>
+
+    <!-- insert into on duplicate -->
+    <insert id="insertOnDuplicate" parameterType="com.mifan.article.domain.TopicsTune" keyProperty="id" useGeneratedKeys="true">
+        INSERT INTO topics_tune(<include refid="insertEntityColumns"/>) VALUES (<include refid="insertEntityValues"/>) ON DUPLICATE KEY UPDATE <include refid="updateValuesByCriterion"/>
+    </insert>
+
+    <!-- insert into on duplicate -->
+    <insert id="saveOrUpdate" parameterType="com.mifan.article.domain.TopicsTune" keyProperty="id" useGeneratedKeys="true">
+        INSERT INTO topics_tune(<include refid="insertColumns"/>) VALUES (<include refid="insertValues"/>) ON DUPLICATE KEY UPDATE <include refid="updateValues"/>
+    </insert>
+
+    <!-- delete -->
+    <delete id="delete" parameterType="long">
+        DELETE FROM topics_tune WHERE id = #{id}
+    </delete>
+
+    <!-- update -->
+    <update id="update" parameterType="com.mifan.article.domain.TopicsTune">
+        UPDATE topics_tune SET <include refid="updateValues"/> WHERE id = #{id}
+    </update>
+
+    <update id="updateByCriterion" parameterType="com.mifan.article.domain.TopicsTune">
+        UPDATE topics_tune SET <include refid="updateValuesByCriterion"/> WHERE id = #{entity.id} AND <include refid="criterion"></include>
+    </update>
+
+    <update id="updateByMap" parameterType="map">
+        UPDATE topics_tune
+        <trim prefix="SET" suffixOverrides=",">
+            <foreach collection="increments" index="index" item="item">
+                ${item.key} = ${item.key} + #{item.value},
+            </foreach>
+            <foreach collection="fields" index="index" item="item">
+                ${item.key} = #{item.value},
+            </foreach>
+        </trim>
+        WHERE id = #{id}
+    </update>
+
+    <!-- select -->
+    <select id="findOne" parameterType="map" resultMap="topicsTune">
+        SELECT
+        <include refid="columns"></include>
+        FROM topics_tune WHERE id = #{id}
+    </select>
+
+    <select id="findOneByObject" parameterType="map" resultMap="topicsTune">
+        SELECT
+        <include refid="columns"></include>
+        FROM topics_tune <include refid="simpleConditions"></include>
+    </select>
+
+    <select id="findOneByCriterion" parameterType="map" resultMap="topicsTune">
+        SELECT
+        <include refid="columns"></include>
+        FROM topics_tune WHERE <include refid="criterion"></include> LIMIT 1
+    </select>
+
+    <select id="findAll" parameterType="map" resultMap="topicsTune">
+        SELECT
+        <include refid="columns"></include>
+        FROM topics_tune WHERE ${field} IN
+        <foreach collection="ids" open="(" separator="," close=")" index="index" item="item" >
+            ${item}
+        </foreach>
+    </select>
+
+    <select id="findAllByObject" parameterType="map" resultMap="topicsTune">
+        SELECT
+        <include refid="columns"></include>
+        FROM topics_tune <include refid="simpleConditions"></include>
+    </select>
+
+    <select id="findAllByCriterion" parameterType="map" resultMap="topicsTune">
+        SELECT
+        <include refid="columns"></include>
+        FROM topics_tune WHERE <include refid="criterion"></include>
+    </select>
+
+    <select id="findPage" parameterType="map" resultMap="topicsTune">
+        SELECT
+        <include refid="columns"></include>
+        FROM topics_tune <include refid="simpleConditions"></include> <include refid="sort"></include> <include refid="limit"></include>
+    </select>
+
+    <select id="findPageByCriterion" parameterType="map" resultMap="topicsTune">
+        SELECT
+        <include refid="columns"></include>
+        FROM topics_tune
+        <include refid="relationships"></include>
+        WHERE <include refid="criterion"></include> <include refid="sort"></include> <include refid="limit"></include>
+    </select>
+
+    <select id="count" resultType="long">
+        SELECT COUNT(*) FROM topics_tune
+    </select>
+
+    <select id="countByCondition" parameterType="map" resultType="long">
+        SELECT COUNT(*) FROM topics_tune <include refid="simpleConditions"></include>
+    </select>
+
+    <select id="countByCriterion" parameterType="map" resultType="long">
+        SELECT COUNT(*) FROM topics_tune
+        <include refid="relationships"></include>
+        WHERE <include refid="criterion"></include>
+    </select>
+
+    <select id="exists" parameterType="long" resultType="long">
+        SELECT COUNT(*) FROM topics_tune WHERE id = #{id}
+    </select>
+
+</mapper>

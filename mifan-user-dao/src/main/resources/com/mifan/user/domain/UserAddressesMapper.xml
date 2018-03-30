@@ -1,0 +1,564 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.mifan.user.domain.UserAddresses">
+
+    <!-- result map -->
+    <resultMap id="userAddresses" type="com.mifan.user.domain.UserAddresses">
+        <id property="id" column="id" javaType="long"/>
+        <result property="userId" column="user_id" javaType="long"/>
+        <result property="code" column="code" javaType="int"/>
+        <result property="province" column="province" javaType="string"/>
+        <result property="city" column="city" javaType="string"/>
+        <result property="district" column="district" javaType="string"/>
+        <result property="mobile" column="mobile" javaType="string"/>
+        <result property="consignee" column="consignee" javaType="string"/>
+        <result property="address" column="address" javaType="string"/>
+        <result property="addressLabel" column="address_label" javaType="string"/>
+        <result property="postalCode" column="postal_code" javaType="string"/>
+        <result property="priority" column="priority" javaType="int"/>
+        <result property="enabled" column="enabled" javaType="int"/>
+        <result property="creator" column="creator" javaType="long"/>
+        <result property="modifier" column="modifier" javaType="long"/>
+        <result property="created" column="created" javaType="date"/>
+        <result property="modified" column="modified" javaType="date"/>
+    </resultMap>
+
+    <!-- sql -->
+    <sql id="columns">
+        <choose>
+            <when test="fields != null and fields.size != 0">
+                <foreach collection="fields" separator="," item="item" index="index">
+                    ${item.fullname}
+                </foreach>
+            </when>
+            <otherwise>
+                id, user_id, code, province, city, district, mobile, consignee, address, address_label, postal_code, priority, enabled, creator, modifier, created, modified 
+            </otherwise>
+        </choose>
+    </sql>
+
+    <sql id="insertColumns">
+        <trim suffixOverrides=",">
+            <if test="id != null">
+                id,
+            </if>
+            <if test="userId != null">
+                user_id,
+            </if>
+            <if test="code != null">
+                code,
+            </if>
+            <if test="province != null">
+                province,
+            </if>
+            <if test="city != null">
+                city,
+            </if>
+            <if test="district != null">
+                district,
+            </if>
+            <if test="mobile != null">
+                mobile,
+            </if>
+            <if test="consignee != null">
+                consignee,
+            </if>
+            <if test="address != null">
+                address,
+            </if>
+            <if test="addressLabel != null">
+                address_label,
+            </if>
+            <if test="postalCode != null">
+                postal_code,
+            </if>
+            <if test="priority != null">
+                priority,
+            </if>
+            <if test="enabled != null">
+                enabled,
+            </if>
+            <if test="creator != null">
+                creator,
+            </if>
+            <if test="modifier != null">
+                modifier,
+            </if>
+            <if test="created != null">
+                created,
+            </if>
+            <if test="modified != null">
+                modified,
+            </if>
+        </trim>
+    </sql>
+
+    <sql id="insertEntityColumns">
+        <trim suffixOverrides=",">
+            <if test="insert.id != null">
+                id,
+            </if>
+            <if test="insert.userId != null">
+                user_id,
+            </if>
+            <if test="insert.code != null">
+                code,
+            </if>
+            <if test="insert.province != null">
+                province,
+            </if>
+            <if test="insert.city != null">
+                city,
+            </if>
+            <if test="insert.district != null">
+                district,
+            </if>
+            <if test="insert.mobile != null">
+                mobile,
+            </if>
+            <if test="insert.consignee != null">
+                consignee,
+            </if>
+            <if test="insert.address != null">
+                address,
+            </if>
+            <if test="insert.addressLabel != null">
+                address_label,
+            </if>
+            <if test="insert.postalCode != null">
+                postal_code,
+            </if>
+            <if test="insert.priority != null">
+                priority,
+            </if>
+            <if test="insert.enabled != null">
+                enabled,
+            </if>
+            <if test="insert.creator != null">
+                creator,
+            </if>
+            <if test="insert.modifier != null">
+                modifier,
+            </if>
+            <if test="insert.created != null">
+                created,
+            </if>
+            <if test="insert.modified != null">
+                modified,
+            </if>
+        </trim>
+    </sql>
+
+    <sql id="insertValues">
+        <trim suffixOverrides=",">
+            <if test="id != null">
+                #{id},
+            </if>
+            <if test="userId != null">
+                #{userId},
+            </if>
+            <if test="code != null">
+                #{code},
+            </if>
+            <if test="province != null">
+                #{province},
+            </if>
+            <if test="city != null">
+                #{city},
+            </if>
+            <if test="district != null">
+                #{district},
+            </if>
+            <if test="mobile != null">
+                #{mobile},
+            </if>
+            <if test="consignee != null">
+                #{consignee},
+            </if>
+            <if test="address != null">
+                #{address},
+            </if>
+            <if test="addressLabel != null">
+                #{addressLabel},
+            </if>
+            <if test="postalCode != null">
+                #{postalCode},
+            </if>
+            <if test="priority != null">
+                #{priority},
+            </if>
+            <if test="enabled != null">
+                #{enabled},
+            </if>
+            <if test="creator != null">
+                #{creator},
+            </if>
+            <if test="modifier != null">
+                #{modifier},
+            </if>
+            <if test="created != null">
+                #{created},
+            </if>
+            <if test="modified != null">
+                #{modified},
+            </if>
+        </trim>
+    </sql>
+
+    <sql id="insertEntityValues">
+        <trim suffixOverrides=",">
+            <if test="insert.id != null">
+                #{insert.id},
+            </if>
+            <if test="insert.userId != null">
+                #{insert.userId},
+            </if>
+            <if test="insert.code != null">
+                #{insert.code},
+            </if>
+            <if test="insert.province != null">
+                #{insert.province},
+            </if>
+            <if test="insert.city != null">
+                #{insert.city},
+            </if>
+            <if test="insert.district != null">
+                #{insert.district},
+            </if>
+            <if test="insert.mobile != null">
+                #{insert.mobile},
+            </if>
+            <if test="insert.consignee != null">
+                #{insert.consignee},
+            </if>
+            <if test="insert.address != null">
+                #{insert.address},
+            </if>
+            <if test="insert.addressLabel != null">
+                #{insert.addressLabel},
+            </if>
+            <if test="insert.postalCode != null">
+                #{insert.postalCode},
+            </if>
+            <if test="insert.priority != null">
+                #{insert.priority},
+            </if>
+            <if test="insert.enabled != null">
+                #{insert.enabled},
+            </if>
+            <if test="insert.creator != null">
+                #{insert.creator},
+            </if>
+            <if test="insert.modifier != null">
+                #{insert.modifier},
+            </if>
+            <if test="insert.created != null">
+                #{insert.created},
+            </if>
+            <if test="insert.modified != null">
+                #{insert.modified},
+            </if>
+        </trim>
+    </sql>
+
+    <sql id="updateValues">
+        <trim suffixOverrides=",">
+            <if test="userId != null">
+                user_id = #{userId},
+            </if>
+            <if test="code != null">
+                code = #{code},
+            </if>
+            <if test="province != null">
+                province = #{province},
+            </if>
+            <if test="city != null">
+                city = #{city},
+            </if>
+            <if test="district != null">
+                district = #{district},
+            </if>
+            <if test="mobile != null">
+                mobile = #{mobile},
+            </if>
+            <if test="consignee != null">
+                consignee = #{consignee},
+            </if>
+            <if test="address != null">
+                address = #{address},
+            </if>
+            <if test="addressLabel != null">
+                address_label = #{addressLabel},
+            </if>
+            <if test="postalCode != null">
+                postal_code = #{postalCode},
+            </if>
+            <if test="priority != null">
+                priority = #{priority},
+            </if>
+            <if test="enabled != null">
+                enabled = #{enabled},
+            </if>
+            <if test="creator != null">
+                creator = #{creator},
+            </if>
+            <if test="modifier != null">
+                modifier = #{modifier},
+            </if>
+            <if test="created != null">
+                created = #{created},
+            </if>
+            <if test="modified != null">
+                modified = #{modified},
+            </if>
+        </trim>
+    </sql>
+
+    <sql id="updateValuesByCriterion">
+        <trim suffixOverrides=",">
+            <if test="entity.userId != null">
+                user_id = #{entity.userId},
+            </if>
+            <if test="entity.code != null">
+                code = #{entity.code},
+            </if>
+            <if test="entity.province != null">
+                province = #{entity.province},
+            </if>
+            <if test="entity.city != null">
+                city = #{entity.city},
+            </if>
+            <if test="entity.district != null">
+                district = #{entity.district},
+            </if>
+            <if test="entity.mobile != null">
+                mobile = #{entity.mobile},
+            </if>
+            <if test="entity.consignee != null">
+                consignee = #{entity.consignee},
+            </if>
+            <if test="entity.address != null">
+                address = #{entity.address},
+            </if>
+            <if test="entity.addressLabel != null">
+                address_label = #{entity.addressLabel},
+            </if>
+            <if test="entity.postalCode != null">
+                postal_code = #{entity.postalCode},
+            </if>
+            <if test="entity.priority != null">
+                priority = #{entity.priority},
+            </if>
+            <if test="entity.enabled != null">
+                enabled = #{entity.enabled},
+            </if>
+            <if test="entity.creator != null">
+                creator = #{entity.creator},
+            </if>
+            <if test="entity.modifier != null">
+                modifier = #{entity.modifier},
+            </if>
+            <if test="entity.created != null">
+                created = #{entity.created},
+            </if>
+            <if test="entity.modified != null">
+                modified = #{entity.modified},
+            </if>
+        </trim>
+    </sql>
+
+    <sql id="simpleConditions">
+        <trim prefix="WHERE" prefixOverrides="AND">
+            <if test="entity.id != null">
+                AND id = #{entity.id}
+            </if>
+            <if test="entity.userId != null">
+                AND user_id = #{entity.userId}
+            </if>
+            <if test="entity.code != null">
+                AND code = #{entity.code}
+            </if>
+            <if test="entity.province != null">
+                AND province = #{entity.province}
+            </if>
+            <if test="entity.city != null">
+                AND city = #{entity.city}
+            </if>
+            <if test="entity.district != null">
+                AND district = #{entity.district}
+            </if>
+            <if test="entity.mobile != null">
+                AND mobile = #{entity.mobile}
+            </if>
+            <if test="entity.consignee != null">
+                AND consignee = #{entity.consignee}
+            </if>
+            <if test="entity.address != null">
+                AND address = #{entity.address}
+            </if>
+            <if test="entity.addressLabel != null">
+                AND address_label = #{entity.addressLabel}
+            </if>
+            <if test="entity.postalCode != null">
+                AND postal_code = #{entity.postalCode}
+            </if>
+            <if test="entity.priority != null">
+                AND priority = #{entity.priority}
+            </if>
+            <if test="entity.enabled != null">
+                AND enabled = #{entity.enabled}
+            </if>
+            <if test="entity.creator != null">
+                AND creator = #{entity.creator}
+            </if>
+            <if test="entity.modifier != null">
+                AND modifier = #{entity.modifier}
+            </if>
+            <if test="entity.created != null">
+                AND created = #{entity.created}
+            </if>
+            <if test="entity.modified != null">
+                AND modified = #{entity.modified}
+            </if>
+        </trim>
+    </sql>
+
+    <sql id="sort">
+        <trim prefix="ORDER BY" suffixOverrides=",">
+            <foreach collection="orders" separator="," item="item" index="index">
+                ${item.property} ${item.direction}
+            </foreach>
+        </trim>
+    </sql>
+
+    <sql id="criterion">
+        <foreach collection="conditions.tokens" item="item">
+            <choose>
+                <when test="item.param">#{item.value}</when><otherwise>${item.value}</otherwise>
+            </choose>
+        </foreach>
+    </sql>
+
+    <sql id="limit">
+        LIMIT #{offset}, #{pageSize}
+    </sql>
+
+    <sql id="relationships">
+        <if test="relationships != null">
+            <foreach collection="relationships" item="join" index="index">
+                ${join.type()} ${join.table()} ON ${join.condition()}
+            </foreach>
+        </if>
+    </sql>
+
+    <!-- insert -->
+    <insert id="save" parameterType="com.mifan.user.domain.UserAddresses" keyProperty="id" useGeneratedKeys="true">
+        INSERT INTO user_addresses(<include refid="insertColumns"/>) VALUES (<include refid="insertValues"/>)
+    </insert>
+
+    <!-- insert into on duplicate -->
+    <insert id="insertOnDuplicate" parameterType="com.mifan.user.domain.UserAddresses" keyProperty="id" useGeneratedKeys="true">
+        INSERT INTO user_addresses(<include refid="insertEntityColumns"/>) VALUES (<include refid="insertEntityValues"/>) ON DUPLICATE KEY UPDATE <include refid="updateValuesByCriterion"/>
+    </insert>
+
+    <!-- insert into on duplicate -->
+    <insert id="saveOrUpdate" parameterType="com.mifan.user.domain.UserAddresses" keyProperty="id" useGeneratedKeys="true">
+        INSERT INTO user_addresses(<include refid="insertColumns"/>) VALUES (<include refid="insertValues"/>) ON DUPLICATE KEY UPDATE <include refid="updateValues"/>
+    </insert>
+
+    <!-- delete -->
+    <delete id="delete" parameterType="long">
+        DELETE FROM user_addresses WHERE id = #{id}
+    </delete>
+
+    <!-- update -->
+    <update id="update" parameterType="com.mifan.user.domain.UserAddresses">
+        UPDATE user_addresses SET <include refid="updateValues"/> WHERE id = #{id}
+    </update>
+
+    <update id="updateByCriterion" parameterType="com.mifan.user.domain.UserAddresses">
+        UPDATE user_addresses SET <include refid="updateValuesByCriterion"/> WHERE id = #{entity.id} AND <include refid="criterion"></include>
+    </update>
+
+    <update id="updateByMap" parameterType="map">
+        UPDATE user_addresses
+        <trim prefix="SET" suffixOverrides=",">
+            <foreach collection="increments" index="index" item="item">
+                ${item.key} = ${item.key} + #{item.value},
+            </foreach>
+            <foreach collection="fields" index="index" item="item">
+                ${item.key} = #{item.value},
+            </foreach>
+        </trim>
+        WHERE id = #{id}
+    </update>
+
+    <!-- select -->
+    <select id="findOne" parameterType="map" resultMap="userAddresses">
+        SELECT
+        <include refid="columns"></include>
+        FROM user_addresses WHERE id = #{id}
+    </select>
+
+    <select id="findOneByObject" parameterType="map" resultMap="userAddresses">
+        SELECT
+        <include refid="columns"></include>
+        FROM user_addresses <include refid="simpleConditions"></include>
+    </select>
+
+    <select id="findAll" parameterType="map" resultMap="userAddresses">
+        SELECT
+        <include refid="columns"></include>
+        FROM user_addresses WHERE ${field} IN
+        <foreach collection="ids" open="(" separator="," close=")" index="index" item="item" >
+            ${item}
+        </foreach>
+    </select>
+
+    <select id="findAllByObject" parameterType="map" resultMap="userAddresses">
+        SELECT
+        <include refid="columns"></include>
+        FROM user_addresses <include refid="simpleConditions"></include>
+    </select>
+
+    <select id="findAllByCriterion" parameterType="map" resultMap="userAddresses">
+        SELECT
+        <include refid="columns"></include>
+        FROM user_addresses WHERE <include refid="criterion"></include>
+    </select>
+
+    <select id="findPage" parameterType="map" resultMap="userAddresses">
+        SELECT
+        <include refid="columns"></include>
+        FROM user_addresses <include refid="simpleConditions"></include> <include refid="sort"></include> <include refid="limit"></include>
+    </select>
+
+    <select id="findPageByCriterion" parameterType="map" resultMap="userAddresses">
+        SELECT
+        <include refid="columns"></include>
+        FROM user_addresses
+        <include refid="relationships"></include>
+        WHERE <include refid="criterion"></include> <include refid="sort"></include> <include refid="limit"></include>
+    </select>
+
+    <select id="count" resultType="long">
+        SELECT COUNT(*) FROM user_addresses
+    </select>
+
+    <select id="countByCondition" parameterType="map" resultType="long">
+        SELECT COUNT(*) FROM user_addresses <include refid="simpleConditions"></include>
+    </select>
+
+    <select id="countByCriterion" parameterType="map" resultType="long">
+        SELECT COUNT(*) FROM user_addresses
+        <include refid="relationships"></include>
+        WHERE <include refid="criterion"></include>
+    </select>
+
+    <select id="exists" parameterType="long" resultType="long">
+        SELECT COUNT(*) FROM user_addresses WHERE id = #{id}
+    </select>
+
+</mapper>

@@ -1,0 +1,254 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.mifan.user.domain.AuthOperations">
+
+    <!-- result map -->
+    <resultMap id="authOperations" type="com.mifan.user.domain.AuthOperations">
+        <id property="id" column="id" javaType="long"/>
+        <result property="authorityId" column="authority_id" javaType="long"/>
+        <result property="functionClass" column="function_class" javaType="string"/>
+        <result property="functionSignature" column="function_signature" javaType="string"/>
+        <result property="args" column="args" javaType="string"/>
+        <result property="argsLength" column="args_length" javaType="int"/>
+    </resultMap>
+
+    <!-- sql -->
+    <sql id="columns">
+        <choose>
+            <when test="fields != null and fields.size != 0">
+                <foreach collection="fields" separator="," item="item" index="index">
+                    ${item.fullname}
+                </foreach>
+            </when>
+            <otherwise>
+                id, authority_id, function_class, function_signature, args, args_length
+            </otherwise>
+        </choose>
+    </sql>
+
+    <sql id="insertColumns">
+        <trim suffixOverrides=",">
+            <if test="id != null">
+                id,
+            </if>
+            <if test="authorityId != null">
+                authority_id,
+            </if>
+            <if test="functionClass != null">
+                function_class,
+            </if>
+            <if test="functionSignature != null">
+                function_signature,
+            </if>
+            <if test="args != null">
+                args,
+            </if>
+            <if test="argsLength != null">
+                args_length,
+            </if>
+        </trim>
+    </sql>
+
+    <sql id="insertValues">
+        <trim suffixOverrides=",">
+            <if test="id != null">
+                #{id},
+            </if>
+            <if test="authorityId != null">
+                #{authorityId},
+            </if>
+            <if test="functionClass != null">
+                #{functionClass},
+            </if>
+            <if test="functionSignature != null">
+                #{functionSignature},
+            </if>
+            <if test="args != null">
+                #{args},
+            </if>
+            <if test="argsLength != null">
+                #{argsLength},
+            </if>
+        </trim>
+    </sql>
+
+    <sql id="updateValues">
+        <trim suffixOverrides=",">
+            <if test="authorityId != null">
+                authority_id = #{authorityId},
+            </if>
+            <if test="functionClass != null">
+                function_class = #{functionClass},
+            </if>
+            <if test="functionSignature != null">
+                function_signature = #{functionSignature},
+            </if>
+            <if test="args != null">
+                args = #{args},
+            </if>
+            <if test="argsLength != null">
+                args_length = #{argsLength},
+            </if>
+        </trim>
+    </sql>
+
+    <sql id="updateValuesByCriterion">
+        <trim suffixOverrides=",">
+            <if test="entity.authorityId != null">
+                authority_id = #{entity.authorityId},
+            </if>
+            <if test="entity.functionClass != null">
+                function_class = #{entity.functionClass},
+            </if>
+            <if test="entity.functionSignature != null">
+                function_signature = #{entity.functionSignature},
+            </if>
+            <if test="entity.args != null">
+                args = #{entity.args},
+            </if>
+            <if test="entity.argsLength != null">
+                args_length = #{entity.argsLength},
+            </if>
+        </trim>
+    </sql>
+
+    <sql id="simpleConditions">
+        <trim prefix="WHERE" prefixOverrides="AND">
+            <if test="entity.id != null">
+                AND id = #{entity.id}
+            </if>
+            <if test="entity.authorityId != null">
+                AND authority_id = #{entity.authorityId}
+            </if>
+            <if test="entity.functionClass != null">
+                AND function_class = #{entity.functionClass}
+            </if>
+            <if test="entity.functionSignature != null">
+                AND function_signature = #{entity.functionSignature}
+            </if>
+            <if test="entity.args != null">
+                AND args = #{entity.args}
+            </if>
+            <if test="entity.argsLength != null">
+                AND args_length = #{entity.argsLength}
+            </if>
+        </trim>
+    </sql>
+
+    <sql id="sort">
+        <trim prefix="ORDER BY" suffixOverrides=",">
+            <foreach collection="orders" separator="," item="item" index="index">
+                ${item.property} ${item.direction}
+            </foreach>
+        </trim>
+    </sql>
+
+    <sql id="criterion">
+        <foreach collection="conditions.tokens" item="item">
+            <choose>
+                <when test="item.param">#{item.value}</when><otherwise>${item.value}</otherwise>
+            </choose>
+        </foreach>
+    </sql>
+
+    <sql id="limit">
+        LIMIT #{offset}, #{pageSize}
+    </sql>
+
+    <!-- insert -->
+    <insert id="save" parameterType="com.mifan.user.domain.AuthOperations" keyProperty="id" useGeneratedKeys="true">
+        INSERT INTO auth_operations(<include refid="insertColumns"/>) VALUES (<include refid="insertValues"/>)
+    </insert>
+
+    <!-- insert into on duplicate -->
+    <insert id="saveOrUpdate" parameterType="com.mifan.user.domain.AuthOperations" keyProperty="id" useGeneratedKeys="true">
+        INSERT INTO auth_operations(<include refid="insertColumns"/>) VALUES (<include refid="insertValues"/>) ON DUPLICATE KEY UPDATE <include refid="updateValues"/>
+    </insert>
+
+    <!-- delete -->
+    <delete id="delete" parameterType="long">
+        DELETE FROM auth_operations WHERE id = #{id}
+    </delete>
+
+    <!-- update -->
+    <update id="update" parameterType="com.mifan.user.domain.AuthOperations">
+        UPDATE auth_operations SET <include refid="updateValues"/> WHERE id = #{id}
+    </update>
+
+    <update id="updateByCriterion" parameterType="com.mifan.user.domain.AuthOperations">
+        UPDATE auth_operations SET <include refid="updateValuesByCriterion"/> WHERE id = #{entity.id} AND <include refid="criterion"></include>
+    </update>
+
+    <!-- select -->
+    <select id="findOne" parameterType="map" resultMap="authOperations">
+        SELECT
+        <include refid="columns"></include>
+        FROM auth_operations WHERE id = #{id}
+    </select>
+
+    <select id="findOneByObject" parameterType="map" resultMap="authOperations">
+        SELECT
+        <include refid="columns"></include>
+        FROM auth_operations <include refid="simpleConditions"></include>
+    </select>
+
+    <select id="findAll" parameterType="map" resultMap="authOperations">
+        SELECT
+        <include refid="columns"></include>
+        FROM auth_operations WHERE ${field} IN
+        <foreach collection="ids" open="(" separator="," close=")" index="index" item="item" >
+            ${item}
+        </foreach>
+    </select>
+
+    <select id="findAllByObject" parameterType="map" resultMap="authOperations">
+        SELECT
+        <include refid="columns"></include>
+        FROM auth_operations <include refid="simpleConditions"></include>
+    </select>
+
+    <select id="findAllByCriterion" parameterType="map" resultMap="authOperations">
+        SELECT
+        <include refid="columns"></include>
+        FROM auth_operations WHERE <include refid="criterion"></include>
+    </select>
+
+    <select id="findPage" parameterType="map" resultMap="authOperations">
+        SELECT
+        <include refid="columns"></include>
+        FROM auth_operations <include refid="simpleConditions"></include> <include refid="sort"></include> <include refid="limit"></include>
+    </select>
+
+    <select id="findPageByCriterion" parameterType="map" resultMap="authOperations">
+        SELECT
+        <include refid="columns"></include>
+        FROM auth_operations WHERE <include refid="criterion"></include> <include refid="sort"></include> <include refid="limit"></include>
+    </select>
+
+    <select id="count" resultType="long">
+        SELECT COUNT(*) FROM auth_operations
+    </select>
+
+    <select id="countByCondition" parameterType="map" resultType="long">
+        SELECT COUNT(*) FROM auth_operations <include refid="simpleConditions"></include>
+    </select>
+
+    <select id="countByCriterion" parameterType="map" resultType="long">
+        SELECT COUNT(*) FROM auth_operations WHERE <include refid="criterion"></include>
+    </select>
+
+    <select id="exists" parameterType="long" resultType="long">
+        SELECT COUNT(*) FROM auth_operations WHERE id = #{id}
+    </select>
+
+    <!-- -->
+    <select id="findByAuthorities" parameterType="map" resultMap="authOperations">
+        SELECT id, authority_id, function_class, function_signature, args, args_length FROM auth_operations WHERE authority_id IN
+        <foreach collection="authorityIds" open="(" separator="," close=")" index="index" item="item">
+            ${item}
+        </foreach>
+    </select>
+
+</mapper>

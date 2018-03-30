@@ -1,0 +1,485 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.mifan.article.domain.Folders">
+
+    <!-- result map -->
+    <resultMap id="folders" type="com.mifan.article.domain.Folders">
+        <id property="id" column="id" javaType="long"/>
+        <result property="parentId" column="parent_id" javaType="long"/>
+        <result property="folderType" column="folder_type" javaType="int"/>
+        <result property="folderName" column="folder_name" javaType="string"/>
+        <result property="amount" column="amount" javaType="int"/>
+        <result property="capacity" column="capacity" javaType="int"/>
+        <result property="displayOrder" column="display_order" javaType="int"/>
+        <result property="cancellable" column="cancellable" javaType="int"/>
+        <result property="enabled" column="enabled" javaType="int"/>
+        <result property="creator" column="creator" javaType="long"/>
+        <result property="modifier" column="modifier" javaType="long"/>
+        <result property="created" column="created" javaType="date"/>
+        <result property="modified" column="modified" javaType="date"/>
+    </resultMap>
+
+    <!-- sql -->
+    <sql id="columns">
+        <choose>
+            <when test="fields != null and fields.size != 0">
+                <foreach collection="fields" separator="," item="item" index="index">
+                    ${item.fullname}
+                </foreach>
+            </when>
+            <otherwise>
+                id, parent_id, folder_type, folder_name, amount, capacity, display_order, cancellable, enabled, creator, modifier, created, modified 
+            </otherwise>
+        </choose>
+    </sql>
+
+    <sql id="insertColumns">
+        <trim suffixOverrides=",">
+            <if test="id != null">
+                id,
+            </if>
+            <if test="parentId != null">
+                parent_id,
+            </if>
+            <if test="folderType != null">
+                folder_type,
+            </if>
+            <if test="folderName != null">
+                folder_name,
+            </if>
+            <if test="amount != null">
+                amount,
+            </if>
+            <if test="capacity != null">
+                capacity,
+            </if>
+            <if test="displayOrder != null">
+                display_order,
+            </if>
+            <if test="cancellable != null">
+                cancellable,
+            </if>
+            <if test="enabled != null">
+                enabled,
+            </if>
+            <if test="creator != null">
+                creator,
+            </if>
+            <if test="modifier != null">
+                modifier,
+            </if>
+            <if test="created != null">
+                created,
+            </if>
+            <if test="modified != null">
+                modified,
+            </if>
+        </trim>
+    </sql>
+
+    <sql id="insertEntityColumns">
+        <trim suffixOverrides=",">
+            <if test="insert.id != null">
+                id,
+            </if>
+            <if test="insert.parentId != null">
+                parent_id,
+            </if>
+            <if test="insert.folderType != null">
+                folder_type,
+            </if>
+            <if test="insert.folderName != null">
+                folder_name,
+            </if>
+            <if test="insert.amount != null">
+                amount,
+            </if>
+            <if test="insert.capacity != null">
+                capacity,
+            </if>
+            <if test="insert.displayOrder != null">
+                display_order,
+            </if>
+            <if test="insert.cancellable != null">
+                cancellable,
+            </if>
+            <if test="insert.enabled != null">
+                enabled,
+            </if>
+            <if test="insert.creator != null">
+                creator,
+            </if>
+            <if test="insert.modifier != null">
+                modifier,
+            </if>
+            <if test="insert.created != null">
+                created,
+            </if>
+            <if test="insert.modified != null">
+                modified,
+            </if>
+        </trim>
+    </sql>
+
+    <sql id="insertValues">
+        <trim suffixOverrides=",">
+            <if test="id != null">
+                #{id},
+            </if>
+            <if test="parentId != null">
+                #{parentId},
+            </if>
+            <if test="folderType != null">
+                #{folderType},
+            </if>
+            <if test="folderName != null">
+                #{folderName},
+            </if>
+            <if test="amount != null">
+                #{amount},
+            </if>
+            <if test="capacity != null">
+                #{capacity},
+            </if>
+            <if test="displayOrder != null">
+                #{displayOrder},
+            </if>
+            <if test="cancellable != null">
+                #{cancellable},
+            </if>
+            <if test="enabled != null">
+                #{enabled},
+            </if>
+            <if test="creator != null">
+                #{creator},
+            </if>
+            <if test="modifier != null">
+                #{modifier},
+            </if>
+            <if test="created != null">
+                #{created},
+            </if>
+            <if test="modified != null">
+                #{modified},
+            </if>
+        </trim>
+    </sql>
+
+    <sql id="insertEntityValues">
+        <trim suffixOverrides=",">
+            <if test="insert.id != null">
+                #{insert.id},
+            </if>
+            <if test="insert.parentId != null">
+                #{insert.parentId},
+            </if>
+            <if test="insert.folderType != null">
+                #{insert.folderType},
+            </if>
+            <if test="insert.folderName != null">
+                #{insert.folderName},
+            </if>
+            <if test="insert.amount != null">
+                #{insert.amount},
+            </if>
+            <if test="insert.capacity != null">
+                #{insert.capacity},
+            </if>
+            <if test="insert.displayOrder != null">
+                #{insert.displayOrder},
+            </if>
+            <if test="insert.cancellable != null">
+                #{insert.cancellable},
+            </if>
+            <if test="insert.enabled != null">
+                #{insert.enabled},
+            </if>
+            <if test="insert.creator != null">
+                #{insert.creator},
+            </if>
+            <if test="insert.modifier != null">
+                #{insert.modifier},
+            </if>
+            <if test="insert.created != null">
+                #{insert.created},
+            </if>
+            <if test="insert.modified != null">
+                #{insert.modified},
+            </if>
+        </trim>
+    </sql>
+
+    <sql id="updateValues">
+        <trim suffixOverrides=",">
+            <if test="parentId != null">
+                parent_id = #{parentId},
+            </if>
+            <if test="folderType != null">
+                folder_type = #{folderType},
+            </if>
+            <if test="folderName != null">
+                folder_name = #{folderName},
+            </if>
+            <if test="amount != null">
+                amount = #{amount},
+            </if>
+            <if test="capacity != null">
+                capacity = #{capacity},
+            </if>
+            <if test="displayOrder != null">
+                display_order = #{displayOrder},
+            </if>
+            <if test="cancellable != null">
+                cancellable = #{cancellable},
+            </if>
+            <if test="enabled != null">
+                enabled = #{enabled},
+            </if>
+            <if test="creator != null">
+                creator = #{creator},
+            </if>
+            <if test="modifier != null">
+                modifier = #{modifier},
+            </if>
+            <if test="created != null">
+                created = #{created},
+            </if>
+            <if test="modified != null">
+                modified = #{modified},
+            </if>
+        </trim>
+    </sql>
+
+    <sql id="updateValuesByCriterion">
+        <trim suffixOverrides=",">
+            <if test="entity.parentId != null">
+                parent_id = #{entity.parentId},
+            </if>
+            <if test="entity.folderType != null">
+                folder_type = #{entity.folderType},
+            </if>
+            <if test="entity.folderName != null">
+                folder_name = #{entity.folderName},
+            </if>
+            <if test="entity.amount != null">
+                amount = #{entity.amount},
+            </if>
+            <if test="entity.capacity != null">
+                capacity = #{entity.capacity},
+            </if>
+            <if test="entity.displayOrder != null">
+                display_order = #{entity.displayOrder},
+            </if>
+            <if test="entity.cancellable != null">
+                cancellable = #{entity.cancellable},
+            </if>
+            <if test="entity.enabled != null">
+                enabled = #{entity.enabled},
+            </if>
+            <if test="entity.creator != null">
+                creator = #{entity.creator},
+            </if>
+            <if test="entity.modifier != null">
+                modifier = #{entity.modifier},
+            </if>
+            <if test="entity.created != null">
+                created = #{entity.created},
+            </if>
+            <if test="entity.modified != null">
+                modified = #{entity.modified},
+            </if>
+        </trim>
+    </sql>
+
+    <sql id="simpleConditions">
+        <trim prefix="WHERE" prefixOverrides="AND">
+            <if test="entity.id != null">
+                AND id = #{entity.id}
+            </if>
+            <if test="entity.parentId != null">
+                AND parent_id = #{entity.parentId}
+            </if>
+            <if test="entity.folderType != null">
+                AND folder_type = #{entity.folderType}
+            </if>
+            <if test="entity.folderName != null">
+                AND folder_name = #{entity.folderName}
+            </if>
+            <if test="entity.amount != null">
+                AND amount = #{entity.amount}
+            </if>
+            <if test="entity.capacity != null">
+                AND capacity = #{entity.capacity}
+            </if>
+            <if test="entity.displayOrder != null">
+                AND display_order = #{entity.displayOrder}
+            </if>
+            <if test="entity.cancellable != null">
+                AND cancellable = #{entity.cancellable}
+            </if>
+            <if test="entity.enabled != null">
+                AND enabled = #{entity.enabled}
+            </if>
+            <if test="entity.creator != null">
+                AND creator = #{entity.creator}
+            </if>
+            <if test="entity.modifier != null">
+                AND modifier = #{entity.modifier}
+            </if>
+            <if test="entity.created != null">
+                AND created = #{entity.created}
+            </if>
+            <if test="entity.modified != null">
+                AND modified = #{entity.modified}
+            </if>
+        </trim>
+    </sql>
+
+    <sql id="sort">
+        <trim prefix="ORDER BY" suffixOverrides=",">
+            <foreach collection="orders" separator="," item="item" index="index">
+                ${item.property} ${item.direction}
+            </foreach>
+        </trim>
+    </sql>
+
+    <sql id="criterion">
+        <foreach collection="conditions.tokens" item="item">
+            <choose>
+                <when test="item.param">#{item.value}</when><otherwise>${item.value}</otherwise>
+            </choose>
+        </foreach>
+    </sql>
+
+    <sql id="limit">
+        LIMIT #{offset}, #{pageSize}
+    </sql>
+
+    <sql id="relationships">
+        <if test="relationships != null">
+            <foreach collection="relationships" item="join" index="index">
+                ${join.type()} ${join.table()} ON ${join.condition()}
+            </foreach>
+        </if>
+    </sql>
+
+    <!-- insert -->
+    <insert id="save" parameterType="com.mifan.article.domain.Folders" keyProperty="id" useGeneratedKeys="true">
+        INSERT INTO folders(<include refid="insertColumns"/>) VALUES (<include refid="insertValues"/>)
+    </insert>
+
+    <!-- insert into on duplicate -->
+    <insert id="insertOnDuplicate" parameterType="com.mifan.article.domain.Folders" keyProperty="id" useGeneratedKeys="true">
+        INSERT INTO folders(<include refid="insertEntityColumns"/>) VALUES (<include refid="insertEntityValues"/>) ON DUPLICATE KEY UPDATE <include refid="updateValuesByCriterion"/>
+    </insert>
+
+    <!-- insert into on duplicate -->
+    <insert id="saveOrUpdate" parameterType="com.mifan.article.domain.Folders" keyProperty="id" useGeneratedKeys="true">
+        INSERT INTO folders(<include refid="insertColumns"/>) VALUES (<include refid="insertValues"/>) ON DUPLICATE KEY UPDATE <include refid="updateValues"/>
+    </insert>
+
+    <!-- delete -->
+    <delete id="delete" parameterType="long">
+        DELETE FROM folders WHERE id = #{id}
+    </delete>
+
+    <!-- update -->
+    <update id="update" parameterType="com.mifan.article.domain.Folders">
+        UPDATE folders SET <include refid="updateValues"/> WHERE id = #{id}
+    </update>
+
+    <update id="updateByCriterion" parameterType="com.mifan.article.domain.Folders">
+        UPDATE folders SET <include refid="updateValuesByCriterion"/> WHERE id = #{entity.id} AND <include refid="criterion"></include>
+    </update>
+
+    <update id="updateByMap" parameterType="map">
+        UPDATE folders
+        <trim prefix="SET" suffixOverrides=",">
+            <foreach collection="increments" index="index" item="item">
+                ${item.key} = ${item.key} + #{item.value},
+            </foreach>
+            <foreach collection="fields" index="index" item="item">
+                ${item.key} = #{item.value},
+            </foreach>
+        </trim>
+        WHERE id = #{id}
+        <if test="conditions != null">
+            AND <include refid="criterion"></include>
+        </if>
+    </update>
+
+    <!-- select -->
+    <select id="findOne" parameterType="map" resultMap="folders">
+        SELECT
+        <include refid="columns"></include>
+        FROM folders WHERE id = #{id}
+    </select>
+
+    <select id="findOneByObject" parameterType="map" resultMap="folders">
+        SELECT
+        <include refid="columns"></include>
+        FROM folders <include refid="simpleConditions"></include>
+    </select>
+
+    <select id="findOneByCriterion" parameterType="map" resultMap="folders">
+        SELECT
+        <include refid="columns"></include>
+        FROM folders WHERE <include refid="criterion"></include> LIMIT 1
+    </select>
+
+    <select id="findAll" parameterType="map" resultMap="folders">
+        SELECT
+        <include refid="columns"></include>
+        FROM folders WHERE ${field} IN
+        <foreach collection="ids" open="(" separator="," close=")" index="index" item="item" >
+            ${item}
+        </foreach>
+    </select>
+
+    <select id="findAllByObject" parameterType="map" resultMap="folders">
+        SELECT
+        <include refid="columns"></include>
+        FROM folders <include refid="simpleConditions"></include>
+    </select>
+
+    <select id="findAllByCriterion" parameterType="map" resultMap="folders">
+        SELECT
+        <include refid="columns"></include>
+        FROM folders WHERE <include refid="criterion"></include>
+    </select>
+
+    <select id="findPage" parameterType="map" resultMap="folders">
+        SELECT
+        <include refid="columns"></include>
+        FROM folders <include refid="simpleConditions"></include> <include refid="sort"></include> <include refid="limit"></include>
+    </select>
+
+    <select id="findPageByCriterion" parameterType="map" resultMap="folders">
+        SELECT
+        <include refid="columns"></include>
+        FROM folders
+        <include refid="relationships"></include>
+        WHERE <include refid="criterion"></include> <include refid="sort"></include> <include refid="limit"></include>
+    </select>
+
+    <select id="count" resultType="long">
+        SELECT COUNT(*) FROM folders
+    </select>
+
+    <select id="countByCondition" parameterType="map" resultType="long">
+        SELECT COUNT(*) FROM folders <include refid="simpleConditions"></include>
+    </select>
+
+    <select id="countByCriterion" parameterType="map" resultType="long">
+        SELECT COUNT(*) FROM folders
+        <include refid="relationships"></include>
+        WHERE <include refid="criterion"></include>
+    </select>
+
+    <select id="exists" parameterType="long" resultType="long">
+        SELECT COUNT(*) FROM folders WHERE id = #{id}
+    </select>
+
+</mapper>

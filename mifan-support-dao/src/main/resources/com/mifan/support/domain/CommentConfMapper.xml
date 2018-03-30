@@ -1,0 +1,278 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.mifan.support.domain.CommentConf">
+
+    <!-- result map -->
+    <resultMap id="commentConf" type="com.mifan.support.domain.CommentConf">
+        <id property="id" column="id" javaType="long"/>
+        <result property="confName" column="conf_name" javaType="string"/>
+        <result property="description" column="description" javaType="string"/>
+        <result property="enabled" column="enabled" javaType="int"/>
+        <result property="modifier" column="modifier" javaType="long"/>
+        <result property="creator" column="creator" javaType="long"/>
+        <result property="modified" column="modified" javaType="date"/>
+        <result property="created" column="created" javaType="date"/>
+    </resultMap>
+
+    <!-- sql -->
+    <sql id="columns">
+        <choose>
+            <when test="fields != null and fields.size != 0">
+                <foreach collection="fields" separator="," item="item" index="index">
+                    ${item.fullname}
+                </foreach>
+            </when>
+            <otherwise>
+                id, conf_name, description, enabled, modifier, creator, modified, created 
+            </otherwise>
+        </choose>
+    </sql>
+
+    <sql id="insertColumns">
+        <trim suffixOverrides=",">
+            <if test="id != null">
+                id,
+            </if>
+            <if test="confName != null">
+                conf_name,
+            </if>
+            <if test="description != null">
+                description,
+            </if>
+            <if test="enabled != null">
+                enabled,
+            </if>
+            <if test="modifier != null">
+                modifier,
+            </if>
+            <if test="creator != null">
+                creator,
+            </if>
+            <if test="modified != null">
+                modified,
+            </if>
+            <if test="created != null">
+                created,
+            </if>
+        </trim>
+    </sql>
+
+    <sql id="insertValues">
+        <trim suffixOverrides=",">
+            <if test="id != null">
+                #{id},
+            </if>
+            <if test="confName != null">
+                #{confName},
+            </if>
+            <if test="description != null">
+                #{description},
+            </if>
+            <if test="enabled != null">
+                #{enabled},
+            </if>
+            <if test="modifier != null">
+                #{modifier},
+            </if>
+            <if test="creator != null">
+                #{creator},
+            </if>
+            <if test="modified != null">
+                #{modified},
+            </if>
+            <if test="created != null">
+                #{created},
+            </if>
+        </trim>
+    </sql>
+
+    <sql id="updateValues">
+        <trim suffixOverrides=",">
+            <if test="confName != null">
+                conf_name = #{confName},
+            </if>
+            <if test="description != null">
+                description = #{description},
+            </if>
+            <if test="enabled != null">
+                enabled = #{enabled},
+            </if>
+            <if test="modifier != null">
+                modifier = #{modifier},
+            </if>
+            <if test="creator != null">
+                creator = #{creator},
+            </if>
+            <if test="modified != null">
+                modified = #{modified},
+            </if>
+            <if test="created != null">
+                created = #{created},
+            </if>
+        </trim>
+    </sql>
+
+    <sql id="updateValuesByCriterion">
+        <trim suffixOverrides=",">
+            <if test="entity.confName != null">
+                conf_name = #{entity.confName},
+            </if>
+            <if test="entity.description != null">
+                description = #{entity.description},
+            </if>
+            <if test="entity.enabled != null">
+                enabled = #{entity.enabled},
+            </if>
+            <if test="entity.modifier != null">
+                modifier = #{entity.modifier},
+            </if>
+            <if test="entity.creator != null">
+                creator = #{entity.creator},
+            </if>
+            <if test="entity.modified != null">
+                modified = #{entity.modified},
+            </if>
+            <if test="entity.created != null">
+                created = #{entity.created},
+            </if>
+        </trim>
+    </sql>
+
+    <sql id="simpleConditions">
+        <trim prefix="WHERE" prefixOverrides="AND">
+            <if test="entity.id != null">
+                AND id = #{entity.id}
+            </if>
+            <if test="entity.confName != null">
+                AND conf_name = #{entity.confName}
+            </if>
+            <if test="entity.description != null">
+                AND description = #{entity.description}
+            </if>
+            <if test="entity.enabled != null">
+                AND enabled = #{entity.enabled}
+            </if>
+            <if test="entity.modifier != null">
+                AND modifier = #{entity.modifier}
+            </if>
+            <if test="entity.creator != null">
+                AND creator = #{entity.creator}
+            </if>
+            <if test="entity.modified != null">
+                AND modified = #{entity.modified}
+            </if>
+            <if test="entity.created != null">
+                AND created = #{entity.created}
+            </if>
+        </trim>
+    </sql>
+
+    <sql id="sort">
+        <trim prefix="ORDER BY" suffixOverrides=",">
+            <foreach collection="orders" separator="," item="item" index="index">
+                ${item.property} ${item.direction}
+            </foreach>
+        </trim>
+    </sql>
+
+    <sql id="criterion">
+        <foreach collection="conditions.tokens" item="item">
+            <choose>
+                <when test="item.param">#{item.value}</when><otherwise>${item.value}</otherwise>
+            </choose>
+        </foreach>
+    </sql>
+
+    <sql id="limit">
+        LIMIT #{offset}, #{pageSize}
+    </sql>
+
+    <!-- insert -->
+    <insert id="save" parameterType="com.mifan.support.domain.CommentConf" keyProperty="id" useGeneratedKeys="true">
+        INSERT INTO comment_conf(<include refid="insertColumns"/>) VALUES (<include refid="insertValues"/>)
+    </insert>
+
+    <!-- insert into on duplicate -->
+    <insert id="saveOrUpdate" parameterType="com.mifan.support.domain.CommentConf" keyProperty="id" useGeneratedKeys="true">
+        INSERT INTO comment_conf(<include refid="insertColumns"/>) VALUES (<include refid="insertValues"/>) ON DUPLICATE KEY UPDATE <include refid="updateValues"/>
+    </insert>
+
+    <!-- delete -->
+    <delete id="delete" parameterType="long">
+        DELETE FROM comment_conf WHERE id = #{id}
+    </delete>
+
+    <!-- update -->
+    <update id="update" parameterType="com.mifan.support.domain.CommentConf">
+        UPDATE comment_conf SET <include refid="updateValues"/> WHERE id = #{id}
+    </update>
+
+    <update id="updateByCriterion" parameterType="com.mifan.support.domain.CommentConf">
+        UPDATE comment_conf SET <include refid="updateValuesByCriterion"/> WHERE id = #{entity.id} AND <include refid="criterion"></include>
+    </update>
+
+    <!-- select -->
+    <select id="findOne" parameterType="map" resultMap="commentConf">
+        SELECT
+        <include refid="columns"></include>
+        FROM comment_conf WHERE id = #{id}
+    </select>
+
+    <select id="findOneByObject" parameterType="map" resultMap="commentConf">
+        SELECT
+        <include refid="columns"></include>
+        FROM comment_conf <include refid="simpleConditions"></include>
+    </select>
+
+    <select id="findAll" parameterType="map" resultMap="commentConf">
+        SELECT
+        <include refid="columns"></include>
+        FROM comment_conf WHERE ${field} IN
+        <foreach collection="ids" open="(" separator="," close=")" index="index" item="item" >
+            ${item}
+        </foreach>
+    </select>
+
+    <select id="findAllByObject" parameterType="map" resultMap="commentConf">
+        SELECT
+        <include refid="columns"></include>
+        FROM comment_conf <include refid="simpleConditions"></include>
+    </select>
+
+    <select id="findAllByCriterion" parameterType="map" resultMap="commentConf">
+        SELECT
+        <include refid="columns"></include>
+        FROM comment_conf WHERE <include refid="criterion"></include>
+    </select>
+
+    <select id="findPage" parameterType="map" resultMap="commentConf">
+        SELECT
+        <include refid="columns"></include>
+        FROM comment_conf <include refid="simpleConditions"></include> <include refid="sort"></include> <include refid="limit"></include>
+    </select>
+
+    <select id="findPageByCriterion" parameterType="map" resultMap="commentConf">
+        SELECT
+        <include refid="columns"></include>
+        FROM comment_conf WHERE <include refid="criterion"></include> <include refid="sort"></include> <include refid="limit"></include>
+    </select>
+
+    <select id="count" resultType="long">
+        SELECT COUNT(*) FROM comment_conf
+    </select>
+
+    <select id="countByCondition" parameterType="map" resultType="long">
+        SELECT COUNT(*) FROM comment_conf <include refid="simpleConditions"></include>
+    </select>
+
+    <select id="countByCriterion" parameterType="map" resultType="long">
+        SELECT COUNT(*) FROM comment_conf WHERE <include refid="criterion"></include>
+    </select>
+
+    <select id="exists" parameterType="long" resultType="long">
+        SELECT COUNT(*) FROM comment_conf WHERE id = #{id}
+    </select>
+
+</mapper>

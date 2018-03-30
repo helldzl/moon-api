@@ -1,0 +1,674 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.mifan.article.domain.QuartzJobs">
+
+    <!-- result map -->
+    <resultMap id="quartzJobs" type="com.mifan.article.domain.QuartzJobs">
+        <id property="id" column="id" javaType="long"/>
+        <result property="jobStatus" column="job_status" javaType="string"/>
+        <result property="jobGroup" column="job_group" javaType="string"/>
+        <result property="jobName" column="job_name" javaType="string"/>
+        <result property="jobClass" column="job_class" javaType="string"/>
+        <result property="jobData" column="job_data" javaType="string"/>
+        <result property="jobDataTemplate" column="job_data_template" javaType="string"/>
+        <result property="triggerGroup" column="trigger_group" javaType="string"/>
+        <result property="triggerName" column="trigger_name" javaType="string"/>
+        <result property="triggerCronExpression" column="trigger_cron_expression" javaType="string"/>
+        <result property="description" column="description" javaType="string"/>
+        <result property="message" column="message" javaType="string"/>
+        <result property="startTime" column="start_time" javaType="date"/>
+        <result property="endTime" column="end_time" javaType="date"/>
+        <result property="lastStartTime" column="last_start_time" javaType="date"/>
+        <result property="version" column="version" javaType="int"/>
+        <result property="auto" column="auto" javaType="int"/>
+        <result property="enabled" column="enabled" javaType="int"/>
+        <result property="creator" column="creator" javaType="long"/>
+        <result property="modifier" column="modifier" javaType="long"/>
+        <result property="created" column="created" javaType="date"/>
+        <result property="modified" column="modified" javaType="date"/>
+    </resultMap>
+
+    <!-- sql -->
+    <sql id="columns">
+        <choose>
+            <when test="fields != null and fields.size != 0">
+                <foreach collection="fields" separator="," item="item" index="index">
+                    ${item.fullname}
+                </foreach>
+            </when>
+            <otherwise>
+                id, job_status, job_group, job_name, job_class, job_data, job_data_template, trigger_group, trigger_name, trigger_cron_expression, description, message, start_time, end_time, last_start_time, version, auto, enabled, creator, modifier, created, modified 
+            </otherwise>
+        </choose>
+    </sql>
+
+    <sql id="insertColumns">
+        <trim suffixOverrides=",">
+            <if test="id != null">
+                id,
+            </if>
+            <if test="jobStatus != null">
+                job_status,
+            </if>
+            <if test="jobGroup != null">
+                job_group,
+            </if>
+            <if test="jobName != null">
+                job_name,
+            </if>
+            <if test="jobClass != null">
+                job_class,
+            </if>
+            <if test="jobData != null">
+                job_data,
+            </if>
+            <if test="jobDataTemplate != null">
+                job_data_template,
+            </if>
+            <if test="triggerGroup != null">
+                trigger_group,
+            </if>
+            <if test="triggerName != null">
+                trigger_name,
+            </if>
+            <if test="triggerCronExpression != null">
+                trigger_cron_expression,
+            </if>
+            <if test="description != null">
+                description,
+            </if>
+            <if test="message != null">
+                message,
+            </if>
+            <if test="startTime != null">
+                start_time,
+            </if>
+            <if test="endTime != null">
+                end_time,
+            </if>
+            <if test="lastStartTime != null">
+                last_start_time,
+            </if>
+            <if test="version != null">
+                version,
+            </if>
+            <if test="auto != null">
+                auto,
+            </if>
+            <if test="enabled != null">
+                enabled,
+            </if>
+            <if test="creator != null">
+                creator,
+            </if>
+            <if test="modifier != null">
+                modifier,
+            </if>
+            <if test="created != null">
+                created,
+            </if>
+            <if test="modified != null">
+                modified,
+            </if>
+        </trim>
+    </sql>
+
+    <sql id="insertEntityColumns">
+        <trim suffixOverrides=",">
+            <if test="insert.id != null">
+                id,
+            </if>
+            <if test="insert.jobStatus != null">
+                job_status,
+            </if>
+            <if test="insert.jobGroup != null">
+                job_group,
+            </if>
+            <if test="insert.jobName != null">
+                job_name,
+            </if>
+            <if test="insert.jobClass != null">
+                job_class,
+            </if>
+            <if test="insert.jobData != null">
+                job_data,
+            </if>
+            <if test="insert.jobDataTemplate != null">
+                job_data_template,
+            </if>
+            <if test="insert.triggerGroup != null">
+                trigger_group,
+            </if>
+            <if test="insert.triggerName != null">
+                trigger_name,
+            </if>
+            <if test="insert.triggerCronExpression != null">
+                trigger_cron_expression,
+            </if>
+            <if test="insert.description != null">
+                description,
+            </if>
+            <if test="insert.message != null">
+                message,
+            </if>
+            <if test="insert.startTime != null">
+                start_time,
+            </if>
+            <if test="insert.endTime != null">
+                end_time,
+            </if>
+            <if test="insert.lastStartTime != null">
+                last_start_time,
+            </if>
+            <if test="insert.version != null">
+                version,
+            </if>
+            <if test="insert.auto != null">
+                auto,
+            </if>
+            <if test="insert.enabled != null">
+                enabled,
+            </if>
+            <if test="insert.creator != null">
+                creator,
+            </if>
+            <if test="insert.modifier != null">
+                modifier,
+            </if>
+            <if test="insert.created != null">
+                created,
+            </if>
+            <if test="insert.modified != null">
+                modified,
+            </if>
+        </trim>
+    </sql>
+
+    <sql id="insertValues">
+        <trim suffixOverrides=",">
+            <if test="id != null">
+                #{id},
+            </if>
+            <if test="jobStatus != null">
+                #{jobStatus},
+            </if>
+            <if test="jobGroup != null">
+                #{jobGroup},
+            </if>
+            <if test="jobName != null">
+                #{jobName},
+            </if>
+            <if test="jobClass != null">
+                #{jobClass},
+            </if>
+            <if test="jobData != null">
+                #{jobData},
+            </if>
+            <if test="jobDataTemplate != null">
+                #{jobDataTemplate},
+            </if>
+            <if test="triggerGroup != null">
+                #{triggerGroup},
+            </if>
+            <if test="triggerName != null">
+                #{triggerName},
+            </if>
+            <if test="triggerCronExpression != null">
+                #{triggerCronExpression},
+            </if>
+            <if test="description != null">
+                #{description},
+            </if>
+            <if test="message != null">
+                #{message},
+            </if>
+            <if test="startTime != null">
+                #{startTime},
+            </if>
+            <if test="endTime != null">
+                #{endTime},
+            </if>
+            <if test="lastStartTime != null">
+                #{lastStartTime},
+            </if>
+            <if test="version != null">
+                #{version},
+            </if>
+            <if test="auto != null">
+                #{auto},
+            </if>
+            <if test="enabled != null">
+                #{enabled},
+            </if>
+            <if test="creator != null">
+                #{creator},
+            </if>
+            <if test="modifier != null">
+                #{modifier},
+            </if>
+            <if test="created != null">
+                #{created},
+            </if>
+            <if test="modified != null">
+                #{modified},
+            </if>
+        </trim>
+    </sql>
+
+    <sql id="insertEntityValues">
+        <trim suffixOverrides=",">
+            <if test="insert.id != null">
+                #{insert.id},
+            </if>
+            <if test="insert.jobStatus != null">
+                #{insert.jobStatus},
+            </if>
+            <if test="insert.jobGroup != null">
+                #{insert.jobGroup},
+            </if>
+            <if test="insert.jobName != null">
+                #{insert.jobName},
+            </if>
+            <if test="insert.jobClass != null">
+                #{insert.jobClass},
+            </if>
+            <if test="insert.jobData != null">
+                #{insert.jobData},
+            </if>
+            <if test="insert.jobDataTemplate != null">
+                #{insert.jobDataTemplate},
+            </if>
+            <if test="insert.triggerGroup != null">
+                #{insert.triggerGroup},
+            </if>
+            <if test="insert.triggerName != null">
+                #{insert.triggerName},
+            </if>
+            <if test="insert.triggerCronExpression != null">
+                #{insert.triggerCronExpression},
+            </if>
+            <if test="insert.description != null">
+                #{insert.description},
+            </if>
+            <if test="insert.message != null">
+                #{insert.message},
+            </if>
+            <if test="insert.startTime != null">
+                #{insert.startTime},
+            </if>
+            <if test="insert.endTime != null">
+                #{insert.endTime},
+            </if>
+            <if test="insert.lastStartTime != null">
+                #{insert.lastStartTime},
+            </if>
+            <if test="insert.version != null">
+                #{insert.version},
+            </if>
+            <if test="insert.auto != null">
+                #{insert.auto},
+            </if>
+            <if test="insert.enabled != null">
+                #{insert.enabled},
+            </if>
+            <if test="insert.creator != null">
+                #{insert.creator},
+            </if>
+            <if test="insert.modifier != null">
+                #{insert.modifier},
+            </if>
+            <if test="insert.created != null">
+                #{insert.created},
+            </if>
+            <if test="insert.modified != null">
+                #{insert.modified},
+            </if>
+        </trim>
+    </sql>
+
+    <sql id="updateValues">
+        <trim suffixOverrides=",">
+            <if test="jobStatus != null">
+                job_status = #{jobStatus},
+            </if>
+            <if test="jobGroup != null">
+                job_group = #{jobGroup},
+            </if>
+            <if test="jobName != null">
+                job_name = #{jobName},
+            </if>
+            <if test="jobClass != null">
+                job_class = #{jobClass},
+            </if>
+            <if test="jobData != null">
+                job_data = #{jobData},
+            </if>
+            <if test="jobDataTemplate != null">
+                job_data_template = #{jobDataTemplate},
+            </if>
+            <if test="triggerGroup != null">
+                trigger_group = #{triggerGroup},
+            </if>
+            <if test="triggerName != null">
+                trigger_name = #{triggerName},
+            </if>
+            <if test="triggerCronExpression != null">
+                trigger_cron_expression = #{triggerCronExpression},
+            </if>
+            <if test="description != null">
+                description = #{description},
+            </if>
+            <if test="message != null">
+                message = #{message},
+            </if>
+            <if test="startTime != null">
+                start_time = #{startTime},
+            </if>
+            <if test="endTime != null">
+                end_time = #{endTime},
+            </if>
+            <if test="lastStartTime != null">
+                last_start_time = #{lastStartTime},
+            </if>
+            <if test="version != null">
+                version = #{version},
+            </if>
+            <if test="auto != null">
+                auto = #{auto},
+            </if>
+            <if test="enabled != null">
+                enabled = #{enabled},
+            </if>
+            <if test="creator != null">
+                creator = #{creator},
+            </if>
+            <if test="modifier != null">
+                modifier = #{modifier},
+            </if>
+            <if test="created != null">
+                created = #{created},
+            </if>
+            <if test="modified != null">
+                modified = #{modified},
+            </if>
+        </trim>
+    </sql>
+
+    <sql id="updateValuesByCriterion">
+        <trim suffixOverrides=",">
+            <if test="entity.jobStatus != null">
+                job_status = #{entity.jobStatus},
+            </if>
+            <if test="entity.jobGroup != null">
+                job_group = #{entity.jobGroup},
+            </if>
+            <if test="entity.jobName != null">
+                job_name = #{entity.jobName},
+            </if>
+            <if test="entity.jobClass != null">
+                job_class = #{entity.jobClass},
+            </if>
+            <if test="entity.jobData != null">
+                job_data = #{entity.jobData},
+            </if>
+            <if test="entity.jobDataTemplate != null">
+                job_data_template = #{entity.jobDataTemplate},
+            </if>
+            <if test="entity.triggerGroup != null">
+                trigger_group = #{entity.triggerGroup},
+            </if>
+            <if test="entity.triggerName != null">
+                trigger_name = #{entity.triggerName},
+            </if>
+            <if test="entity.triggerCronExpression != null">
+                trigger_cron_expression = #{entity.triggerCronExpression},
+            </if>
+            <if test="entity.description != null">
+                description = #{entity.description},
+            </if>
+            <if test="entity.message != null">
+                message = #{entity.message},
+            </if>
+            <if test="entity.startTime != null">
+                start_time = #{entity.startTime},
+            </if>
+            <if test="entity.endTime != null">
+                end_time = #{entity.endTime},
+            </if>
+            <if test="entity.lastStartTime != null">
+                last_start_time = #{entity.lastStartTime},
+            </if>
+            <if test="entity.version != null">
+                version = #{entity.version},
+            </if>
+            <if test="entity.auto != null">
+                auto = #{entity.auto},
+            </if>
+            <if test="entity.enabled != null">
+                enabled = #{entity.enabled},
+            </if>
+            <if test="entity.creator != null">
+                creator = #{entity.creator},
+            </if>
+            <if test="entity.modifier != null">
+                modifier = #{entity.modifier},
+            </if>
+            <if test="entity.created != null">
+                created = #{entity.created},
+            </if>
+            <if test="entity.modified != null">
+                modified = #{entity.modified},
+            </if>
+        </trim>
+    </sql>
+
+    <sql id="simpleConditions">
+        <trim prefix="WHERE" prefixOverrides="AND">
+            <if test="entity.id != null">
+                AND id = #{entity.id}
+            </if>
+            <if test="entity.jobStatus != null">
+                AND job_status = #{entity.jobStatus}
+            </if>
+            <if test="entity.jobGroup != null">
+                AND job_group = #{entity.jobGroup}
+            </if>
+            <if test="entity.jobName != null">
+                AND job_name = #{entity.jobName}
+            </if>
+            <if test="entity.jobClass != null">
+                AND job_class = #{entity.jobClass}
+            </if>
+            <if test="entity.jobData != null">
+                AND job_data = #{entity.jobData}
+            </if>
+            <if test="entity.jobDataTemplate != null">
+                AND job_data_template = #{entity.jobDataTemplate}
+            </if>
+            <if test="entity.triggerGroup != null">
+                AND trigger_group = #{entity.triggerGroup}
+            </if>
+            <if test="entity.triggerName != null">
+                AND trigger_name = #{entity.triggerName}
+            </if>
+            <if test="entity.triggerCronExpression != null">
+                AND trigger_cron_expression = #{entity.triggerCronExpression}
+            </if>
+            <if test="entity.description != null">
+                AND description = #{entity.description}
+            </if>
+            <if test="entity.message != null">
+                AND message = #{entity.message}
+            </if>
+            <if test="entity.startTime != null">
+                AND start_time = #{entity.startTime}
+            </if>
+            <if test="entity.endTime != null">
+                AND end_time = #{entity.endTime}
+            </if>
+            <if test="entity.lastStartTime != null">
+                AND last_start_time = #{entity.lastStartTime}
+            </if>
+            <if test="entity.version != null">
+                AND version = #{entity.version}
+            </if>
+            <if test="entity.auto != null">
+                AND auto = #{entity.auto}
+            </if>
+            <if test="entity.enabled != null">
+                AND enabled = #{entity.enabled}
+            </if>
+            <if test="entity.creator != null">
+                AND creator = #{entity.creator}
+            </if>
+            <if test="entity.modifier != null">
+                AND modifier = #{entity.modifier}
+            </if>
+            <if test="entity.created != null">
+                AND created = #{entity.created}
+            </if>
+            <if test="entity.modified != null">
+                AND modified = #{entity.modified}
+            </if>
+        </trim>
+    </sql>
+
+    <sql id="sort">
+        <trim prefix="ORDER BY" suffixOverrides=",">
+            <foreach collection="orders" separator="," item="item" index="index">
+                ${item.property} ${item.direction}
+            </foreach>
+        </trim>
+    </sql>
+
+    <sql id="criterion">
+        <foreach collection="conditions.tokens" item="item">
+            <choose>
+                <when test="item.param">#{item.value}</when><otherwise>${item.value}</otherwise>
+            </choose>
+        </foreach>
+    </sql>
+
+    <sql id="limit">
+        LIMIT #{offset}, #{pageSize}
+    </sql>
+
+    <sql id="relationships">
+        <if test="relationships != null">
+            <foreach collection="relationships" item="join" index="index">
+                ${join.type()} ${join.table()} ON ${join.condition()}
+            </foreach>
+        </if>
+    </sql>
+
+    <!-- insert -->
+    <insert id="save" parameterType="com.mifan.article.domain.QuartzJobs" keyProperty="id" useGeneratedKeys="true">
+        INSERT INTO quartz_jobs(<include refid="insertColumns"/>) VALUES (<include refid="insertValues"/>)
+    </insert>
+
+    <!-- insert into on duplicate -->
+    <insert id="insertOnDuplicate" parameterType="com.mifan.article.domain.QuartzJobs" keyProperty="id" useGeneratedKeys="true">
+        INSERT INTO quartz_jobs(<include refid="insertEntityColumns"/>) VALUES (<include refid="insertEntityValues"/>) ON DUPLICATE KEY UPDATE <include refid="updateValuesByCriterion"/>
+    </insert>
+
+    <!-- insert into on duplicate -->
+    <insert id="saveOrUpdate" parameterType="com.mifan.article.domain.QuartzJobs" keyProperty="id" useGeneratedKeys="true">
+        INSERT INTO quartz_jobs(<include refid="insertColumns"/>) VALUES (<include refid="insertValues"/>) ON DUPLICATE KEY UPDATE <include refid="updateValues"/>
+    </insert>
+
+    <!-- delete -->
+    <delete id="delete" parameterType="long">
+        DELETE FROM quartz_jobs WHERE id = #{id}
+    </delete>
+
+    <!-- update -->
+    <update id="update" parameterType="com.mifan.article.domain.QuartzJobs">
+        UPDATE quartz_jobs SET <include refid="updateValues"/> WHERE id = #{id}
+    </update>
+
+    <update id="updateByCriterion" parameterType="com.mifan.article.domain.QuartzJobs">
+        UPDATE quartz_jobs SET <include refid="updateValuesByCriterion"/> WHERE id = #{entity.id} AND <include refid="criterion"></include>
+    </update>
+
+    <update id="updateByMap" parameterType="map">
+        UPDATE quartz_jobs
+        <trim prefix="SET" suffixOverrides=",">
+            <foreach collection="increments" index="index" item="item">
+                ${item.key} = ${item.key} + #{item.value},
+            </foreach>
+            <foreach collection="fields" index="index" item="item">
+                ${item.key} = #{item.value},
+            </foreach>
+        </trim>
+        WHERE id = #{id}
+    </update>
+
+    <!-- select -->
+    <select id="findOne" parameterType="map" resultMap="quartzJobs">
+        SELECT
+        <include refid="columns"></include>
+        FROM quartz_jobs WHERE id = #{id}
+    </select>
+
+    <select id="findOneByObject" parameterType="map" resultMap="quartzJobs">
+        SELECT
+        <include refid="columns"></include>
+        FROM quartz_jobs <include refid="simpleConditions"></include>
+    </select>
+
+    <select id="findAll" parameterType="map" resultMap="quartzJobs">
+        SELECT
+        <include refid="columns"></include>
+        FROM quartz_jobs WHERE ${field} IN
+        <foreach collection="ids" open="(" separator="," close=")" index="index" item="item" >
+            ${item}
+        </foreach>
+    </select>
+
+    <select id="findAllByObject" parameterType="map" resultMap="quartzJobs">
+        SELECT
+        <include refid="columns"></include>
+        FROM quartz_jobs <include refid="simpleConditions"></include>
+    </select>
+
+    <select id="findAllByCriterion" parameterType="map" resultMap="quartzJobs">
+        SELECT
+        <include refid="columns"></include>
+        FROM quartz_jobs WHERE <include refid="criterion"></include>
+    </select>
+
+    <select id="findPage" parameterType="map" resultMap="quartzJobs">
+        SELECT
+        <include refid="columns"></include>
+        FROM quartz_jobs <include refid="simpleConditions"></include> <include refid="sort"></include> <include refid="limit"></include>
+    </select>
+
+    <select id="findPageByCriterion" parameterType="map" resultMap="quartzJobs">
+        SELECT
+        <include refid="columns"></include>
+        FROM quartz_jobs
+        <include refid="relationships"></include>
+        WHERE <include refid="criterion"></include> <include refid="sort"></include> <include refid="limit"></include>
+    </select>
+
+    <select id="count" resultType="long">
+        SELECT COUNT(*) FROM quartz_jobs
+    </select>
+
+    <select id="countByCondition" parameterType="map" resultType="long">
+        SELECT COUNT(*) FROM quartz_jobs <include refid="simpleConditions"></include>
+    </select>
+
+    <select id="countByCriterion" parameterType="map" resultType="long">
+        SELECT COUNT(*) FROM quartz_jobs
+        <include refid="relationships"></include>
+        WHERE <include refid="criterion"></include>
+    </select>
+
+    <select id="exists" parameterType="long" resultType="long">
+        SELECT COUNT(*) FROM quartz_jobs WHERE id = #{id}
+    </select>
+
+</mapper>

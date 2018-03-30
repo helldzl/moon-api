@@ -1,0 +1,416 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.mifan.reward.domain.Records">
+
+    <!-- result map -->
+    <resultMap id="records" type="com.mifan.reward.domain.Records">
+        <id property="id" column="id" javaType="long"/>
+        <result property="prizeId" column="prize_id" javaType="long"/>
+        <result property="userId" column="user_id" javaType="long"/>
+        <result property="buyTimes" column="buy_times" javaType="int"/>
+        <result property="ip" column="ip" javaType="string"/>
+        <result property="enabled" column="enabled" javaType="int"/>
+        <result property="creator" column="creator" javaType="long"/>
+        <result property="modifier" column="modifier" javaType="long"/>
+        <result property="created" column="created" javaType="date"/>
+        <result property="modified" column="modified" javaType="date"/>
+    </resultMap>
+
+    <!-- sql -->
+    <sql id="columns">
+        <choose>
+            <when test="fields != null and fields.size != 0">
+                <foreach collection="fields" separator="," item="item" index="index">
+                    `${item.fullname}`
+                </foreach>
+            </when>
+            <otherwise>
+                `id`, `prize_id`, `user_id`, `buy_times`, `ip`, `enabled`, `creator`, `modifier`, `created`, `modified` 
+            </otherwise>
+        </choose>
+    </sql>
+
+    <sql id="insertColumns">
+        <trim suffixOverrides=",">
+            <if test="id != null">
+                `id`,
+            </if>
+            <if test="prizeId != null">
+                `prize_id`,
+            </if>
+            <if test="userId != null">
+                `user_id`,
+            </if>
+            <if test="buyTimes != null">
+                `buy_times`,
+            </if>
+            <if test="ip != null">
+                `ip`,
+            </if>
+            <if test="enabled != null">
+                `enabled`,
+            </if>
+            <if test="creator != null">
+                `creator`,
+            </if>
+            <if test="modifier != null">
+                `modifier`,
+            </if>
+            <if test="created != null">
+                `created`,
+            </if>
+            <if test="modified != null">
+                `modified`,
+            </if>
+        </trim>
+    </sql>
+
+    <sql id="insertEntityColumns">
+        <trim suffixOverrides=",">
+            <if test="insert.id != null">
+                `id`,
+            </if>
+            <if test="insert.prizeId != null">
+                `prize_id`,
+            </if>
+            <if test="insert.userId != null">
+                `user_id`,
+            </if>
+            <if test="insert.buyTimes != null">
+                `buy_times`,
+            </if>
+            <if test="insert.ip != null">
+                `ip`,
+            </if>
+            <if test="insert.enabled != null">
+                `enabled`,
+            </if>
+            <if test="insert.creator != null">
+                `creator`,
+            </if>
+            <if test="insert.modifier != null">
+                `modifier`,
+            </if>
+            <if test="insert.created != null">
+                `created`,
+            </if>
+            <if test="insert.modified != null">
+                `modified`,
+            </if>
+        </trim>
+    </sql>
+
+    <sql id="insertValues">
+        <trim suffixOverrides=",">
+            <if test="id != null">
+                #{id},
+            </if>
+            <if test="prizeId != null">
+                #{prizeId},
+            </if>
+            <if test="userId != null">
+                #{userId},
+            </if>
+            <if test="buyTimes != null">
+                #{buyTimes},
+            </if>
+            <if test="ip != null">
+                #{ip},
+            </if>
+            <if test="enabled != null">
+                #{enabled},
+            </if>
+            <if test="creator != null">
+                #{creator},
+            </if>
+            <if test="modifier != null">
+                #{modifier},
+            </if>
+            <if test="created != null">
+                #{created},
+            </if>
+            <if test="modified != null">
+                #{modified},
+            </if>
+        </trim>
+    </sql>
+
+    <sql id="insertEntityValues">
+        <trim suffixOverrides=",">
+            <if test="insert.id != null">
+                #{insert.id},
+            </if>
+            <if test="insert.prizeId != null">
+                #{insert.prizeId},
+            </if>
+            <if test="insert.userId != null">
+                #{insert.userId},
+            </if>
+            <if test="insert.buyTimes != null">
+                #{insert.buyTimes},
+            </if>
+            <if test="insert.ip != null">
+                #{insert.ip},
+            </if>
+            <if test="insert.enabled != null">
+                #{insert.enabled},
+            </if>
+            <if test="insert.creator != null">
+                #{insert.creator},
+            </if>
+            <if test="insert.modifier != null">
+                #{insert.modifier},
+            </if>
+            <if test="insert.created != null">
+                #{insert.created},
+            </if>
+            <if test="insert.modified != null">
+                #{insert.modified},
+            </if>
+        </trim>
+    </sql>
+
+    <sql id="updateValues">
+        <trim suffixOverrides=",">
+            <if test="prizeId != null">
+                `prize_id` = #{prizeId},
+            </if>
+            <if test="userId != null">
+                `user_id` = #{userId},
+            </if>
+            <if test="buyTimes != null">
+                `buy_times` = #{buyTimes},
+            </if>
+            <if test="ip != null">
+                `ip` = #{ip},
+            </if>
+            <if test="enabled != null">
+                `enabled` = #{enabled},
+            </if>
+            <if test="creator != null">
+                `creator` = #{creator},
+            </if>
+            <if test="modifier != null">
+                `modifier` = #{modifier},
+            </if>
+            <if test="created != null">
+                `created` = #{created},
+            </if>
+            <if test="modified != null">
+                `modified` = #{modified},
+            </if>
+        </trim>
+    </sql>
+
+    <sql id="updateValuesByCriterion">
+        <trim suffixOverrides=",">
+            <if test="entity.prizeId != null">
+                `prize_id` = #{entity.prizeId},
+            </if>
+            <if test="entity.userId != null">
+                `user_id` = #{entity.userId},
+            </if>
+            <if test="entity.buyTimes != null">
+                `buy_times` = #{entity.buyTimes},
+            </if>
+            <if test="entity.ip != null">
+                `ip` = #{entity.ip},
+            </if>
+            <if test="entity.enabled != null">
+                `enabled` = #{entity.enabled},
+            </if>
+            <if test="entity.creator != null">
+                `creator` = #{entity.creator},
+            </if>
+            <if test="entity.modifier != null">
+                `modifier` = #{entity.modifier},
+            </if>
+            <if test="entity.created != null">
+                `created` = #{entity.created},
+            </if>
+            <if test="entity.modified != null">
+                `modified` = #{entity.modified},
+            </if>
+        </trim>
+    </sql>
+
+    <sql id="simpleConditions">
+        <trim prefix="WHERE" prefixOverrides="AND">
+            <if test="entity.id != null">
+                AND `id` = #{entity.id}
+            </if>
+            <if test="entity.prizeId != null">
+                AND `prize_id` = #{entity.prizeId}
+            </if>
+            <if test="entity.userId != null">
+                AND `user_id` = #{entity.userId}
+            </if>
+            <if test="entity.buyTimes != null">
+                AND `buy_times` = #{entity.buyTimes}
+            </if>
+            <if test="entity.ip != null">
+                AND `ip` = #{entity.ip}
+            </if>
+            <if test="entity.enabled != null">
+                AND `enabled` = #{entity.enabled}
+            </if>
+            <if test="entity.creator != null">
+                AND `creator` = #{entity.creator}
+            </if>
+            <if test="entity.modifier != null">
+                AND `modifier` = #{entity.modifier}
+            </if>
+            <if test="entity.created != null">
+                AND `created` = #{entity.created}
+            </if>
+            <if test="entity.modified != null">
+                AND `modified` = #{entity.modified}
+            </if>
+        </trim>
+    </sql>
+
+    <sql id="sort">
+        <trim prefix="ORDER BY" suffixOverrides=",">
+            <foreach collection="orders" separator="," item="item" index="index">
+                ${item.property} ${item.direction}
+            </foreach>
+        </trim>
+    </sql>
+
+    <sql id="criterion">
+        <foreach collection="conditions.tokens" item="item">
+            <choose>
+                <when test="item.param">#{item.value}</when><otherwise>${item.value}</otherwise>
+            </choose>
+        </foreach>
+    </sql>
+
+    <sql id="limit">
+        LIMIT #{offset}, #{pageSize}
+    </sql>
+
+    <sql id="relationships">
+        <if test="relationships != null">
+            <foreach collection="relationships" item="join" index="index">
+                ${join.type()} ${join.table()} ON ${join.condition()}
+            </foreach>
+        </if>
+    </sql>
+
+    <!-- insert -->
+    <insert id="save" parameterType="com.mifan.reward.domain.Records" keyProperty="id" useGeneratedKeys="true">
+        INSERT INTO records(<include refid="insertColumns"/>) VALUES (<include refid="insertValues"/>)
+    </insert>
+
+    <!-- insert into on duplicate -->
+    <insert id="insertOnDuplicate" parameterType="com.mifan.reward.domain.Records" keyProperty="id" useGeneratedKeys="true">
+        INSERT INTO records(<include refid="insertEntityColumns"/>) VALUES (<include refid="insertEntityValues"/>) ON DUPLICATE KEY UPDATE <include refid="updateValuesByCriterion"/>
+    </insert>
+
+    <!-- insert into on duplicate -->
+    <insert id="saveOrUpdate" parameterType="com.mifan.reward.domain.Records" keyProperty="id" useGeneratedKeys="true">
+        INSERT INTO records(<include refid="insertColumns"/>) VALUES (<include refid="insertValues"/>) ON DUPLICATE KEY UPDATE <include refid="updateValues"/>
+    </insert>
+
+    <!-- delete -->
+    <delete id="delete" parameterType="long">
+        DELETE FROM records WHERE id = #{id}
+    </delete>
+
+    <!-- update -->
+    <update id="update" parameterType="com.mifan.reward.domain.Records">
+        UPDATE records SET <include refid="updateValues"/> WHERE id = #{id}
+    </update>
+
+    <update id="updateByCriterion" parameterType="com.mifan.reward.domain.Records">
+        UPDATE records SET <include refid="updateValuesByCriterion"/> WHERE id = #{entity.id} AND <include refid="criterion"></include>
+    </update>
+
+    <update id="updateByMap" parameterType="map">
+        UPDATE records
+        <trim prefix="SET" suffixOverrides=",">
+            <foreach collection="increments" index="index" item="item">
+                ${item.key} = ${item.key} + #{item.value},
+            </foreach>
+            <foreach collection="fields" index="index" item="item">
+                ${item.key} = #{item.value},
+            </foreach>
+        </trim>
+        WHERE id = #{id}
+    </update>
+
+    <!-- select -->
+    <select id="findOne" parameterType="map" resultMap="records">
+        SELECT
+        <include refid="columns"></include>
+        FROM records WHERE id = #{id}
+    </select>
+
+    <select id="findOneByObject" parameterType="map" resultMap="records">
+        SELECT
+        <include refid="columns"></include>
+        FROM records <include refid="simpleConditions"></include>
+    </select>
+
+    <select id="findOneByCriterion" parameterType="map" resultMap="records">
+        SELECT
+        <include refid="columns"></include>
+        FROM records WHERE <include refid="criterion"></include> LIMIT 1
+    </select>
+
+    <select id="findAll" parameterType="map" resultMap="records">
+        SELECT
+        <include refid="columns"></include>
+        FROM records WHERE ${field} IN
+        <foreach collection="ids" open="(" separator="," close=")" index="index" item="item" >
+            ${item}
+        </foreach>
+    </select>
+
+    <select id="findAllByObject" parameterType="map" resultMap="records">
+        SELECT
+        <include refid="columns"></include>
+        FROM records <include refid="simpleConditions"></include>
+    </select>
+
+    <select id="findAllByCriterion" parameterType="map" resultMap="records">
+        SELECT
+        <include refid="columns"></include>
+        FROM records WHERE <include refid="criterion"></include>
+    </select>
+
+    <select id="findPage" parameterType="map" resultMap="records">
+        SELECT
+        <include refid="columns"></include>
+        FROM records <include refid="simpleConditions"></include> <include refid="sort"></include> <include refid="limit"></include>
+    </select>
+
+    <select id="findPageByCriterion" parameterType="map" resultMap="records">
+        SELECT
+        <include refid="columns"></include>
+        FROM records
+        <include refid="relationships"></include>
+        WHERE <include refid="criterion"></include> <include refid="sort"></include> <include refid="limit"></include>
+    </select>
+
+    <select id="count" resultType="long">
+        SELECT COUNT(*) FROM records
+    </select>
+
+    <select id="countByCondition" parameterType="map" resultType="long">
+        SELECT COUNT(*) FROM records <include refid="simpleConditions"></include>
+    </select>
+
+    <select id="countByCriterion" parameterType="map" resultType="long">
+        SELECT COUNT(*) FROM records
+        <include refid="relationships"></include>
+        WHERE <include refid="criterion"></include>
+    </select>
+
+    <select id="exists" parameterType="long" resultType="long">
+        SELECT COUNT(*) FROM records WHERE id = #{id}
+    </select>
+
+</mapper>

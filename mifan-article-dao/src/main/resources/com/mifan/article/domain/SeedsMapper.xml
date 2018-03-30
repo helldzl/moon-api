@@ -1,0 +1,609 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.mifan.article.domain.Seeds">
+
+    <!-- result map -->
+    <resultMap id="seeds" type="com.mifan.article.domain.Seeds">
+        <id property="id" column="id" javaType="long"/>
+        <result property="url" column="url" javaType="string"/>
+        <result property="source" column="source" javaType="string"/>
+        <result property="conf" column="conf" javaType="string"/>
+        <result property="name" column="name" javaType="string"/>
+        <result property="agencyIp" column="agency_ip" javaType="string"/>
+        <result property="agencyIpPort" column="agency_ip_port" javaType="int"/>
+        <result property="charset" column="charset" javaType="string"/>
+        <result property="description" column="description" javaType="string"/>
+        <result property="rank" column="rank" javaType="int"/>
+        <result property="updateRate" column="update_rate" javaType="int"/>
+        <result property="language" column="language" javaType="int"/>
+        <result property="enabled" column="enabled" javaType="int"/>
+        <result property="creator" column="creator" javaType="long"/>
+        <result property="modifier" column="modifier" javaType="long"/>
+        <result property="created" column="created" javaType="date"/>
+        <result property="modified" column="modified" javaType="date"/>
+    </resultMap>
+
+    <!-- sql -->
+    <sql id="columns">
+        <choose>
+            <when test="fields != null and fields.size != 0">
+                <foreach collection="fields" separator="," item="item" index="index">
+                    ${item.fullname}
+                </foreach>
+            </when>
+            <otherwise>
+                id, url, source, conf, name, agency_ip, agency_ip_port, charset, description, rank, update_rate, language, enabled, creator, modifier, created, modified 
+            </otherwise>
+        </choose>
+    </sql>
+
+    <sql id="insertColumns">
+        <trim suffixOverrides=",">
+            <if test="id != null">
+                id,
+            </if>
+            <if test="url != null">
+                url,
+            </if>
+            <if test="source != null">
+                source,
+            </if>
+            <if test="conf != null">
+                conf,
+            </if>
+            <if test="name != null">
+                name,
+            </if>
+            <if test="agencyIp != null">
+                agency_ip,
+            </if>
+            <if test="agencyIpPort != null">
+                agency_ip_port,
+            </if>
+            <if test="charset != null">
+                charset,
+            </if>
+            <if test="description != null">
+                description,
+            </if>
+            <if test="rank != null">
+                rank,
+            </if>
+            <if test="updateRate != null">
+                update_rate,
+            </if>
+            <if test="language != null">
+                language,
+            </if>
+            <if test="enabled != null">
+                enabled,
+            </if>
+            <if test="creator != null">
+                creator,
+            </if>
+            <if test="modifier != null">
+                modifier,
+            </if>
+            <if test="created != null">
+                created,
+            </if>
+            <if test="modified != null">
+                modified,
+            </if>
+        </trim>
+    </sql>
+
+    <sql id="insertEntityColumns">
+        <trim suffixOverrides=",">
+            <if test="insert.id != null">
+                id,
+            </if>
+            <if test="insert.url != null">
+                url,
+            </if>
+            <if test="insert.source != null">
+                source,
+            </if>
+            <if test="insert.conf != null">
+                conf,
+            </if>
+            <if test="insert.name != null">
+                name,
+            </if>
+            <if test="insert.agencyIp != null">
+                agency_ip,
+            </if>
+            <if test="insert.agencyIpPort != null">
+                agency_ip_port,
+            </if>
+            <if test="insert.charset != null">
+                charset,
+            </if>
+            <if test="insert.description != null">
+                description,
+            </if>
+            <if test="insert.rank != null">
+                rank,
+            </if>
+            <if test="insert.updateRate != null">
+                update_rate,
+            </if>
+            <if test="insert.language != null">
+                language,
+            </if>
+            <if test="insert.enabled != null">
+                enabled,
+            </if>
+            <if test="insert.creator != null">
+                creator,
+            </if>
+            <if test="insert.modifier != null">
+                modifier,
+            </if>
+            <if test="insert.created != null">
+                created,
+            </if>
+            <if test="insert.modified != null">
+                modified,
+            </if>
+        </trim>
+    </sql>
+
+    <sql id="insertValues">
+        <trim suffixOverrides=",">
+            <if test="id != null">
+                #{id},
+            </if>
+            <if test="url != null">
+                #{url},
+            </if>
+            <if test="source != null">
+                #{source},
+            </if>
+            <if test="conf != null">
+                #{conf},
+            </if>
+            <if test="name != null">
+                #{name},
+            </if>
+            <if test="agencyIp != null">
+                #{agencyIp},
+            </if>
+            <if test="agencyIpPort != null">
+                #{agencyIpPort},
+            </if>
+            <if test="charset != null">
+                #{charset},
+            </if>
+            <if test="description != null">
+                #{description},
+            </if>
+            <if test="rank != null">
+                #{rank},
+            </if>
+            <if test="updateRate != null">
+                #{updateRate},
+            </if>
+            <if test="language != null">
+                #{language},
+            </if>
+            <if test="enabled != null">
+                #{enabled},
+            </if>
+            <if test="creator != null">
+                #{creator},
+            </if>
+            <if test="modifier != null">
+                #{modifier},
+            </if>
+            <if test="created != null">
+                #{created},
+            </if>
+            <if test="modified != null">
+                #{modified},
+            </if>
+        </trim>
+    </sql>
+
+    <sql id="insertEntityValues">
+        <trim suffixOverrides=",">
+            <if test="insert.id != null">
+                #{insert.id},
+            </if>
+            <if test="insert.url != null">
+                #{insert.url},
+            </if>
+            <if test="insert.source != null">
+                #{insert.source},
+            </if>
+            <if test="insert.conf != null">
+                #{insert.conf},
+            </if>
+            <if test="insert.name != null">
+                #{insert.name},
+            </if>
+            <if test="insert.agencyIp != null">
+                #{insert.agencyIp},
+            </if>
+            <if test="insert.agencyIpPort != null">
+                #{insert.agencyIpPort},
+            </if>
+            <if test="insert.charset != null">
+                #{insert.charset},
+            </if>
+            <if test="insert.description != null">
+                #{insert.description},
+            </if>
+            <if test="insert.rank != null">
+                #{insert.rank},
+            </if>
+            <if test="insert.updateRate != null">
+                #{insert.updateRate},
+            </if>
+            <if test="insert.language != null">
+                #{insert.language},
+            </if>
+            <if test="insert.enabled != null">
+                #{insert.enabled},
+            </if>
+            <if test="insert.creator != null">
+                #{insert.creator},
+            </if>
+            <if test="insert.modifier != null">
+                #{insert.modifier},
+            </if>
+            <if test="insert.created != null">
+                #{insert.created},
+            </if>
+            <if test="insert.modified != null">
+                #{insert.modified},
+            </if>
+        </trim>
+    </sql>
+
+    <sql id="updateValues">
+        <trim suffixOverrides=",">
+            <if test="url != null">
+                url = #{url},
+            </if>
+            <if test="source != null">
+                source = #{source},
+            </if>
+            <if test="conf != null">
+                conf = #{conf},
+            </if>
+            <if test="name != null">
+                name = #{name},
+            </if>
+            <if test="agencyIp != null">
+                agency_ip = #{agencyIp},
+            </if>
+            <if test="agencyIpPort != null">
+                agency_ip_port = #{agencyIpPort},
+            </if>
+            <if test="charset != null">
+                charset = #{charset},
+            </if>
+            <if test="description != null">
+                description = #{description},
+            </if>
+            <if test="rank != null">
+                rank = #{rank},
+            </if>
+            <if test="updateRate != null">
+                update_rate = #{updateRate},
+            </if>
+            <if test="language != null">
+                language = #{language},
+            </if>
+            <if test="enabled != null">
+                enabled = #{enabled},
+            </if>
+            <if test="creator != null">
+                creator = #{creator},
+            </if>
+            <if test="modifier != null">
+                modifier = #{modifier},
+            </if>
+            <if test="created != null">
+                created = #{created},
+            </if>
+            <if test="modified != null">
+                modified = #{modified},
+            </if>
+        </trim>
+    </sql>
+
+    <sql id="updateValuesByCriterion">
+        <trim suffixOverrides=",">
+            <if test="entity.url != null">
+                url = #{entity.url},
+            </if>
+            <if test="entity.source != null">
+                source = #{entity.source},
+            </if>
+            <if test="entity.conf != null">
+                conf = #{entity.conf},
+            </if>
+            <if test="entity.name != null">
+                name = #{entity.name},
+            </if>
+            <if test="entity.agencyIp != null">
+                agency_ip = #{entity.agencyIp},
+            </if>
+            <if test="entity.agencyIpPort != null">
+                agency_ip_port = #{entity.agencyIpPort},
+            </if>
+            <if test="entity.charset != null">
+                charset = #{entity.charset},
+            </if>
+            <if test="entity.description != null">
+                description = #{entity.description},
+            </if>
+            <if test="entity.rank != null">
+                rank = #{entity.rank},
+            </if>
+            <if test="entity.updateRate != null">
+                update_rate = #{entity.updateRate},
+            </if>
+            <if test="entity.language != null">
+                language = #{entity.language},
+            </if>
+            <if test="entity.enabled != null">
+                enabled = #{entity.enabled},
+            </if>
+            <if test="entity.creator != null">
+                creator = #{entity.creator},
+            </if>
+            <if test="entity.modifier != null">
+                modifier = #{entity.modifier},
+            </if>
+            <if test="entity.created != null">
+                created = #{entity.created},
+            </if>
+            <if test="entity.modified != null">
+                modified = #{entity.modified},
+            </if>
+        </trim>
+    </sql>
+
+    <sql id="simpleConditions">
+        <trim prefix="WHERE" prefixOverrides="AND">
+            <if test="entity.id != null">
+                AND id = #{entity.id}
+            </if>
+            <if test="entity.url != null">
+                AND url = #{entity.url}
+            </if>
+            <if test="entity.source != null">
+                AND source = #{entity.source}
+            </if>
+            <if test="entity.conf != null">
+                AND conf = #{entity.conf}
+            </if>
+            <if test="entity.name != null">
+                AND name = #{entity.name}
+            </if>
+            <if test="entity.agencyIp != null">
+                AND agency_ip = #{entity.agencyIp}
+            </if>
+            <if test="entity.agencyIpPort != null">
+                AND agency_ip_port = #{entity.agencyIpPort}
+            </if>
+            <if test="entity.charset != null">
+                AND charset = #{entity.charset}
+            </if>
+            <if test="entity.description != null">
+                AND description = #{entity.description}
+            </if>
+            <if test="entity.rank != null">
+                AND rank = #{entity.rank}
+            </if>
+            <if test="entity.updateRate != null">
+                AND update_rate = #{entity.updateRate}
+            </if>
+            <if test="entity.language != null">
+                AND language = #{entity.language}
+            </if>
+            <if test="entity.enabled != null">
+                AND enabled = #{entity.enabled}
+            </if>
+            <if test="entity.creator != null">
+                AND creator = #{entity.creator}
+            </if>
+            <if test="entity.modifier != null">
+                AND modifier = #{entity.modifier}
+            </if>
+            <if test="entity.created != null">
+                AND created = #{entity.created}
+            </if>
+            <if test="entity.modified != null">
+                AND modified = #{entity.modified}
+            </if>
+        </trim>
+    </sql>
+
+    <sql id="sort">
+        <trim prefix="ORDER BY" suffixOverrides=",">
+            <foreach collection="orders" separator="," item="item" index="index">
+                ${item.property} ${item.direction}
+            </foreach>
+        </trim>
+    </sql>
+
+    <sql id="criterion">
+        <foreach collection="conditions.tokens" item="item">
+            <choose>
+                <when test="item.param">#{item.value}</when><otherwise>${item.value}</otherwise>
+            </choose>
+        </foreach>
+    </sql>
+
+    <sql id="limit">
+        LIMIT #{offset}, #{pageSize}
+    </sql>
+
+    <sql id="relationships">
+        <if test="relationships != null">
+            <foreach collection="relationships" item="join" index="index">
+                ${join.type()} ${join.table()} ON ${join.condition()}
+            </foreach>
+        </if>
+    </sql>
+
+    <!-- insert -->
+    <insert id="save" parameterType="com.mifan.article.domain.Seeds" keyProperty="id" useGeneratedKeys="true">
+        INSERT INTO seeds(<include refid="insertColumns"/>) VALUES (<include refid="insertValues"/>)
+    </insert>
+
+    <!-- insert into on duplicate -->
+    <insert id="insertOnDuplicate" parameterType="com.mifan.article.domain.Seeds" keyProperty="id" useGeneratedKeys="true">
+        INSERT INTO seeds(<include refid="insertEntityColumns"/>) VALUES (<include refid="insertEntityValues"/>) ON DUPLICATE KEY UPDATE <include refid="updateValuesByCriterion"/>
+    </insert>
+
+    <!-- insert into on duplicate -->
+    <insert id="saveOrUpdate" parameterType="com.mifan.article.domain.Seeds" keyProperty="id" useGeneratedKeys="true">
+        INSERT INTO seeds(<include refid="insertColumns"/>) VALUES (<include refid="insertValues"/>) ON DUPLICATE KEY UPDATE <include refid="updateValues"/>
+    </insert>
+
+    <!-- delete -->
+    <delete id="delete" parameterType="long">
+        DELETE FROM seeds WHERE id = #{id}
+    </delete>
+
+    <!-- update -->
+    <update id="update" parameterType="com.mifan.article.domain.Seeds">
+        UPDATE seeds SET <include refid="updateValues"/> WHERE id = #{id}
+    </update>
+
+    <update id="updateByCriterion" parameterType="com.mifan.article.domain.Seeds">
+        UPDATE seeds SET <include refid="updateValuesByCriterion"/> WHERE id = #{entity.id} AND <include refid="criterion"></include>
+    </update>
+
+    <update id="updateByMap" parameterType="map">
+        UPDATE seeds
+        <trim prefix="SET" suffixOverrides=",">
+            <foreach collection="increments" index="index" item="item">
+                ${item.key} = ${item.key} + #{item.value},
+            </foreach>
+            <foreach collection="fields" index="index" item="item">
+                ${item.key} = #{item.value},
+            </foreach>
+        </trim>
+        WHERE id = #{id}
+    </update>
+
+    <!-- select -->
+    <select id="findOne" parameterType="map" resultMap="seeds">
+        SELECT
+        <include refid="columns"></include>
+        FROM seeds WHERE id = #{id}
+    </select>
+
+    <select id="findOneByObject" parameterType="map" resultMap="seeds">
+        SELECT
+        <include refid="columns"></include>
+        FROM seeds <include refid="simpleConditions"></include>
+    </select>
+
+    <select id="findAll" parameterType="map" resultMap="seeds">
+        SELECT
+        <include refid="columns"></include>
+        FROM seeds WHERE ${field} IN
+        <foreach collection="ids" open="(" separator="," close=")" index="index" item="item" >
+            ${item}
+        </foreach>
+    </select>
+
+    <select id="findAllByObject" parameterType="map" resultMap="seeds">
+        SELECT
+        <include refid="columns"></include>
+        FROM seeds <include refid="simpleConditions"></include>
+    </select>
+
+    <select id="findAllByCriterion" parameterType="map" resultMap="seeds">
+        SELECT
+        <include refid="columns"></include>
+        FROM seeds WHERE <include refid="criterion"></include>
+    </select>
+
+    <select id="findPage" parameterType="map" resultMap="seeds">
+        SELECT
+        <include refid="columns"></include>
+        FROM seeds <include refid="simpleConditions"></include> <include refid="sort"></include> <include refid="limit"></include>
+    </select>
+
+    <select id="findPageByCriterion" parameterType="map" resultMap="seeds">
+        SELECT
+        <include refid="columns"></include>
+        FROM seeds
+        <include refid="relationships"></include>
+        WHERE <include refid="criterion"></include> <include refid="sort"></include> <include refid="limit"></include>
+    </select>
+
+    <select id="count" resultType="long">
+        SELECT COUNT(*) FROM seeds
+    </select>
+
+    <select id="countByCondition" parameterType="map" resultType="long">
+        SELECT COUNT(*) FROM seeds <include refid="simpleConditions"></include>
+    </select>
+
+    <select id="countByCriterion" parameterType="map" resultType="long">
+        SELECT COUNT(*) FROM seeds
+        <include refid="relationships"></include>
+        WHERE <include refid="criterion"></include>
+    </select>
+
+    <select id="exists" parameterType="long" resultType="long">
+        SELECT COUNT(*) FROM seeds WHERE id = #{id}
+    </select>
+
+    <!-- 取得在种子规定时间内没有抓取任何数据的种子，需要查看是否模板已经改变 -->
+    <select id="getNotSpiderTemplate" parameterType="map" resultType="com.mifan.article.domain.Seeds">
+        select * from seeds where id not in (select b.id from(select t.id,tf.topic_id,tf.seed_id from topics t,topics_fetch tf where t.id=tf.topic_id) a,seeds b,
+        (select c1.topic_id as topic_id,c1.created as created,c2.title,c2.content from posts c1,posts_text c2 where c1.id=c2.id) p
+        where a.seed_id=b.id and b.enabled=1
+        and a.id=p.topic_id
+        and DATE_SUB(CURDATE(), INTERVAL b.update_rate DAY) &lt;= date(p.created)
+        GROUP BY a.seed_id) and enabled=1
+        <include refid="limit"></include>
+    </select>
+
+    <!-- 取得在种子规定时间内没有抓取任何数据的种子，需要查看是否模板已经改变 -->
+    <select id="getNotSpiderTemplateCount"  resultType="long">
+        select count(*) from seeds where id not in (select b.id from(select t.id,tf.topic_id,tf.seed_id from topics t,topics_fetch tf where t.id=tf.topic_id) a,seeds b,
+        (select c1.topic_id as topic_id,c1.created as created,c2.title,c2.content from posts c1,posts_text c2 where c1.id=c2.id) p
+        where a.seed_id=b.id and b.enabled=1
+        and a.id=p.topic_id
+        and DATE_SUB(CURDATE(), INTERVAL b.update_rate DAY) &lt;= date(p.created)
+        GROUP BY a.seed_id) and enabled=1
+    </select>
+
+
+
+    <!-- 内容抓取下来的不全的模板 -->
+    <select id="getNotWholeTemplate" parameterType="map" resultType="com.mifan.article.domain.Seeds">
+        select b.* from (select t.id,tf.topic_id,tf.seed_id from topics t,topics_fetch tf where t.id=tf.topic_id) a,seeds b,
+        (select c1.topic_id as topic_id,c1.created as created,c2.title,c2.content from posts c1,posts_text c2 where c1.id=c2.id) p
+        where a.seed_id=b.id and ISNULL(p.content) and ISNULL(p.title)
+        and a.id=p.topic_id
+        and DATE_SUB(CURDATE(), INTERVAL b.update_rate DAY) &lt;= date(p.created)
+        GROUP BY a.seed_id
+        <include refid="limit"></include>
+    </select>
+
+    <!-- 内容抓取下来的不全的模板 -->
+    <select id="getNotWholeTemplateCount"  resultType="long">
+        select COUNT(*) from
+        (select b.* from (select t.id,tf.topic_id,tf.seed_id from topics t,topics_fetch tf where t.id=tf.topic_id) a,seeds b,
+                (select c1.topic_id as topic_id,c1.created as created,c2.title,c2.content from posts c1,posts_text c2 where c1.id=c2.id) p
+        where a.seed_id=b.id and ISNULL(p.content) and ISNULL(p.title)
+        and a.id=p.topic_id
+        and DATE_SUB(CURDATE(), INTERVAL b.update_rate DAY) &lt;= date(p.created)
+        GROUP BY a.seed_id) a
+    </select>
+
+</mapper>

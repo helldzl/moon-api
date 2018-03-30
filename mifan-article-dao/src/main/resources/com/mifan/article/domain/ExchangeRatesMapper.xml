@@ -1,0 +1,432 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.mifan.article.domain.ExchangeRates">
+
+    <!-- result map -->
+    <resultMap id="exchangeRates" type="com.mifan.article.domain.ExchangeRates">
+        <id property="id" column="id" javaType="long"/>
+        <result property="fromCode" column="from_code" javaType="string"/>
+        <result property="fromSign" column="from_sign" javaType="string"/>
+        <result property="toCode" column="to_code" javaType="string"/>
+        <result property="toSign" column="to_sign" javaType="string"/>
+        <result property="rate" column="rate" javaType="double"/>
+        <result property="enabled" column="enabled" javaType="int"/>
+        <result property="creator" column="creator" javaType="long"/>
+        <result property="modifier" column="modifier" javaType="long"/>
+        <result property="created" column="created" javaType="date"/>
+        <result property="modified" column="modified" javaType="date"/>
+    </resultMap>
+
+    <!-- sql -->
+    <sql id="columns">
+        <choose>
+            <when test="fields != null and fields.size != 0">
+                <foreach collection="fields" separator="," item="item" index="index">
+                    ${item.fullname}
+                </foreach>
+            </when>
+            <otherwise>
+                id, from_code, from_sign, to_code, to_sign, rate, enabled, creator, modifier, created, modified 
+            </otherwise>
+        </choose>
+    </sql>
+
+    <sql id="insertColumns">
+        <trim suffixOverrides=",">
+            <if test="id != null">
+                id,
+            </if>
+            <if test="fromCode != null">
+                from_code,
+            </if>
+            <if test="fromSign != null">
+                from_sign,
+            </if>
+            <if test="toCode != null">
+                to_code,
+            </if>
+            <if test="toSign != null">
+                to_sign,
+            </if>
+            <if test="rate != null">
+                rate,
+            </if>
+            <if test="enabled != null">
+                enabled,
+            </if>
+            <if test="creator != null">
+                creator,
+            </if>
+            <if test="modifier != null">
+                modifier,
+            </if>
+            <if test="created != null">
+                created,
+            </if>
+            <if test="modified != null">
+                modified,
+            </if>
+        </trim>
+    </sql>
+
+    <sql id="insertEntityColumns">
+        <trim suffixOverrides=",">
+            <if test="insert.id != null">
+                id,
+            </if>
+            <if test="insert.fromCode != null">
+                from_code,
+            </if>
+            <if test="insert.fromSign != null">
+                from_sign,
+            </if>
+            <if test="insert.toCode != null">
+                to_code,
+            </if>
+            <if test="insert.toSign != null">
+                to_sign,
+            </if>
+            <if test="insert.rate != null">
+                rate,
+            </if>
+            <if test="insert.enabled != null">
+                enabled,
+            </if>
+            <if test="insert.creator != null">
+                creator,
+            </if>
+            <if test="insert.modifier != null">
+                modifier,
+            </if>
+            <if test="insert.created != null">
+                created,
+            </if>
+            <if test="insert.modified != null">
+                modified,
+            </if>
+        </trim>
+    </sql>
+
+    <sql id="insertValues">
+        <trim suffixOverrides=",">
+            <if test="id != null">
+                #{id},
+            </if>
+            <if test="fromCode != null">
+                #{fromCode},
+            </if>
+            <if test="fromSign != null">
+                #{fromSign},
+            </if>
+            <if test="toCode != null">
+                #{toCode},
+            </if>
+            <if test="toSign != null">
+                #{toSign},
+            </if>
+            <if test="rate != null">
+                #{rate},
+            </if>
+            <if test="enabled != null">
+                #{enabled},
+            </if>
+            <if test="creator != null">
+                #{creator},
+            </if>
+            <if test="modifier != null">
+                #{modifier},
+            </if>
+            <if test="created != null">
+                #{created},
+            </if>
+            <if test="modified != null">
+                #{modified},
+            </if>
+        </trim>
+    </sql>
+
+    <sql id="insertEntityValues">
+        <trim suffixOverrides=",">
+            <if test="insert.id != null">
+                #{insert.id},
+            </if>
+            <if test="insert.fromCode != null">
+                #{insert.fromCode},
+            </if>
+            <if test="insert.fromSign != null">
+                #{insert.fromSign},
+            </if>
+            <if test="insert.toCode != null">
+                #{insert.toCode},
+            </if>
+            <if test="insert.toSign != null">
+                #{insert.toSign},
+            </if>
+            <if test="insert.rate != null">
+                #{insert.rate},
+            </if>
+            <if test="insert.enabled != null">
+                #{insert.enabled},
+            </if>
+            <if test="insert.creator != null">
+                #{insert.creator},
+            </if>
+            <if test="insert.modifier != null">
+                #{insert.modifier},
+            </if>
+            <if test="insert.created != null">
+                #{insert.created},
+            </if>
+            <if test="insert.modified != null">
+                #{insert.modified},
+            </if>
+        </trim>
+    </sql>
+
+    <sql id="updateValues">
+        <trim suffixOverrides=",">
+            <if test="fromCode != null">
+                from_code = #{fromCode},
+            </if>
+            <if test="fromSign != null">
+                from_sign = #{fromSign},
+            </if>
+            <if test="toCode != null">
+                to_code = #{toCode},
+            </if>
+            <if test="toSign != null">
+                to_sign = #{toSign},
+            </if>
+            <if test="rate != null">
+                rate = #{rate},
+            </if>
+            <if test="enabled != null">
+                enabled = #{enabled},
+            </if>
+            <if test="creator != null">
+                creator = #{creator},
+            </if>
+            <if test="modifier != null">
+                modifier = #{modifier},
+            </if>
+            <if test="created != null">
+                created = #{created},
+            </if>
+            <if test="modified != null">
+                modified = #{modified},
+            </if>
+        </trim>
+    </sql>
+
+    <sql id="updateValuesByCriterion">
+        <trim suffixOverrides=",">
+            <if test="entity.fromCode != null">
+                from_code = #{entity.fromCode},
+            </if>
+            <if test="entity.fromSign != null">
+                from_sign = #{entity.fromSign},
+            </if>
+            <if test="entity.toCode != null">
+                to_code = #{entity.toCode},
+            </if>
+            <if test="entity.toSign != null">
+                to_sign = #{entity.toSign},
+            </if>
+            <if test="entity.rate != null">
+                rate = #{entity.rate},
+            </if>
+            <if test="entity.enabled != null">
+                enabled = #{entity.enabled},
+            </if>
+            <if test="entity.creator != null">
+                creator = #{entity.creator},
+            </if>
+            <if test="entity.modifier != null">
+                modifier = #{entity.modifier},
+            </if>
+            <if test="entity.created != null">
+                created = #{entity.created},
+            </if>
+            <if test="entity.modified != null">
+                modified = #{entity.modified},
+            </if>
+        </trim>
+    </sql>
+
+    <sql id="simpleConditions">
+        <trim prefix="WHERE" prefixOverrides="AND">
+            <if test="entity.id != null">
+                AND id = #{entity.id}
+            </if>
+            <if test="entity.fromCode != null">
+                AND from_code = #{entity.fromCode}
+            </if>
+            <if test="entity.fromSign != null">
+                AND from_sign = #{entity.fromSign}
+            </if>
+            <if test="entity.toCode != null">
+                AND to_code = #{entity.toCode}
+            </if>
+            <if test="entity.toSign != null">
+                AND to_sign = #{entity.toSign}
+            </if>
+            <if test="entity.rate != null">
+                AND rate = #{entity.rate}
+            </if>
+            <if test="entity.enabled != null">
+                AND enabled = #{entity.enabled}
+            </if>
+            <if test="entity.creator != null">
+                AND creator = #{entity.creator}
+            </if>
+            <if test="entity.modifier != null">
+                AND modifier = #{entity.modifier}
+            </if>
+            <if test="entity.created != null">
+                AND created = #{entity.created}
+            </if>
+            <if test="entity.modified != null">
+                AND modified = #{entity.modified}
+            </if>
+        </trim>
+    </sql>
+
+    <sql id="sort">
+        <trim prefix="ORDER BY" suffixOverrides=",">
+            <foreach collection="orders" separator="," item="item" index="index">
+                ${item.property} ${item.direction}
+            </foreach>
+        </trim>
+    </sql>
+
+    <sql id="criterion">
+        <foreach collection="conditions.tokens" item="item">
+            <choose>
+                <when test="item.param">#{item.value}</when><otherwise>${item.value}</otherwise>
+            </choose>
+        </foreach>
+    </sql>
+
+    <sql id="limit">
+        LIMIT #{offset}, #{pageSize}
+    </sql>
+
+    <sql id="relationships">
+        <if test="relationships != null">
+            <foreach collection="relationships" item="join" index="index">
+                ${join.type()} ${join.table()} ON ${join.condition()}
+            </foreach>
+        </if>
+    </sql>
+
+    <!-- insert -->
+    <insert id="save" parameterType="com.mifan.article.domain.ExchangeRates" keyProperty="id" useGeneratedKeys="true">
+        INSERT INTO exchange_rates(<include refid="insertColumns"/>) VALUES (<include refid="insertValues"/>)
+    </insert>
+
+    <!-- insert into on duplicate -->
+    <insert id="insertOnDuplicate" parameterType="com.mifan.article.domain.ExchangeRates" keyProperty="id" useGeneratedKeys="true">
+        INSERT INTO exchange_rates(<include refid="insertEntityColumns"/>) VALUES (<include refid="insertEntityValues"/>) ON DUPLICATE KEY UPDATE <include refid="updateValuesByCriterion"/>
+    </insert>
+
+    <!-- insert into on duplicate -->
+    <insert id="saveOrUpdate" parameterType="com.mifan.article.domain.ExchangeRates" keyProperty="id" useGeneratedKeys="true">
+        INSERT INTO exchange_rates(<include refid="insertColumns"/>) VALUES (<include refid="insertValues"/>) ON DUPLICATE KEY UPDATE <include refid="updateValues"/>
+    </insert>
+
+    <!-- delete -->
+    <delete id="delete" parameterType="long">
+        DELETE FROM exchange_rates WHERE id = #{id}
+    </delete>
+
+    <!-- update -->
+    <update id="update" parameterType="com.mifan.article.domain.ExchangeRates">
+        UPDATE exchange_rates SET <include refid="updateValues"/> WHERE id = #{id}
+    </update>
+
+    <update id="updateByCriterion" parameterType="com.mifan.article.domain.ExchangeRates">
+        UPDATE exchange_rates SET <include refid="updateValuesByCriterion"/> WHERE id = #{entity.id} AND <include refid="criterion"></include>
+    </update>
+
+    <update id="updateByMap" parameterType="map">
+        UPDATE exchange_rates
+        <trim prefix="SET" suffixOverrides=",">
+            <foreach collection="increments" index="index" item="item">
+                ${item.key} = ${item.key} + #{item.value},
+            </foreach>
+            <foreach collection="fields" index="index" item="item">
+                ${item.key} = #{item.value},
+            </foreach>
+        </trim>
+        WHERE id = #{id}
+    </update>
+
+    <!-- select -->
+    <select id="findOne" parameterType="map" resultMap="exchangeRates">
+        SELECT
+        <include refid="columns"></include>
+        FROM exchange_rates WHERE id = #{id}
+    </select>
+
+    <select id="findOneByObject" parameterType="map" resultMap="exchangeRates">
+        SELECT
+        <include refid="columns"></include>
+        FROM exchange_rates <include refid="simpleConditions"></include>
+    </select>
+
+    <select id="findAll" parameterType="map" resultMap="exchangeRates">
+        SELECT
+        <include refid="columns"></include>
+        FROM exchange_rates WHERE ${field} IN
+        <foreach collection="ids" open="(" separator="," close=")" index="index" item="item" >
+            ${item}
+        </foreach>
+    </select>
+
+    <select id="findAllByObject" parameterType="map" resultMap="exchangeRates">
+        SELECT
+        <include refid="columns"></include>
+        FROM exchange_rates <include refid="simpleConditions"></include>
+    </select>
+
+    <select id="findAllByCriterion" parameterType="map" resultMap="exchangeRates">
+        SELECT
+        <include refid="columns"></include>
+        FROM exchange_rates WHERE <include refid="criterion"></include>
+    </select>
+
+    <select id="findPage" parameterType="map" resultMap="exchangeRates">
+        SELECT
+        <include refid="columns"></include>
+        FROM exchange_rates <include refid="simpleConditions"></include> <include refid="sort"></include> <include refid="limit"></include>
+    </select>
+
+    <select id="findPageByCriterion" parameterType="map" resultMap="exchangeRates">
+        SELECT
+        <include refid="columns"></include>
+        FROM exchange_rates
+        <include refid="relationships"></include>
+        WHERE <include refid="criterion"></include> <include refid="sort"></include> <include refid="limit"></include>
+    </select>
+
+    <select id="count" resultType="long">
+        SELECT COUNT(*) FROM exchange_rates
+    </select>
+
+    <select id="countByCondition" parameterType="map" resultType="long">
+        SELECT COUNT(*) FROM exchange_rates <include refid="simpleConditions"></include>
+    </select>
+
+    <select id="countByCriterion" parameterType="map" resultType="long">
+        SELECT COUNT(*) FROM exchange_rates
+        <include refid="relationships"></include>
+        WHERE <include refid="criterion"></include>
+    </select>
+
+    <select id="exists" parameterType="long" resultType="long">
+        SELECT COUNT(*) FROM exchange_rates WHERE id = #{id}
+    </select>
+
+</mapper>

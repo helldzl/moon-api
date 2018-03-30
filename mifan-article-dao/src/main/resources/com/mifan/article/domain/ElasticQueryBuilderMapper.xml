@@ -1,0 +1,586 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.mifan.article.domain.ElasticQueryBuilder">
+
+    <!-- result map -->
+    <resultMap id="elasticQueryBuilder" type="com.mifan.article.domain.ElasticQueryBuilder">
+        <id property="id" column="id" javaType="long"/>
+        <result property="title" column="title" javaType="string"/>
+        <result property="queryFieldsEn" column="query_fields_en" javaType="string"/>
+        <result property="queryFieldsCn" column="query_fields_cn" javaType="string"/>
+        <result property="filterCategoriesEn" column="filter_categories_en" javaType="string"/>
+        <result property="filterCategoriesCn" column="filter_categories_cn" javaType="string"/>
+        <result property="positiveQueryStringEn" column="positive_query_string_en" javaType="string"/>
+        <result property="positiveQueryStringCn" column="positive_query_string_cn" javaType="string"/>
+        <result property="negativeQueryStringEn" column="negative_query_string_en" javaType="string"/>
+        <result property="negativeQueryStringCn" column="negative_query_string_cn" javaType="string"/>
+        <result property="negativeBoost" column="negative_boost" javaType="double"/>
+        <result property="functionScoreMode" column="function_score_mode" javaType="string"/>
+        <result property="functionBoostMode" column="function_boost_mode" javaType="string"/>
+        <result property="enabled" column="enabled" javaType="int"/>
+        <result property="creator" column="creator" javaType="long"/>
+        <result property="modifier" column="modifier" javaType="long"/>
+        <result property="created" column="created" javaType="date"/>
+        <result property="modified" column="modified" javaType="date"/>
+    </resultMap>
+
+    <!-- sql -->
+    <sql id="columns">
+        <choose>
+            <when test="fields != null and fields.size != 0">
+                <foreach collection="fields" separator="," item="item" index="index">
+                    ${item.fullname}
+                </foreach>
+            </when>
+            <otherwise>
+                id, title, query_fields_en, query_fields_cn, filter_categories_en, filter_categories_cn, positive_query_string_en, positive_query_string_cn, negative_query_string_en, negative_query_string_cn, negative_boost, function_score_mode, function_boost_mode, enabled, creator, modifier, created, modified 
+            </otherwise>
+        </choose>
+    </sql>
+
+    <sql id="insertColumns">
+        <trim suffixOverrides=",">
+            <if test="id != null">
+                id,
+            </if>
+            <if test="title != null">
+                title,
+            </if>
+            <if test="queryFieldsEn != null">
+                query_fields_en,
+            </if>
+            <if test="queryFieldsCn != null">
+                query_fields_cn,
+            </if>
+            <if test="filterCategoriesEn != null">
+                filter_categories_en,
+            </if>
+            <if test="filterCategoriesCn != null">
+                filter_categories_cn,
+            </if>
+            <if test="positiveQueryStringEn != null">
+                positive_query_string_en,
+            </if>
+            <if test="positiveQueryStringCn != null">
+                positive_query_string_cn,
+            </if>
+            <if test="negativeQueryStringEn != null">
+                negative_query_string_en,
+            </if>
+            <if test="negativeQueryStringCn != null">
+                negative_query_string_cn,
+            </if>
+            <if test="negativeBoost != null">
+                negative_boost,
+            </if>
+            <if test="functionScoreMode != null">
+                function_score_mode,
+            </if>
+            <if test="functionBoostMode != null">
+                function_boost_mode,
+            </if>
+            <if test="enabled != null">
+                enabled,
+            </if>
+            <if test="creator != null">
+                creator,
+            </if>
+            <if test="modifier != null">
+                modifier,
+            </if>
+            <if test="created != null">
+                created,
+            </if>
+            <if test="modified != null">
+                modified,
+            </if>
+        </trim>
+    </sql>
+
+    <sql id="insertEntityColumns">
+        <trim suffixOverrides=",">
+            <if test="insert.id != null">
+                id,
+            </if>
+            <if test="insert.title != null">
+                title,
+            </if>
+            <if test="insert.queryFieldsEn != null">
+                query_fields_en,
+            </if>
+            <if test="insert.queryFieldsCn != null">
+                query_fields_cn,
+            </if>
+            <if test="insert.filterCategoriesEn != null">
+                filter_categories_en,
+            </if>
+            <if test="insert.filterCategoriesCn != null">
+                filter_categories_cn,
+            </if>
+            <if test="insert.positiveQueryStringEn != null">
+                positive_query_string_en,
+            </if>
+            <if test="insert.positiveQueryStringCn != null">
+                positive_query_string_cn,
+            </if>
+            <if test="insert.negativeQueryStringEn != null">
+                negative_query_string_en,
+            </if>
+            <if test="insert.negativeQueryStringCn != null">
+                negative_query_string_cn,
+            </if>
+            <if test="insert.negativeBoost != null">
+                negative_boost,
+            </if>
+            <if test="insert.functionScoreMode != null">
+                function_score_mode,
+            </if>
+            <if test="insert.functionBoostMode != null">
+                function_boost_mode,
+            </if>
+            <if test="insert.enabled != null">
+                enabled,
+            </if>
+            <if test="insert.creator != null">
+                creator,
+            </if>
+            <if test="insert.modifier != null">
+                modifier,
+            </if>
+            <if test="insert.created != null">
+                created,
+            </if>
+            <if test="insert.modified != null">
+                modified,
+            </if>
+        </trim>
+    </sql>
+
+    <sql id="insertValues">
+        <trim suffixOverrides=",">
+            <if test="id != null">
+                #{id},
+            </if>
+            <if test="title != null">
+                #{title},
+            </if>
+            <if test="queryFieldsEn != null">
+                #{queryFieldsEn},
+            </if>
+            <if test="queryFieldsCn != null">
+                #{queryFieldsCn},
+            </if>
+            <if test="filterCategoriesEn != null">
+                #{filterCategoriesEn},
+            </if>
+            <if test="filterCategoriesCn != null">
+                #{filterCategoriesCn},
+            </if>
+            <if test="positiveQueryStringEn != null">
+                #{positiveQueryStringEn},
+            </if>
+            <if test="positiveQueryStringCn != null">
+                #{positiveQueryStringCn},
+            </if>
+            <if test="negativeQueryStringEn != null">
+                #{negativeQueryStringEn},
+            </if>
+            <if test="negativeQueryStringCn != null">
+                #{negativeQueryStringCn},
+            </if>
+            <if test="negativeBoost != null">
+                #{negativeBoost},
+            </if>
+            <if test="functionScoreMode != null">
+                #{functionScoreMode},
+            </if>
+            <if test="functionBoostMode != null">
+                #{functionBoostMode},
+            </if>
+            <if test="enabled != null">
+                #{enabled},
+            </if>
+            <if test="creator != null">
+                #{creator},
+            </if>
+            <if test="modifier != null">
+                #{modifier},
+            </if>
+            <if test="created != null">
+                #{created},
+            </if>
+            <if test="modified != null">
+                #{modified},
+            </if>
+        </trim>
+    </sql>
+
+    <sql id="insertEntityValues">
+        <trim suffixOverrides=",">
+            <if test="insert.id != null">
+                #{insert.id},
+            </if>
+            <if test="insert.title != null">
+                #{insert.title},
+            </if>
+            <if test="insert.queryFieldsEn != null">
+                #{insert.queryFieldsEn},
+            </if>
+            <if test="insert.queryFieldsCn != null">
+                #{insert.queryFieldsCn},
+            </if>
+            <if test="insert.filterCategoriesEn != null">
+                #{insert.filterCategoriesEn},
+            </if>
+            <if test="insert.filterCategoriesCn != null">
+                #{insert.filterCategoriesCn},
+            </if>
+            <if test="insert.positiveQueryStringEn != null">
+                #{insert.positiveQueryStringEn},
+            </if>
+            <if test="insert.positiveQueryStringCn != null">
+                #{insert.positiveQueryStringCn},
+            </if>
+            <if test="insert.negativeQueryStringEn != null">
+                #{insert.negativeQueryStringEn},
+            </if>
+            <if test="insert.negativeQueryStringCn != null">
+                #{insert.negativeQueryStringCn},
+            </if>
+            <if test="insert.negativeBoost != null">
+                #{insert.negativeBoost},
+            </if>
+            <if test="insert.functionScoreMode != null">
+                #{insert.functionScoreMode},
+            </if>
+            <if test="insert.functionBoostMode != null">
+                #{insert.functionBoostMode},
+            </if>
+            <if test="insert.enabled != null">
+                #{insert.enabled},
+            </if>
+            <if test="insert.creator != null">
+                #{insert.creator},
+            </if>
+            <if test="insert.modifier != null">
+                #{insert.modifier},
+            </if>
+            <if test="insert.created != null">
+                #{insert.created},
+            </if>
+            <if test="insert.modified != null">
+                #{insert.modified},
+            </if>
+        </trim>
+    </sql>
+
+    <sql id="updateValues">
+        <trim suffixOverrides=",">
+            <if test="title != null">
+                title = #{title},
+            </if>
+            <if test="queryFieldsEn != null">
+                query_fields_en = #{queryFieldsEn},
+            </if>
+            <if test="queryFieldsCn != null">
+                query_fields_cn = #{queryFieldsCn},
+            </if>
+            <if test="filterCategoriesEn != null">
+                filter_categories_en = #{filterCategoriesEn},
+            </if>
+            <if test="filterCategoriesCn != null">
+                filter_categories_cn = #{filterCategoriesCn},
+            </if>
+            <if test="positiveQueryStringEn != null">
+                positive_query_string_en = #{positiveQueryStringEn},
+            </if>
+            <if test="positiveQueryStringCn != null">
+                positive_query_string_cn = #{positiveQueryStringCn},
+            </if>
+            <if test="negativeQueryStringEn != null">
+                negative_query_string_en = #{negativeQueryStringEn},
+            </if>
+            <if test="negativeQueryStringCn != null">
+                negative_query_string_cn = #{negativeQueryStringCn},
+            </if>
+            <if test="negativeBoost != null">
+                negative_boost = #{negativeBoost},
+            </if>
+            <if test="functionScoreMode != null">
+                function_score_mode = #{functionScoreMode},
+            </if>
+            <if test="functionBoostMode != null">
+                function_boost_mode = #{functionBoostMode},
+            </if>
+            <if test="enabled != null">
+                enabled = #{enabled},
+            </if>
+            <if test="creator != null">
+                creator = #{creator},
+            </if>
+            <if test="modifier != null">
+                modifier = #{modifier},
+            </if>
+            <if test="created != null">
+                created = #{created},
+            </if>
+            <if test="modified != null">
+                modified = #{modified},
+            </if>
+        </trim>
+    </sql>
+
+    <sql id="updateValuesByCriterion">
+        <trim suffixOverrides=",">
+            <if test="entity.title != null">
+                title = #{entity.title},
+            </if>
+            <if test="entity.queryFieldsEn != null">
+                query_fields_en = #{entity.queryFieldsEn},
+            </if>
+            <if test="entity.queryFieldsCn != null">
+                query_fields_cn = #{entity.queryFieldsCn},
+            </if>
+            <if test="entity.filterCategoriesEn != null">
+                filter_categories_en = #{entity.filterCategoriesEn},
+            </if>
+            <if test="entity.filterCategoriesCn != null">
+                filter_categories_cn = #{entity.filterCategoriesCn},
+            </if>
+            <if test="entity.positiveQueryStringEn != null">
+                positive_query_string_en = #{entity.positiveQueryStringEn},
+            </if>
+            <if test="entity.positiveQueryStringCn != null">
+                positive_query_string_cn = #{entity.positiveQueryStringCn},
+            </if>
+            <if test="entity.negativeQueryStringEn != null">
+                negative_query_string_en = #{entity.negativeQueryStringEn},
+            </if>
+            <if test="entity.negativeQueryStringCn != null">
+                negative_query_string_cn = #{entity.negativeQueryStringCn},
+            </if>
+            <if test="entity.negativeBoost != null">
+                negative_boost = #{entity.negativeBoost},
+            </if>
+            <if test="entity.functionScoreMode != null">
+                function_score_mode = #{entity.functionScoreMode},
+            </if>
+            <if test="entity.functionBoostMode != null">
+                function_boost_mode = #{entity.functionBoostMode},
+            </if>
+            <if test="entity.enabled != null">
+                enabled = #{entity.enabled},
+            </if>
+            <if test="entity.creator != null">
+                creator = #{entity.creator},
+            </if>
+            <if test="entity.modifier != null">
+                modifier = #{entity.modifier},
+            </if>
+            <if test="entity.created != null">
+                created = #{entity.created},
+            </if>
+            <if test="entity.modified != null">
+                modified = #{entity.modified},
+            </if>
+        </trim>
+    </sql>
+
+    <sql id="simpleConditions">
+        <trim prefix="WHERE" prefixOverrides="AND">
+            <if test="entity.id != null">
+                AND id = #{entity.id}
+            </if>
+            <if test="entity.title != null">
+                AND title = #{entity.title}
+            </if>
+            <if test="entity.queryFieldsEn != null">
+                AND query_fields_en = #{entity.queryFieldsEn}
+            </if>
+            <if test="entity.queryFieldsCn != null">
+                AND query_fields_cn = #{entity.queryFieldsCn}
+            </if>
+            <if test="entity.filterCategoriesEn != null">
+                AND filter_categories_en = #{entity.filterCategoriesEn}
+            </if>
+            <if test="entity.filterCategoriesCn != null">
+                AND filter_categories_cn = #{entity.filterCategoriesCn}
+            </if>
+            <if test="entity.positiveQueryStringEn != null">
+                AND positive_query_string_en = #{entity.positiveQueryStringEn}
+            </if>
+            <if test="entity.positiveQueryStringCn != null">
+                AND positive_query_string_cn = #{entity.positiveQueryStringCn}
+            </if>
+            <if test="entity.negativeQueryStringEn != null">
+                AND negative_query_string_en = #{entity.negativeQueryStringEn}
+            </if>
+            <if test="entity.negativeQueryStringCn != null">
+                AND negative_query_string_cn = #{entity.negativeQueryStringCn}
+            </if>
+            <if test="entity.negativeBoost != null">
+                AND negative_boost = #{entity.negativeBoost}
+            </if>
+            <if test="entity.functionScoreMode != null">
+                AND function_score_mode = #{entity.functionScoreMode}
+            </if>
+            <if test="entity.functionBoostMode != null">
+                AND function_boost_mode = #{entity.functionBoostMode}
+            </if>
+            <if test="entity.enabled != null">
+                AND enabled = #{entity.enabled}
+            </if>
+            <if test="entity.creator != null">
+                AND creator = #{entity.creator}
+            </if>
+            <if test="entity.modifier != null">
+                AND modifier = #{entity.modifier}
+            </if>
+            <if test="entity.created != null">
+                AND created = #{entity.created}
+            </if>
+            <if test="entity.modified != null">
+                AND modified = #{entity.modified}
+            </if>
+        </trim>
+    </sql>
+
+    <sql id="sort">
+        <trim prefix="ORDER BY" suffixOverrides=",">
+            <foreach collection="orders" separator="," item="item" index="index">
+                ${item.property} ${item.direction}
+            </foreach>
+        </trim>
+    </sql>
+
+    <sql id="criterion">
+        <foreach collection="conditions.tokens" item="item">
+            <choose>
+                <when test="item.param">#{item.value}</when><otherwise>${item.value}</otherwise>
+            </choose>
+        </foreach>
+    </sql>
+
+    <sql id="limit">
+        LIMIT #{offset}, #{pageSize}
+    </sql>
+
+    <sql id="relationships">
+        <if test="relationships != null">
+            <foreach collection="relationships" item="join" index="index">
+                ${join.type()} ${join.table()} ON ${join.condition()}
+            </foreach>
+        </if>
+    </sql>
+
+    <!-- insert -->
+    <insert id="save" parameterType="com.mifan.article.domain.ElasticQueryBuilder" keyProperty="id" useGeneratedKeys="true">
+        INSERT INTO elastic_query_builder(<include refid="insertColumns"/>) VALUES (<include refid="insertValues"/>)
+    </insert>
+
+    <!-- insert into on duplicate -->
+    <insert id="insertOnDuplicate" parameterType="com.mifan.article.domain.ElasticQueryBuilder" keyProperty="id" useGeneratedKeys="true">
+        INSERT INTO elastic_query_builder(<include refid="insertEntityColumns"/>) VALUES (<include refid="insertEntityValues"/>) ON DUPLICATE KEY UPDATE <include refid="updateValuesByCriterion"/>
+    </insert>
+
+    <!-- insert into on duplicate -->
+    <insert id="saveOrUpdate" parameterType="com.mifan.article.domain.ElasticQueryBuilder" keyProperty="id" useGeneratedKeys="true">
+        INSERT INTO elastic_query_builder(<include refid="insertColumns"/>) VALUES (<include refid="insertValues"/>) ON DUPLICATE KEY UPDATE <include refid="updateValues"/>
+    </insert>
+
+    <!-- delete -->
+    <delete id="delete" parameterType="long">
+        DELETE FROM elastic_query_builder WHERE id = #{id}
+    </delete>
+
+    <!-- update -->
+    <update id="update" parameterType="com.mifan.article.domain.ElasticQueryBuilder">
+        UPDATE elastic_query_builder SET <include refid="updateValues"/> WHERE id = #{id}
+    </update>
+
+    <update id="updateByCriterion" parameterType="com.mifan.article.domain.ElasticQueryBuilder">
+        UPDATE elastic_query_builder SET <include refid="updateValuesByCriterion"/> WHERE id = #{entity.id} AND <include refid="criterion"></include>
+    </update>
+
+    <update id="updateByMap" parameterType="map">
+        UPDATE elastic_query_builder
+        <trim prefix="SET" suffixOverrides=",">
+            <foreach collection="increments" index="index" item="item">
+                ${item.key} = ${item.key} + #{item.value},
+            </foreach>
+            <foreach collection="fields" index="index" item="item">
+                ${item.key} = #{item.value},
+            </foreach>
+        </trim>
+        WHERE id = #{id}
+    </update>
+
+    <!-- select -->
+    <select id="findOne" parameterType="map" resultMap="elasticQueryBuilder">
+        SELECT
+        <include refid="columns"></include>
+        FROM elastic_query_builder WHERE id = #{id}
+    </select>
+
+    <select id="findOneByObject" parameterType="map" resultMap="elasticQueryBuilder">
+        SELECT
+        <include refid="columns"></include>
+        FROM elastic_query_builder <include refid="simpleConditions"></include>
+    </select>
+
+    <select id="findAll" parameterType="map" resultMap="elasticQueryBuilder">
+        SELECT
+        <include refid="columns"></include>
+        FROM elastic_query_builder WHERE ${field} IN
+        <foreach collection="ids" open="(" separator="," close=")" index="index" item="item" >
+            ${item}
+        </foreach>
+    </select>
+
+    <select id="findAllByObject" parameterType="map" resultMap="elasticQueryBuilder">
+        SELECT
+        <include refid="columns"></include>
+        FROM elastic_query_builder <include refid="simpleConditions"></include>
+    </select>
+
+    <select id="findAllByCriterion" parameterType="map" resultMap="elasticQueryBuilder">
+        SELECT
+        <include refid="columns"></include>
+        FROM elastic_query_builder WHERE <include refid="criterion"></include>
+    </select>
+
+    <select id="findPage" parameterType="map" resultMap="elasticQueryBuilder">
+        SELECT
+        <include refid="columns"></include>
+        FROM elastic_query_builder <include refid="simpleConditions"></include> <include refid="sort"></include> <include refid="limit"></include>
+    </select>
+
+    <select id="findPageByCriterion" parameterType="map" resultMap="elasticQueryBuilder">
+        SELECT
+        <include refid="columns"></include>
+        FROM elastic_query_builder
+        <include refid="relationships"></include>
+        WHERE <include refid="criterion"></include> <include refid="sort"></include> <include refid="limit"></include>
+    </select>
+
+    <select id="count" resultType="long">
+        SELECT COUNT(*) FROM elastic_query_builder
+    </select>
+
+    <select id="countByCondition" parameterType="map" resultType="long">
+        SELECT COUNT(*) FROM elastic_query_builder <include refid="simpleConditions"></include>
+    </select>
+
+    <select id="countByCriterion" parameterType="map" resultType="long">
+        SELECT COUNT(*) FROM elastic_query_builder
+        <include refid="relationships"></include>
+        WHERE <include refid="criterion"></include>
+    </select>
+
+    <select id="exists" parameterType="long" resultType="long">
+        SELECT COUNT(*) FROM elastic_query_builder WHERE id = #{id}
+    </select>
+
+</mapper>

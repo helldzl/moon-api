@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>com.mifan.api</groupId>
+    <artifactId>mifan-api</artifactId>
+    <packaging>pom</packaging>
+    <version>1.0.0</version>
+
+    <developers>
+        <developer>
+            <id>helldzl</id>
+            <name>Ethan</name>
+            <email>1949602@qq.com</email>
+        </developer>
+        <!-- Other developer add here -->
+    </developers>
+
+    <modules>
+        <module>mifan-article-dependencies</module>
+        <module>mifan-award-dependencies</module>
+        <module>mifan-quiz-dependencies</module>
+        <module>mifan-reward-dependencies</module>
+        <module>mifan-support-dependencies</module>
+        <module>mifan-user-dependencies</module>
+        <module>mifan-batch-spider</module>
+        <module>mifan-batch-analyzer</module>
+        <module>mifan-eureka-server</module>
+        <module>mifan-config-server</module>
+        <module>mifan-zuul-gateway</module>
+        <module>mifan-zipkin-server</module>
+    </modules>
+
+    <properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+        <java.version>1.8</java.version>
+        <moonframework.version>2.0.0</moonframework.version>
+        <spring.boot.version>1.5.9.RELEASE</spring.boot.version>
+        <spotify-docker.version>1.0.0</spotify-docker.version>
+        <project.run.profile>development</project.run.profile>
+    </properties>
+
+    <dependencyManagement>
+        <dependencies>
+            <dependency>
+                <groupId>org.moonframework</groupId>
+                <artifactId>moon-framework2-bom</artifactId>
+                <version>${moonframework.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+
+            <dependency>
+                <groupId>com.spotify</groupId>
+                <artifactId>docker-maven-plugin</artifactId>
+                <version>${spotify-docker.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+
+            <dependency>
+                <groupId>org.elasticsearch</groupId>
+                <artifactId>elasticsearch</artifactId>
+                <version>2.4.0</version>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
+
+    <!-- Nexus Repository -->
+    <distributionManagement>
+        <repository>
+            <id>releases</id>
+            <name>Nexus Release Repository</name>
+            <url>http://192.168.1.138:8081/nexus/content/repositories/releases/</url>
+        </repository>
+        <snapshotRepository>
+            <id>snapshots</id>
+            <name>Nexus Snapshot Repository</name>
+            <url>http://192.168.1.138:8081/nexus/content/repositories/releases/</url>
+        </snapshotRepository>
+    </distributionManagement>
+
+    <build>
+        <plugins>
+            <!-- Compiles Java sources. -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>3.3</version>
+                <configuration>
+                    <source>${java.version}</source>
+                    <target>${java.version}</target>
+                    <encoding>UTF-8</encoding>
+                </configuration>
+            </plugin>
+
+            <!-- Build a source-JAR from the current project. -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-source-plugin</artifactId>
+                <version>2.4</version>
+                <executions>
+                    <execution>
+                        <id>attach-sources</id>
+                        <goals>
+                            <goal>jar-no-fork</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+
+            <!-- Generate Javadoc for the project. -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-javadoc-plugin</artifactId>
+                <version>2.10.3</version>
+            </plugin>
+        </plugins>
+    </build>
+
+</project>

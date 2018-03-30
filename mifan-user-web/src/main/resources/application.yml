@@ -1,0 +1,15 @@
+###############
+### LOGGING ###
+###############
+#logging:
+#  level:
+#    root: INFO
+#    com.mifan.user.web.*: INFO
+#    org.moonframework.web.core: INFO
+#    org.springframework.web.servlet.DispatcherServlet: INFO
+#    org.springframework.cloud.sleuth: INFO
+#    org.hibernate: INFO                                       # 配置日志级别，让hibernate打印出执行的SQL
+#    org.springframework.web: INFO
+#    org.hibernate.type.descriptor.sql.BasicBinder: INFO
+#    org.hibernate.type.descriptor.sql.BasicExtractor: INFO
+#    org.springframework.cloud.commons.util.InetUtils: INFO    # 开启这边的日志，可以打印出Spring查找网卡的过程

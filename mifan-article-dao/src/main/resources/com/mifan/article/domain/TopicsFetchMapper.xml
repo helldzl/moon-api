@@ -1,0 +1,381 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.mifan.article.domain.TopicsFetch">
+
+    <!-- result map -->
+    <resultMap id="topicsFetch" type="com.mifan.article.domain.TopicsFetch">
+        <id property="id" column="id" javaType="long"/>
+        <result property="topicId" column="topic_id" javaType="long"/>
+        <result property="seedId" column="seed_id" javaType="long"/>
+        <result property="origin" column="origin" javaType="string"/>
+        <result property="originHash" column="origin_hash" javaType="long"/>
+        <result property="rating" column="rating" javaType="double"/>
+        <result property="reviews" column="reviews" javaType="int"/>
+        <result property="thumbsUp" column="thumbs_up" javaType="int"/>
+    </resultMap>
+
+    <!-- sql -->
+    <sql id="columns">
+        <choose>
+            <when test="fields != null and fields.size != 0">
+                <foreach collection="fields" separator="," item="item" index="index">
+                    ${item.fullname}
+                </foreach>
+            </when>
+            <otherwise>
+                id, topic_id, seed_id, origin, origin_hash, rating, reviews, thumbs_up
+            </otherwise>
+        </choose>
+    </sql>
+
+    <sql id="insertColumns">
+        <trim suffixOverrides=",">
+            <if test="id != null">
+                id,
+            </if>
+            <if test="topicId != null">
+                topic_id,
+            </if>
+            <if test="seedId != null">
+                seed_id,
+            </if>
+            <if test="origin != null">
+                origin,
+            </if>
+            <if test="originHash != null">
+                origin_hash,
+            </if>
+            <if test="rating != null">
+                rating,
+            </if>
+            <if test="reviews != null">
+                reviews,
+            </if>
+            <if test="thumbsUp != null">
+                thumbs_up,
+            </if>
+        </trim>
+    </sql>
+
+    <sql id="insertEntityColumns">
+        <trim suffixOverrides=",">
+            <if test="insert.id != null">
+                id,
+            </if>
+            <if test="insert.topicId != null">
+                topic_id,
+            </if>
+            <if test="insert.seedId != null">
+                seed_id,
+            </if>
+            <if test="insert.origin != null">
+                origin,
+            </if>
+            <if test="insert.originHash != null">
+                origin_hash,
+            </if>
+            <if test="insert.rating != null">
+                rating,
+            </if>
+            <if test="insert.reviews != null">
+                reviews,
+            </if>
+            <if test="insert.thumbsUp != null">
+                thumbs_up,
+            </if>
+        </trim>
+    </sql>
+
+    <sql id="insertValues">
+        <trim suffixOverrides=",">
+            <if test="id != null">
+                #{id},
+            </if>
+            <if test="topicId != null">
+                #{topicId},
+            </if>
+            <if test="seedId != null">
+                #{seedId},
+            </if>
+            <if test="origin != null">
+                #{origin},
+            </if>
+            <if test="originHash != null">
+                #{originHash},
+            </if>
+            <if test="rating != null">
+                #{rating},
+            </if>
+            <if test="reviews != null">
+                #{reviews},
+            </if>
+            <if test="thumbsUp != null">
+                #{thumbsUp},
+            </if>
+        </trim>
+    </sql>
+
+    <sql id="insertEntityValues">
+        <trim suffixOverrides=",">
+            <if test="insert.id != null">
+                #{insert.id},
+            </if>
+            <if test="insert.topicId != null">
+                #{insert.topicId},
+            </if>
+            <if test="insert.seedId != null">
+                #{insert.seedId},
+            </if>
+            <if test="insert.origin != null">
+                #{insert.origin},
+            </if>
+            <if test="insert.originHash != null">
+                #{insert.originHash},
+            </if>
+            <if test="insert.rating != null">
+                #{insert.rating},
+            </if>
+            <if test="insert.reviews != null">
+                #{insert.reviews},
+            </if>
+            <if test="insert.thumbsUp != null">
+                #{insert.thumbsUp},
+            </if>
+        </trim>
+    </sql>
+
+    <sql id="updateValues">
+        <trim suffixOverrides=",">
+            <if test="topicId != null">
+                topic_id = #{topicId},
+            </if>
+            <if test="seedId != null">
+                seed_id = #{seedId},
+            </if>
+            <if test="origin != null">
+                origin = #{origin},
+            </if>
+            <if test="originHash != null">
+                origin_hash = #{originHash},
+            </if>
+            <if test="rating != null">
+                rating = #{rating},
+            </if>
+            <if test="reviews != null">
+                reviews = #{reviews},
+            </if>
+            <if test="thumbsUp != null">
+                thumbs_up = #{thumbsUp},
+            </if>
+        </trim>
+    </sql>
+
+    <sql id="updateValuesByCriterion">
+        <trim suffixOverrides=",">
+            <if test="entity.topicId != null">
+                topic_id = #{entity.topicId},
+            </if>
+            <if test="entity.seedId != null">
+                seed_id = #{entity.seedId},
+            </if>
+            <if test="entity.origin != null">
+                origin = #{entity.origin},
+            </if>
+            <if test="entity.originHash != null">
+                origin_hash = #{entity.originHash},
+            </if>
+            <if test="entity.rating != null">
+                rating = #{entity.rating},
+            </if>
+            <if test="entity.reviews != null">
+                reviews = #{entity.reviews},
+            </if>
+            <if test="entity.thumbsUp != null">
+                thumbs_up = #{entity.thumbsUp},
+            </if>
+        </trim>
+    </sql>
+
+    <sql id="simpleConditions">
+        <trim prefix="WHERE" prefixOverrides="AND">
+            <if test="entity.id != null">
+                AND id = #{entity.id}
+            </if>
+            <if test="entity.topicId != null">
+                AND topic_id = #{entity.topicId}
+            </if>
+            <if test="entity.seedId != null">
+                AND seed_id = #{entity.seedId}
+            </if>
+            <if test="entity.origin != null">
+                AND origin = #{entity.origin}
+            </if>
+            <if test="entity.originHash != null">
+                AND origin_hash = #{entity.originHash}
+            </if>
+            <if test="entity.rating != null">
+                AND rating = #{entity.rating}
+            </if>
+            <if test="entity.reviews != null">
+                AND reviews = #{entity.reviews}
+            </if>
+            <if test="entity.thumbsUp != null">
+                AND thumbs_up = #{entity.thumbsUp}
+            </if>
+        </trim>
+    </sql>
+
+    <sql id="sort">
+        <trim prefix="ORDER BY" suffixOverrides=",">
+            <foreach collection="orders" separator="," item="item" index="index">
+                ${item.property} ${item.direction}
+            </foreach>
+        </trim>
+    </sql>
+
+    <sql id="criterion">
+        <foreach collection="conditions.tokens" item="item">
+            <choose>
+                <when test="item.param">#{item.value}</when><otherwise>${item.value}</otherwise>
+            </choose>
+        </foreach>
+    </sql>
+
+    <sql id="limit">
+        LIMIT #{offset}, #{pageSize}
+    </sql>
+
+    <sql id="relationships">
+        <if test="relationships != null">
+            <foreach collection="relationships" item="join" index="index">
+                ${join.type()} ${join.table()} ON ${join.condition()}
+            </foreach>
+        </if>
+    </sql>
+
+    <!-- insert -->
+    <insert id="save" parameterType="com.mifan.article.domain.TopicsFetch" keyProperty="id" useGeneratedKeys="true">
+        INSERT INTO topics_fetch(<include refid="insertColumns"/>) VALUES (<include refid="insertValues"/>)
+    </insert>
+
+    <!-- insert into on duplicate -->
+    <insert id="insertOnDuplicate" parameterType="com.mifan.article.domain.TopicsFetch" keyProperty="id" useGeneratedKeys="true">
+        INSERT INTO topics_fetch(<include refid="insertEntityColumns"/>) VALUES (<include refid="insertEntityValues"/>) ON DUPLICATE KEY UPDATE <include refid="updateValuesByCriterion"/>
+    </insert>
+
+    <!-- insert into on duplicate -->
+    <insert id="saveOrUpdate" parameterType="com.mifan.article.domain.TopicsFetch" keyProperty="id" useGeneratedKeys="true">
+        INSERT INTO topics_fetch(<include refid="insertColumns"/>) VALUES (<include refid="insertValues"/>) ON DUPLICATE KEY UPDATE <include refid="updateValues"/>
+    </insert>
+
+    <!-- delete -->
+    <delete id="delete" parameterType="long">
+        DELETE FROM topics_fetch WHERE id = #{id}
+    </delete>
+
+    <!-- update -->
+    <update id="update" parameterType="com.mifan.article.domain.TopicsFetch">
+        UPDATE topics_fetch SET <include refid="updateValues"/> WHERE id = #{id}
+    </update>
+
+    <update id="updateByCriterion" parameterType="com.mifan.article.domain.TopicsFetch">
+        UPDATE topics_fetch SET <include refid="updateValuesByCriterion"/> WHERE id = #{entity.id} AND <include refid="criterion"></include>
+    </update>
+
+    <update id="updateByMap" parameterType="map">
+        UPDATE topics_fetch
+        <trim prefix="SET" suffixOverrides=",">
+            <foreach collection="increments" index="index" item="item">
+                ${item.key} = ${item.key} + #{item.value},
+            </foreach>
+            <foreach collection="fields" index="index" item="item">
+                ${item.key} = #{item.value},
+            </foreach>
+        </trim>
+        WHERE id = #{id}
+    </update>
+
+    <select id="mpHotNews" parameterType="map" resultMap="topicsFetch">
+        SELECT 
+		    tf.topic_id,tf.reviews 
+		FROM 
+		    topics t JOIN topics_fetch tf ON t.id = tf.topic_id 
+		WHERE 
+		    tf.seed_id IN 
+		    <foreach collection="seeds" open="(" separator="," close=")" index="index" item="item" >
+                ${item}
+            </foreach>
+		AND 
+		    t.created > #{mydate}
+		ORDER BY tf.reviews DESC LIMIT 0,#{size};
+    </select>
+
+    <!-- select -->
+    <select id="findOne" parameterType="map" resultMap="topicsFetch">
+        SELECT
+        <include refid="columns"></include>
+        FROM topics_fetch WHERE id = #{id}
+    </select>
+
+    <select id="findOneByObject" parameterType="map" resultMap="topicsFetch">
+        SELECT
+        <include refid="columns"></include>
+        FROM topics_fetch <include refid="simpleConditions"></include>
+    </select>
+
+    <select id="findAll" parameterType="map" resultMap="topicsFetch">
+        SELECT
+        <include refid="columns"></include>
+        FROM topics_fetch WHERE ${field} IN
+        <foreach collection="ids" open="(" separator="," close=")" index="index" item="item" >
+            ${item}
+        </foreach>
+    </select>
+
+    <select id="findAllByObject" parameterType="map" resultMap="topicsFetch">
+        SELECT
+        <include refid="columns"></include>
+        FROM topics_fetch <include refid="simpleConditions"></include>
+    </select>
+
+    <select id="findAllByCriterion" parameterType="map" resultMap="topicsFetch">
+        SELECT
+        <include refid="columns"></include>
+        FROM topics_fetch WHERE <include refid="criterion"></include>
+    </select>
+
+    <select id="findPage" parameterType="map" resultMap="topicsFetch">
+        SELECT
+        <include refid="columns"></include>
+        FROM topics_fetch <include refid="simpleConditions"></include> <include refid="sort"></include> <include refid="limit"></include>
+    </select>
+
+    <select id="findPageByCriterion" parameterType="map" resultMap="topicsFetch">
+        SELECT
+        <include refid="columns"></include>
+        FROM topics_fetch
+        <include refid="relationships"></include>
+        WHERE <include refid="criterion"></include> <include refid="sort"></include> <include refid="limit"></include>
+    </select>
+
+    <select id="count" resultType="long">
+        SELECT COUNT(*) FROM topics_fetch
+    </select>
+
+    <select id="countByCondition" parameterType="map" resultType="long">
+        SELECT COUNT(*) FROM topics_fetch <include refid="simpleConditions"></include>
+    </select>
+
+    <select id="countByCriterion" parameterType="map" resultType="long">
+        SELECT COUNT(*) FROM topics_fetch
+        <include refid="relationships"></include>
+        WHERE <include refid="criterion"></include>
+    </select>
+
+    <select id="exists" parameterType="long" resultType="long">
+        SELECT COUNT(*) FROM topics_fetch WHERE id = #{id}
+    </select>
+
+</mapper>

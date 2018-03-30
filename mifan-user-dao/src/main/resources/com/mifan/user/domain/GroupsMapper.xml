@@ -1,0 +1,285 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.mifan.user.domain.Groups">
+
+    <!-- result map -->
+    <resultMap id="groups" type="com.mifan.user.domain.Groups">
+        <id property="id" column="id" javaType="long"/>
+        <result property="siteId" column="site_id" javaType="long"/>
+        <result property="parentId" column="parent_id" javaType="long"/>
+        <result property="groupName" column="group_name" javaType="string"/>
+        <result property="description" column="description" javaType="string"/>
+        <result property="enabled" column="enabled" javaType="int"/>
+        <result property="created" column="created" javaType="date"/>
+        <result property="modified" column="modified" javaType="date"/>
+    </resultMap>
+
+    <!-- sql -->
+    <sql id="columns">
+        <choose>
+            <when test="fields != null and fields.size != 0">
+                <foreach collection="fields" separator="," item="item" index="index">
+                    ${item.fullname}
+                </foreach>
+            </when>
+            <otherwise>
+                id, site_id, parent_id, group_name, description, enabled, created, modified
+            </otherwise>
+        </choose>
+    </sql>
+
+    <sql id="insertColumns">
+        <trim suffixOverrides=",">
+            <if test="id != null">
+                id,
+            </if>
+            <if test="siteId != null">
+                site_id,
+            </if>
+            <if test="parentId != null">
+                parent_id,
+            </if>
+            <if test="groupName != null">
+                group_name,
+            </if>
+            <if test="description != null">
+                description,
+            </if>
+            <if test="enabled != null">
+                enabled,
+            </if>
+            <if test="created != null">
+                created,
+            </if>
+            <if test="modified != null">
+                modified,
+            </if>
+        </trim>
+    </sql>
+
+    <sql id="insertValues">
+        <trim suffixOverrides=",">
+            <if test="id != null">
+                #{id},
+            </if>
+            <if test="siteId != null">
+                #{siteId},
+            </if>
+            <if test="parentId != null">
+                #{parentId},
+            </if>
+            <if test="groupName != null">
+                #{groupName},
+            </if>
+            <if test="description != null">
+                #{description},
+            </if>
+            <if test="enabled != null">
+                #{enabled},
+            </if>
+            <if test="created != null">
+                #{created},
+            </if>
+            <if test="modified != null">
+                #{modified},
+            </if>
+        </trim>
+    </sql>
+
+    <sql id="updateValues">
+        <trim suffixOverrides=",">
+            <if test="siteId != null">
+                site_id = #{siteId},
+            </if>
+            <if test="parentId != null">
+                parent_id = #{parentId},
+            </if>
+            <if test="groupName != null">
+                group_name = #{groupName},
+            </if>
+            <if test="description != null">
+                description = #{description},
+            </if>
+            <if test="enabled != null">
+                enabled = #{enabled},
+            </if>
+            <if test="created != null">
+                created = #{created},
+            </if>
+            <if test="modified != null">
+                modified = #{modified},
+            </if>
+        </trim>
+    </sql>
+
+    <sql id="updateValuesByCriterion">
+        <trim suffixOverrides=",">
+            <if test="entity.siteId != null">
+                site_id = #{entity.siteId},
+            </if>
+            <if test="entity.parentId != null">
+                parent_id = #{entity.parentId},
+            </if>
+            <if test="entity.groupName != null">
+                group_name = #{entity.groupName},
+            </if>
+            <if test="entity.description != null">
+                description = #{entity.description},
+            </if>
+            <if test="entity.enabled != null">
+                enabled = #{entity.enabled},
+            </if>
+            <if test="entity.created != null">
+                created = #{entity.created},
+            </if>
+            <if test="entity.modified != null">
+                modified = #{entity.modified},
+            </if>
+        </trim>
+    </sql>
+
+    <sql id="simpleConditions">
+        <trim prefix="WHERE" prefixOverrides="AND">
+            <if test="entity.id != null">
+                AND id = #{entity.id}
+            </if>
+            <if test="entity.siteId != null">
+                AND site_id = #{entity.siteId}
+            </if>
+            <if test="entity.parentId != null">
+                AND parent_id = #{entity.parentId}
+            </if>
+            <if test="entity.groupName != null">
+                AND group_name = #{entity.groupName}
+            </if>
+            <if test="entity.description != null">
+                AND description = #{entity.description}
+            </if>
+            <if test="entity.enabled != null">
+                AND enabled = #{entity.enabled}
+            </if>
+            <if test="entity.created != null">
+                AND created = #{entity.created}
+            </if>
+            <if test="entity.modified != null">
+                AND modified = #{entity.modified}
+            </if>
+        </trim>
+    </sql>
+
+    <sql id="sort">
+        <trim prefix="ORDER BY" suffixOverrides=",">
+            <foreach collection="orders" separator="," item="item" index="index">
+                ${item.property} ${item.direction}
+            </foreach>
+        </trim>
+    </sql>
+
+    <sql id="criterion">
+        <foreach collection="conditions.tokens" item="item">
+            <choose>
+                <when test="item.param">#{item.value}</when><otherwise>${item.value}</otherwise>
+            </choose>
+        </foreach>
+    </sql>
+
+    <sql id="limit">
+        LIMIT #{offset}, #{pageSize}
+    </sql>
+
+    <!-- insert -->
+    <insert id="save" parameterType="com.mifan.user.domain.Groups" keyProperty="id" useGeneratedKeys="true">
+        INSERT INTO groups(<include refid="insertColumns"/>) VALUES (<include refid="insertValues"/>)
+    </insert>
+
+    <!-- insert into on duplicate -->
+    <insert id="saveOrUpdate" parameterType="com.mifan.user.domain.Groups" keyProperty="id" useGeneratedKeys="true">
+        INSERT INTO groups(<include refid="insertColumns"/>) VALUES (<include refid="insertValues"/>) ON DUPLICATE KEY UPDATE <include refid="updateValues"/>
+    </insert>
+
+    <!-- delete -->
+    <delete id="delete" parameterType="long">
+        DELETE FROM groups WHERE id = #{id}
+    </delete>
+
+    <!-- update -->
+    <update id="update" parameterType="com.mifan.user.domain.Groups">
+        UPDATE groups SET <include refid="updateValues"/> WHERE id = #{id}
+    </update>
+
+    <update id="updateByCriterion" parameterType="com.mifan.user.domain.Groups">
+        UPDATE groups SET <include refid="updateValuesByCriterion"/> WHERE id = #{entity.id} AND <include refid="criterion"></include>
+    </update>
+
+    <!-- select -->
+    <select id="findOne" parameterType="map" resultMap="groups">
+        SELECT
+        <include refid="columns"></include>
+        FROM groups WHERE id = #{id}
+    </select>
+
+    <select id="findOneByObject" parameterType="map" resultMap="groups">
+        SELECT
+        <include refid="columns"></include>
+        FROM groups <include refid="simpleConditions"></include>
+    </select>
+
+    <select id="findAll" parameterType="map" resultMap="groups">
+        SELECT
+        <include refid="columns"></include>
+        FROM groups WHERE ${field} IN
+        <foreach collection="ids" open="(" separator="," close=")" index="index" item="item" >
+            ${item}
+        </foreach>
+    </select>
+
+    <select id="findAllByObject" parameterType="map" resultMap="groups">
+        SELECT
+        <include refid="columns"></include>
+        FROM groups <include refid="simpleConditions"></include>
+    </select>
+
+    <select id="findAllByCriterion" parameterType="map" resultMap="groups">
+        SELECT
+        <include refid="columns"></include>
+        FROM groups WHERE <include refid="criterion"></include>
+    </select>
+
+    <select id="findPage" parameterType="map" resultMap="groups">
+        SELECT
+        <include refid="columns"></include>
+        FROM groups <include refid="simpleConditions"></include> <include refid="sort"></include> <include refid="limit"></include>
+    </select>
+
+    <select id="findPageByCriterion" parameterType="map" resultMap="groups">
+        SELECT
+        <include refid="columns"></include>
+        FROM groups WHERE <include refid="criterion"></include> <include refid="sort"></include> <include refid="limit"></include>
+    </select>
+
+    <select id="count" resultType="long">
+        SELECT COUNT(*) FROM groups
+    </select>
+
+    <select id="countByCondition" parameterType="map" resultType="long">
+        SELECT COUNT(*) FROM groups <include refid="simpleConditions"></include>
+    </select>
+
+    <select id="countByCriterion" parameterType="map" resultType="long">
+        SELECT COUNT(*) FROM groups WHERE <include refid="criterion"></include>
+    </select>
+
+    <select id="exists" parameterType="long" resultType="long">
+        SELECT COUNT(*) FROM groups WHERE id = #{id}
+    </select>
+
+    <!-- -->
+    <select id="findGroups" parameterType="map" resultMap="groups">
+        SELECT
+        <include refid="columns"></include>
+        FROM users_groups JOIN groups ON groups.id = users_groups.group_id WHERE users_groups.user_id = #{userId} AND groups.site_id = #{siteId} AND groups.enabled = 1
+    </select>
+
+</mapper>
